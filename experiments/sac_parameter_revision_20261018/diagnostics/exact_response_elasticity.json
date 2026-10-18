@@ -1,0 +1,1535 @@
+{
+  "equation_unchanged": true,
+  "noise_draws": 128,
+  "seed_start": 940300000,
+  "delta_price": 0.01,
+  "formula": "epsilon = d(actual demand)/d(price) * anchor_price/actual_demand; average sample elasticity",
+  "common_random_numbers": true,
+  "results": [
+    {
+      "curvature_mean": 0.001,
+      "curvature_std": 8.280000000000001e-05,
+      "reference_mean_elasticity_range": [
+        -3.766195150842343,
+        -1.8447319594083305
+      ],
+      "billing_mean_elasticity_range": [
+        -2.795381491904446,
+        -1.4358288961608432
+      ],
+      "hourly": [
+        {
+          "hour": 0,
+          "reference": 28.3,
+          "billing_tou": 26.5,
+          "baseline_load": 2946.4306640625,
+          "reference_elasticity_mean": -2.6661740476509603,
+          "billing_elasticity_mean": -1.730599490606728,
+          "reference_demand_derivative_mean": -277.6199340819878,
+          "reference_elasticity_sd": 0.21870146325877807
+        },
+        {
+          "hour": 1,
+          "reference": 28.3,
+          "billing_tou": 26.5,
+          "baseline_load": 2705.141845703125,
+          "reference_elasticity_mean": -2.912819428322326,
+          "billing_elasticity_mean": -1.84164767634121,
+          "reference_demand_derivative_mean": -278.39784622188034,
+          "reference_elasticity_sd": 0.2651026494134042
+        },
+        {
+          "hour": 2,
+          "reference": 28.3,
+          "billing_tou": 26.5,
+          "baseline_load": 2527.49755859375,
+          "reference_elasticity_mean": -3.0361565689126113,
+          "billing_elasticity_mean": -1.8905507330262217,
+          "reference_demand_derivative_mean": -271.16012573237947,
+          "reference_elasticity_sd": 0.2853319786699566
+        },
+        {
+          "hour": 3,
+          "reference": 28.3,
+          "billing_tou": 26.5,
+          "baseline_load": 2173.306640625,
+          "reference_elasticity_mean": -3.63501178829583,
+          "billing_elasticity_mean": -2.128582654864898,
+          "reference_demand_derivative_mean": -278.69100570674357,
+          "reference_elasticity_sd": 0.3252982727260419
+        },
+        {
+          "hour": 4,
+          "reference": 28.3,
+          "billing_tou": 26.5,
+          "baseline_load": 2067.45849609375,
+          "reference_elasticity_mean": -3.766195150842343,
+          "billing_elasticity_mean": -2.1654930376698465,
+          "reference_demand_derivative_mean": -275.19693374629486,
+          "reference_elasticity_sd": 0.3636774752503994
+        },
+        {
+          "hour": 5,
+          "reference": 28.3,
+          "billing_tou": 26.5,
+          "baseline_load": 2107.985595703125,
+          "reference_elasticity_mean": -3.691998820366425,
+          "billing_elasticity_mean": -2.1378354707570058,
+          "reference_demand_derivative_mean": -274.8703002929258,
+          "reference_elasticity_sd": 0.3518195486819824
+        },
+        {
+          "hour": 6,
+          "reference": 28.3,
+          "billing_tou": 26.5,
+          "baseline_load": 2559.495849609375,
+          "reference_elasticity_mean": -2.999972963203925,
+          "billing_elasticity_mean": -1.8648202090550048,
+          "reference_demand_derivative_mean": -271.1369514464908,
+          "reference_elasticity_sd": 0.27430321527825086
+        },
+        {
+          "hour": 7,
+          "reference": 28.3,
+          "billing_tou": 26.5,
+          "baseline_load": 3422.305419921875,
+          "reference_elasticity_mean": -2.2255892782347386,
+          "billing_elasticity_mean": -1.5085030562412036,
+          "reference_demand_derivative_mean": -269.2110061645087,
+          "reference_elasticity_sd": 0.20624995390441125
+        },
+        {
+          "hour": 8,
+          "reference": 28.6,
+          "billing_tou": 28.5,
+          "baseline_load": 3878.875244140625,
+          "reference_elasticity_mean": -1.9824112994482936,
+          "billing_elasticity_mean": -1.9499805390406806,
+          "reference_demand_derivative_mean": -268.94273757930364,
+          "reference_elasticity_sd": 0.1750364131053994
+        },
+        {
+          "hour": 9,
+          "reference": 28.7,
+          "billing_tou": 28.5,
+          "baseline_load": 4046.9287109375,
+          "reference_elasticity_mean": -1.9437552214973102,
+          "billing_elasticity_mean": -1.8819678801709878,
+          "reference_demand_derivative_mean": -274.2674827575255,
+          "reference_elasticity_sd": 0.1664023536290641
+        },
+        {
+          "hour": 10,
+          "reference": 29.0,
+          "billing_tou": 28.5,
+          "baseline_load": 4197.376953125,
+          "reference_elasticity_mean": -1.9033601762911736,
+          "billing_elasticity_mean": -1.7583066096716315,
+          "reference_demand_derivative_mean": -275.66699981685144,
+          "reference_elasticity_sd": 0.16331545893581456
+        },
+        {
+          "hour": 11,
+          "reference": 29.2,
+          "billing_tou": 28.5,
+          "baseline_load": 4212.27880859375,
+          "reference_elasticity_mean": -1.9010273928822992,
+          "billing_elasticity_mean": -1.7026849126372006,
+          "reference_demand_derivative_mean": -274.2952346801329,
+          "reference_elasticity_sd": 0.15907744074967398
+        },
+        {
+          "hour": 12,
+          "reference": 29.5,
+          "billing_tou": 28.5,
+          "baseline_load": 4145.94140625,
+          "reference_elasticity_mean": -1.9615410714595367,
+          "billing_elasticity_mean": -1.674104772123937,
+          "reference_demand_derivative_mean": -275.84075927730066,
+          "reference_elasticity_sd": 0.18956703647621623
+        },
+        {
+          "hour": 13,
+          "reference": 29.7,
+          "billing_tou": 32.5,
+          "baseline_load": 4124.17236328125,
+          "reference_elasticity_mean": -2.195737213572658,
+          "billing_elasticity_mean": -2.795381491904446,
+          "reference_demand_derivative_mean": -304.96540069575315,
+          "reference_elasticity_sd": 0.18867255063779118
+        },
+        {
+          "hour": 14,
+          "reference": 29.8,
+          "billing_tou": 32.5,
+          "baseline_load": 4103.63671875,
+          "reference_elasticity_mean": -2.2018905898898686,
+          "billing_elasticity_mean": -2.780422331063714,
+          "reference_demand_derivative_mean": -303.1836509704116,
+          "reference_elasticity_sd": 0.1839261806273642
+        },
+        {
+          "hour": 15,
+          "reference": 29.9,
+          "billing_tou": 32.5,
+          "baseline_load": 4102.63623046875,
+          "reference_elasticity_mean": -2.1911058214472647,
+          "billing_elasticity_mean": -2.7395731046698355,
+          "reference_demand_derivative_mean": -300.73442459101744,
+          "reference_elasticity_sd": 0.159483069621189
+        },
+        {
+          "hour": 16,
+          "reference": 29.8,
+          "billing_tou": 32.5,
+          "baseline_load": 4120.25341796875,
+          "reference_elasticity_mean": -2.2037258654763887,
+          "billing_elasticity_mean": -2.783296562280361,
+          "reference_demand_derivative_mean": -304.442691802931,
+          "reference_elasticity_sd": 0.16989828900392562
+        },
+        {
+          "hour": 17,
+          "reference": 30.6,
+          "billing_tou": 32.5,
+          "baseline_load": 4267.08056640625,
+          "reference_elasticity_mean": -2.108279439268464,
+          "billing_elasticity_mean": -2.464815727653427,
+          "reference_demand_derivative_mean": -293.88122558589157,
+          "reference_elasticity_sd": 0.2038310222681132
+        },
+        {
+          "hour": 18,
+          "reference": 30.4,
+          "billing_tou": 32.5,
+          "baseline_load": 4838.85009765625,
+          "reference_elasticity_mean": -1.8447319594083305,
+          "billing_elasticity_mean": -2.121514635831814,
+          "reference_demand_derivative_mean": -293.8261032104033,
+          "reference_elasticity_sd": 0.16979105597461444
+        },
+        {
+          "hour": 19,
+          "reference": 30.5,
+          "billing_tou": 32.5,
+          "baseline_load": 4656.515625,
+          "reference_elasticity_mean": -1.8996866997265225,
+          "billing_elasticity_mean": -2.1830254104966507,
+          "reference_demand_derivative_mean": -290.0648117064976,
+          "reference_elasticity_sd": 0.15522110813978512
+        },
+        {
+          "hour": 20,
+          "reference": 29.2,
+          "billing_tou": 32.5,
+          "baseline_load": 4313.75244140625,
+          "reference_elasticity_mean": -2.0631048189522705,
+          "billing_elasticity_mean": -2.6718526081763887,
+          "reference_demand_derivative_mean": -305.2282333373546,
+          "reference_elasticity_sd": 0.1569022021424709
+        },
+        {
+          "hour": 21,
+          "reference": 29.0,
+          "billing_tou": 28.5,
+          "baseline_load": 4023.004150390625,
+          "reference_elasticity_mean": -1.9644753783250712,
+          "billing_elasticity_mean": -1.8100993468274178,
+          "reference_demand_derivative_mean": -272.5553512572816,
+          "reference_elasticity_sd": 0.19038472601527195
+        },
+        {
+          "hour": 22,
+          "reference": 28.6,
+          "billing_tou": 28.5,
+          "baseline_load": 3645.580322265625,
+          "reference_elasticity_mean": -2.1423274911126384,
+          "billing_elasticity_mean": -2.1037734863636057,
+          "reference_demand_derivative_mean": -272.75714874263315,
+          "reference_elasticity_sd": 0.18550682871402585
+        },
+        {
+          "hour": 23,
+          "reference": 28.5,
+          "billing_tou": 26.5,
+          "baseline_load": 3605.482421875,
+          "reference_elasticity_mean": -2.1766364629037973,
+          "billing_elasticity_mean": -1.4358288961608432,
+          "reference_demand_derivative_mean": -275.4277229308651,
+          "reference_elasticity_sd": 0.21060953366181936
+        }
+      ]
+    },
+    {
+      "curvature_mean": 0.005,
+      "curvature_std": 0.000414,
+      "reference_mean_elasticity_range": [
+        -0.7531507803335546,
+        -0.36959794604199303
+      ],
+      "billing_mean_elasticity_range": [
+        -0.6151702446609923,
+        -0.3504127521487205
+      ],
+      "hourly": [
+        {
+          "hour": 0,
+          "reference": 28.3,
+          "billing_tou": 26.5,
+          "baseline_load": 2946.4306640625,
+          "reference_elasticity_mean": -0.5331605317573673,
+          "billing_elasticity_mean": -0.44839455353942037,
+          "reference_demand_derivative_mean": -55.514430999747184,
+          "reference_elasticity_sd": 0.044597708944010904
+        },
+        {
+          "hour": 1,
+          "reference": 28.3,
+          "billing_tou": 26.5,
+          "baseline_load": 2705.141845703125,
+          "reference_elasticity_mean": -0.5825599391992524,
+          "billing_elasticity_mean": -0.48698705181243673,
+          "reference_demand_derivative_mean": -55.67626953124129,
+          "reference_elasticity_sd": 0.05395034624336864
+        },
+        {
+          "hour": 2,
+          "reference": 28.3,
+          "billing_tou": 26.5,
+          "baseline_load": 2527.49755859375,
+          "reference_elasticity_mean": -0.6072488289944996,
+          "billing_elasticity_mean": -0.5056827670946472,
+          "reference_demand_derivative_mean": -54.23126220702277,
+          "reference_elasticity_sd": 0.05725796867130693
+        },
+        {
+          "hour": 3,
+          "reference": 28.3,
+          "billing_tou": 26.5,
+          "baseline_load": 2173.306640625,
+          "reference_elasticity_mean": -0.7274185316740461,
+          "billing_elasticity_mean": -0.596951468650603,
+          "reference_demand_derivative_mean": -55.76705932616316,
+          "reference_elasticity_sd": 0.0661445712169452
+        },
+        {
+          "hour": 4,
+          "reference": 28.3,
+          "billing_tou": 26.5,
+          "baseline_load": 2067.45849609375,
+          "reference_elasticity_mean": -0.7531507803335546,
+          "billing_elasticity_mean": -0.6151702446609923,
+          "reference_demand_derivative_mean": -55.029296874991395,
+          "reference_elasticity_sd": 0.07383539837336983
+        },
+        {
+          "hour": 5,
+          "reference": 28.3,
+          "billing_tou": 26.5,
+          "baseline_load": 2107.985595703125,
+          "reference_elasticity_mean": -0.7384574452377054,
+          "billing_elasticity_mean": -0.6043891083616059,
+          "reference_demand_derivative_mean": -54.97570037840937,
+          "reference_elasticity_sd": 0.07143668981763464
+        },
+        {
+          "hour": 6,
+          "reference": 28.3,
+          "billing_tou": 26.5,
+          "baseline_load": 2559.495849609375,
+          "reference_elasticity_mean": -0.6001977966403358,
+          "billing_elasticity_mean": -0.4995033040479221,
+          "reference_demand_derivative_mean": -54.243469238272766,
+          "reference_elasticity_sd": 0.05493488822918973
+        },
+        {
+          "hour": 7,
+          "reference": 28.3,
+          "billing_tou": 26.5,
+          "baseline_load": 3422.305419921875,
+          "reference_elasticity_mean": -0.4450591654958126,
+          "billing_elasticity_mean": -0.3776340490479616,
+          "reference_demand_derivative_mean": -53.833675384513064,
+          "reference_elasticity_sd": 0.04144041610705969
+        },
+        {
+          "hour": 8,
+          "reference": 28.6,
+          "billing_tou": 28.5,
+          "baseline_load": 3878.875244140625,
+          "reference_elasticity_mean": -0.39641056412338393,
+          "billing_elasticity_mean": -0.3946356089447842,
+          "reference_demand_derivative_mean": -53.77740859984512,
+          "reference_elasticity_sd": 0.03538697818388092
+        },
+        {
+          "hour": 9,
+          "reference": 28.7,
+          "billing_tou": 28.5,
+          "baseline_load": 4046.9287109375,
+          "reference_elasticity_mean": -0.38859680471916047,
+          "billing_elasticity_mean": -0.3851080834677981,
+          "reference_demand_derivative_mean": -54.83036041258909,
+          "reference_elasticity_sd": 0.03357349592824565
+        },
+        {
+          "hour": 10,
+          "reference": 29.0,
+          "billing_tou": 28.5,
+          "baseline_load": 4197.376953125,
+          "reference_elasticity_mean": -0.38052265824746706,
+          "billing_elasticity_mean": -0.3711058193856428,
+          "reference_demand_derivative_mean": -55.11035919188592,
+          "reference_elasticity_sd": 0.03298596785628384
+        },
+        {
+          "hour": 11,
+          "reference": 29.2,
+          "billing_tou": 28.5,
+          "baseline_load": 4212.27880859375,
+          "reference_elasticity_mean": -0.3801723654278656,
+          "billing_elasticity_mean": -0.3664917306883558,
+          "reference_demand_derivative_mean": -54.852676391592986,
+          "reference_elasticity_sd": 0.03187595350958712
+        },
+        {
+          "hour": 12,
+          "reference": 29.5,
+          "billing_tou": 28.5,
+          "baseline_load": 4145.94140625,
+          "reference_elasticity_mean": -0.39216758107508787,
+          "billing_elasticity_mean": -0.3723423815420846,
+          "reference_demand_derivative_mean": -55.14707565306755,
+          "reference_elasticity_sd": 0.038176908000807565
+        },
+        {
+          "hour": 13,
+          "reference": 29.7,
+          "billing_tou": 32.5,
+          "baseline_load": 4124.17236328125,
+          "reference_elasticity_mean": -0.43950047370793743,
+          "billing_elasticity_mean": -0.4157354578706227,
+          "reference_demand_derivative_mean": -61.04888916014671,
+          "reference_elasticity_sd": 0.03599080441174655
+        },
+        {
+          "hour": 14,
+          "reference": 29.8,
+          "billing_tou": 32.5,
+          "baseline_load": 4103.63671875,
+          "reference_elasticity_mean": -0.44042723794644767,
+          "billing_elasticity_mean": -0.41666324433039764,
+          "reference_demand_derivative_mean": -60.649490356435834,
+          "reference_elasticity_sd": 0.035640081479061954
+        },
+        {
+          "hour": 15,
+          "reference": 29.9,
+          "billing_tou": 32.5,
+          "baseline_load": 4102.63623046875,
+          "reference_elasticity_mean": -0.4385058314434912,
+          "billing_elasticity_mean": -0.4158970599214403,
+          "reference_demand_derivative_mean": -60.19163131712926,
+          "reference_elasticity_sd": 0.03193565517004223
+        },
+        {
+          "hour": 16,
+          "reference": 29.8,
+          "billing_tou": 32.5,
+          "baseline_load": 4120.25341796875,
+          "reference_elasticity_mean": -0.4400701690487052,
+          "billing_elasticity_mean": -0.4163764923084524,
+          "reference_demand_derivative_mean": -60.802078247060805,
+          "reference_elasticity_sd": 0.03415811492099307
+        },
+        {
+          "hour": 17,
+          "reference": 30.6,
+          "billing_tou": 32.5,
+          "baseline_load": 4267.08056640625,
+          "reference_elasticity_mean": -0.42138765081754803,
+          "billing_elasticity_mean": -0.4037082476921267,
+          "reference_demand_derivative_mean": -58.7434768676666,
+          "reference_elasticity_sd": 0.04026005977282407
+        },
+        {
+          "hour": 18,
+          "reference": 30.4,
+          "billing_tou": 32.5,
+          "baseline_load": 4838.85009765625,
+          "reference_elasticity_mean": -0.36959794604199303,
+          "billing_elasticity_mean": -0.3504127521487205,
+          "reference_demand_derivative_mean": -58.87489318846736,
+          "reference_elasticity_sd": 0.03367953774140899
+        },
+        {
+          "hour": 19,
+          "reference": 30.5,
+          "billing_tou": 32.5,
+          "baseline_load": 4656.515625,
+          "reference_elasticity_mean": -0.3800700794465639,
+          "billing_elasticity_mean": -0.3610036325587109,
+          "reference_demand_derivative_mean": -58.03852081297921,
+          "reference_elasticity_sd": 0.03075059039108809
+        },
+        {
+          "hour": 20,
+          "reference": 29.2,
+          "billing_tou": 32.5,
+          "baseline_load": 4313.75244140625,
+          "reference_elasticity_mean": -0.4138194531835286,
+          "billing_elasticity_mean": -0.38488362490624795,
+          "reference_demand_derivative_mean": -61.229324340810734,
+          "reference_elasticity_sd": 0.031843900497532926
+        },
+        {
+          "hour": 21,
+          "reference": 29.0,
+          "billing_tou": 28.5,
+          "baseline_load": 4023.004150390625,
+          "reference_elasticity_mean": -0.39285573420373177,
+          "billing_elasticity_mean": -0.3825937073345034,
+          "reference_demand_derivative_mean": -54.504013061514925,
+          "reference_elasticity_sd": 0.03851416848819226
+        },
+        {
+          "hour": 22,
+          "reference": 28.6,
+          "billing_tou": 28.5,
+          "baseline_load": 3645.580322265625,
+          "reference_elasticity_mean": -0.42874447534075755,
+          "billing_elasticity_mean": -0.4255061787153013,
+          "reference_demand_derivative_mean": -54.585456848136005,
+          "reference_elasticity_sd": 0.037478987647001416
+        },
+        {
+          "hour": 23,
+          "reference": 28.5,
+          "billing_tou": 26.5,
+          "baseline_load": 3605.482421875,
+          "reference_elasticity_mean": -0.43523045353513484,
+          "billing_elasticity_mean": -0.3639147319184862,
+          "reference_demand_derivative_mean": -55.07106781004998,
+          "reference_elasticity_sd": 0.04270622579650085
+        }
+      ]
+    },
+    {
+      "curvature_mean": 0.01,
+      "curvature_std": 0.000828,
+      "reference_mean_elasticity_range": [
+        -0.37650862720363637,
+        -0.18521410579874564
+      ],
+      "billing_mean_elasticity_range": [
+        -0.32258795681591435,
+        -0.1713598207173293
+      ],
+      "hourly": [
+        {
+          "hour": 0,
+          "reference": 28.3,
+          "billing_tou": 26.5,
+          "baseline_load": 2946.4306640625,
+          "reference_elasticity_mean": -0.2665293458084278,
+          "billing_elasticity_mean": -0.23181436442886566,
+          "reference_demand_derivative_mean": -27.75077819823785,
+          "reference_elasticity_sd": 0.022903118224535123
+        },
+        {
+          "hour": 1,
+          "reference": 28.3,
+          "billing_tou": 26.5,
+          "baseline_load": 2705.141845703125,
+          "reference_elasticity_mean": -0.29128601387146913,
+          "billing_elasticity_mean": -0.25255078755797167,
+          "reference_demand_derivative_mean": -27.83689498900932,
+          "reference_elasticity_sd": 0.027648969497946124
+        },
+        {
+          "hour": 2,
+          "reference": 28.3,
+          "billing_tou": 26.5,
+          "baseline_load": 2527.49755859375,
+          "reference_elasticity_mean": -0.3036215962238087,
+          "billing_elasticity_mean": -0.262680488423369,
+          "reference_demand_derivative_mean": -27.113914489741852,
+          "reference_elasticity_sd": 0.028843950752566988
+        },
+        {
+          "hour": 3,
+          "reference": 28.3,
+          "billing_tou": 26.5,
+          "baseline_load": 2173.306640625,
+          "reference_elasticity_mean": -0.36395414423874767,
+          "billing_elasticity_mean": -0.3125576489922809,
+          "reference_demand_derivative_mean": -27.900409698481965,
+          "reference_elasticity_sd": 0.03382972094996843
+        },
+        {
+          "hour": 4,
+          "reference": 28.3,
+          "billing_tou": 26.5,
+          "baseline_load": 2067.45849609375,
+          "reference_elasticity_mean": -0.37650862720363637,
+          "billing_elasticity_mean": -0.32258795681591435,
+          "reference_demand_derivative_mean": -27.507495880122654,
+          "reference_elasticity_sd": 0.03771379022413562
+        },
+        {
+          "hour": 5,
+          "reference": 28.3,
+          "billing_tou": 26.5,
+          "baseline_load": 2107.985595703125,
+          "reference_elasticity_mean": -0.36927716535212995,
+          "billing_elasticity_mean": -0.31675604083902004,
+          "reference_demand_derivative_mean": -27.489805221553322,
+          "reference_elasticity_sd": 0.03646471559876681
+        },
+        {
+          "hour": 6,
+          "reference": 28.3,
+          "billing_tou": 26.5,
+          "baseline_load": 2559.495849609375,
+          "reference_elasticity_mean": -0.30023706188477056,
+          "billing_elasticity_mean": -0.25960213572665847,
+          "reference_demand_derivative_mean": -27.132797241206696,
+          "reference_elasticity_sd": 0.027610530346993574
+        },
+        {
+          "hour": 7,
+          "reference": 28.3,
+          "billing_tou": 26.5,
+          "baseline_load": 3422.305419921875,
+          "reference_elasticity_mean": -0.22248460026915015,
+          "billing_elasticity_mean": -0.19429029205480736,
+          "reference_demand_derivative_mean": -26.910495758052434,
+          "reference_elasticity_sd": 0.02091884712548122
+        },
+        {
+          "hour": 8,
+          "reference": 28.6,
+          "billing_tou": 28.5,
+          "baseline_load": 3878.875244140625,
+          "reference_elasticity_mean": -0.1981538674315968,
+          "billing_elasticity_mean": -0.19771981330220573,
+          "reference_demand_derivative_mean": -26.880836486812203,
+          "reference_elasticity_sd": 0.017972562568642894
+        },
+        {
+          "hour": 9,
+          "reference": 28.7,
+          "billing_tou": 28.5,
+          "baseline_load": 4046.9287109375,
+          "reference_elasticity_mean": -0.19418278815055245,
+          "billing_elasticity_mean": -0.19328724450096207,
+          "reference_demand_derivative_mean": -27.39801406859923,
+          "reference_elasticity_sd": 0.017017076458786133
+        },
+        {
+          "hour": 10,
+          "reference": 29.0,
+          "billing_tou": 28.5,
+          "baseline_load": 4197.376953125,
+          "reference_elasticity_mean": -0.19016928171612016,
+          "billing_elasticity_mean": -0.18699657334255582,
+          "reference_demand_derivative_mean": -27.540969848628507,
+          "reference_elasticity_sd": 0.01675028582972091
+        },
+        {
+          "hour": 11,
+          "reference": 29.2,
+          "billing_tou": 28.5,
+          "baseline_load": 4212.27880859375,
+          "reference_elasticity_mean": -0.1900680003896409,
+          "billing_elasticity_mean": -0.1849844073285785,
+          "reference_demand_derivative_mean": -27.422714233394153,
+          "reference_elasticity_sd": 0.016042680630212806
+        },
+        {
+          "hour": 12,
+          "reference": 29.5,
+          "billing_tou": 28.5,
+          "baseline_load": 4145.94140625,
+          "reference_elasticity_mean": -0.19597336058505832,
+          "billing_elasticity_mean": -0.18882684571839908,
+          "reference_demand_derivative_mean": -27.55718231200741,
+          "reference_elasticity_sd": 0.01928299420628232
+        },
+        {
+          "hour": 13,
+          "reference": 29.7,
+          "billing_tou": 32.5,
+          "baseline_load": 4124.17236328125,
+          "reference_elasticity_mean": -0.21997109864894876,
+          "billing_elasticity_mean": -0.20003051773928324,
+          "reference_demand_derivative_mean": -30.55934906005382,
+          "reference_elasticity_sd": 0.017714215967705095
+        },
+        {
+          "hour": 14,
+          "reference": 29.8,
+          "billing_tou": 32.5,
+          "baseline_load": 4103.63671875,
+          "reference_elasticity_mean": -0.22024182010049778,
+          "billing_elasticity_mean": -0.20048176225059836,
+          "reference_demand_derivative_mean": -30.332374572749163,
+          "reference_elasticity_sd": 0.01782106675621245
+        },
+        {
+          "hour": 15,
+          "reference": 29.9,
+          "billing_tou": 32.5,
+          "baseline_load": 4102.63623046875,
+          "reference_elasticity_mean": -0.21942404761450815,
+          "billing_elasticity_mean": -0.20063131302119872,
+          "reference_demand_derivative_mean": -30.122852325434746,
+          "reference_elasticity_sd": 0.016753411056189448
+        },
+        {
+          "hour": 16,
+          "reference": 29.8,
+          "billing_tou": 32.5,
+          "baseline_load": 4120.25341796875,
+          "reference_elasticity_mean": -0.21960744812892277,
+          "billing_elasticity_mean": -0.1998482354352894,
+          "reference_demand_derivative_mean": -30.346202850337054,
+          "reference_elasticity_sd": 0.01803348823967394
+        },
+        {
+          "hour": 17,
+          "reference": 30.6,
+          "billing_tou": 32.5,
+          "baseline_load": 4267.08056640625,
+          "reference_elasticity_mean": -0.21050954883565978,
+          "billing_elasticity_mean": -0.1965562792619123,
+          "reference_demand_derivative_mean": -29.348945617671195,
+          "reference_elasticity_sd": 0.020363024264202653
+        },
+        {
+          "hour": 18,
+          "reference": 30.4,
+          "billing_tou": 32.5,
+          "baseline_load": 4838.85009765625,
+          "reference_elasticity_mean": -0.18521410579874564,
+          "billing_elasticity_mean": -0.1713598207173293,
+          "reference_demand_derivative_mean": -29.507255554194607,
+          "reference_elasticity_sd": 0.017359686604730577
+        },
+        {
+          "hour": 19,
+          "reference": 30.5,
+          "billing_tou": 32.5,
+          "baseline_load": 4656.515625,
+          "reference_elasticity_mean": -0.19012517390995123,
+          "billing_elasticity_mean": -0.17617484391830174,
+          "reference_demand_derivative_mean": -29.036331176753272,
+          "reference_elasticity_sd": 0.01593522501250406
+        },
+        {
+          "hour": 20,
+          "reference": 29.2,
+          "billing_tou": 32.5,
+          "baseline_load": 4313.75244140625,
+          "reference_elasticity_mean": -0.20764588287537783,
+          "billing_elasticity_mean": -0.18485260492415193,
+          "reference_demand_derivative_mean": -30.727577209467853,
+          "reference_elasticity_sd": 0.016969875257161288
+        },
+        {
+          "hour": 21,
+          "reference": 29.0,
+          "billing_tou": 28.5,
+          "baseline_load": 4023.004150390625,
+          "reference_elasticity_mean": -0.1963951742560333,
+          "billing_elasticity_mean": -0.19269309271121904,
+          "reference_demand_derivative_mean": -27.246475219722303,
+          "reference_elasticity_sd": 0.019572194888376148
+        },
+        {
+          "hour": 22,
+          "reference": 28.6,
+          "billing_tou": 28.5,
+          "baseline_load": 3645.580322265625,
+          "reference_elasticity_mean": -0.21454896164836273,
+          "billing_elasticity_mean": -0.21281275530643967,
+          "reference_demand_derivative_mean": -27.314281463618777,
+          "reference_elasticity_sd": 0.019021574352749652
+        },
+        {
+          "hour": 23,
+          "reference": 28.5,
+          "billing_tou": 26.5,
+          "baseline_load": 3605.482421875,
+          "reference_elasticity_mean": -0.2175583725237255,
+          "billing_elasticity_mean": -0.18753393469171414,
+          "reference_demand_derivative_mean": -27.526950836177342,
+          "reference_elasticity_sd": 0.021787568826255602
+        }
+      ]
+    },
+    {
+      "curvature_mean": 0.015,
+      "curvature_std": 0.0012419999999999998,
+      "reference_mean_elasticity_range": [
+        -0.25097266342064906,
+        -0.1237441065249745
+      ],
+      "billing_mean_elasticity_range": [
+        -0.21851945475303294,
+        -0.11358548929885726
+      ],
+      "hourly": [
+        {
+          "hour": 0,
+          "reference": 28.3,
+          "billing_tou": 26.5,
+          "baseline_load": 2946.4306640625,
+          "reference_elasticity_mean": -0.17764312817170425,
+          "billing_elasticity_mean": -0.15623788549546996,
+          "reference_demand_derivative_mean": -18.495273590085,
+          "reference_elasticity_sd": 0.015694939914866902
+        },
+        {
+          "hour": 1,
+          "reference": 28.3,
+          "billing_tou": 26.5,
+          "baseline_load": 2705.141845703125,
+          "reference_elasticity_mean": -0.19416562200676543,
+          "billing_elasticity_mean": -0.17041525983192385,
+          "reference_demand_derivative_mean": -18.55430603027054,
+          "reference_elasticity_sd": 0.018944481350651667
+        },
+        {
+          "hour": 2,
+          "reference": 28.3,
+          "billing_tou": 26.5,
+          "baseline_load": 2527.49755859375,
+          "reference_elasticity_mean": -0.20242083860285337,
+          "billing_elasticity_mean": -0.17737810550722824,
+          "reference_demand_derivative_mean": -18.075561523434672,
+          "reference_elasticity_sd": 0.019433329648508996
+        },
+        {
+          "hour": 3,
+          "reference": 28.3,
+          "billing_tou": 26.5,
+          "baseline_load": 2173.306640625,
+          "reference_elasticity_mean": -0.2428145471487969,
+          "billing_elasticity_mean": -0.21171046088690526,
+          "reference_demand_derivative_mean": -18.612670898434594,
+          "reference_elasticity_sd": 0.02315713153215725
+        },
+        {
+          "hour": 4,
+          "reference": 28.3,
+          "billing_tou": 26.5,
+          "baseline_load": 2067.45849609375,
+          "reference_elasticity_mean": -0.25097266342064906,
+          "billing_elasticity_mean": -0.21851945475303294,
+          "reference_demand_derivative_mean": -18.33438873290729,
+          "reference_elasticity_sd": 0.025763419298937645
+        },
+        {
+          "hour": 5,
+          "reference": 28.3,
+          "billing_tou": 26.5,
+          "baseline_load": 2107.985595703125,
+          "reference_elasticity_mean": -0.2462268395185644,
+          "billing_elasticity_mean": -0.2145084922024322,
+          "reference_demand_derivative_mean": -18.328571319577215,
+          "reference_elasticity_sd": 0.02486377443125886
+        },
+        {
+          "hour": 6,
+          "reference": 28.3,
+          "billing_tou": 26.5,
+          "baseline_load": 2559.495849609375,
+          "reference_elasticity_mean": -0.20022980319902117,
+          "billing_elasticity_mean": -0.17540147181654422,
+          "reference_demand_derivative_mean": -18.094062805172953,
+          "reference_elasticity_sd": 0.018565813768914467
+        },
+        {
+          "hour": 7,
+          "reference": 28.3,
+          "billing_tou": 26.5,
+          "baseline_load": 3422.305419921875,
+          "reference_elasticity_mean": -0.14828298196080905,
+          "billing_elasticity_mean": -0.13072851023418106,
+          "reference_demand_derivative_mean": -17.934894561764775,
+          "reference_elasticity_sd": 0.014093909047038895
+        },
+        {
+          "hour": 8,
+          "reference": 28.6,
+          "billing_tou": 28.5,
+          "baseline_load": 3878.875244140625,
+          "reference_elasticity_mean": -0.1320664075575163,
+          "billing_elasticity_mean": -0.13194205319098792,
+          "reference_demand_derivative_mean": -17.915058135983525,
+          "reference_elasticity_sd": 0.012204343399042661
+        },
+        {
+          "hour": 9,
+          "reference": 28.7,
+          "billing_tou": 28.5,
+          "baseline_load": 4046.9287109375,
+          "reference_elasticity_mean": -0.1293964130140287,
+          "billing_elasticity_mean": -0.12911030945953011,
+          "reference_demand_derivative_mean": -18.25647354125691,
+          "reference_elasticity_sd": 0.01153040073055703
+        },
+        {
+          "hour": 10,
+          "reference": 29.0,
+          "billing_tou": 28.5,
+          "baseline_load": 4197.376953125,
+          "reference_elasticity_mean": -0.12669712719678175,
+          "billing_elasticity_mean": -0.1250608318740256,
+          "reference_demand_derivative_mean": -18.34812164306354,
+          "reference_elasticity_sd": 0.011369888945045897
+        },
+        {
+          "hour": 11,
+          "reference": 29.2,
+          "billing_tou": 28.5,
+          "baseline_load": 4212.27880859375,
+          "reference_elasticity_mean": -0.1267003086310494,
+          "billing_elasticity_mean": -0.1237277185599194,
+          "reference_demand_derivative_mean": -18.2794570922823,
+          "reference_elasticity_sd": 0.010800459467080985
+        },
+        {
+          "hour": 12,
+          "reference": 29.5,
+          "billing_tou": 28.5,
+          "baseline_load": 4145.94140625,
+          "reference_elasticity_mean": -0.1305972781184216,
+          "billing_elasticity_mean": -0.12655269377085604,
+          "reference_demand_derivative_mean": -18.363666534420958,
+          "reference_elasticity_sd": 0.013020950780545134
+        },
+        {
+          "hour": 13,
+          "reference": 29.7,
+          "billing_tou": 32.5,
+          "baseline_load": 4124.17236328125,
+          "reference_elasticity_mean": -0.1467840239144811,
+          "billing_elasticity_mean": -0.13176599414905169,
+          "reference_demand_derivative_mean": -20.394706726071032,
+          "reference_elasticity_sd": 0.012207953070265279
+        },
+        {
+          "hour": 14,
+          "reference": 29.8,
+          "billing_tou": 32.5,
+          "baseline_load": 4103.63671875,
+          "reference_elasticity_mean": -0.14683837062001934,
+          "billing_elasticity_mean": -0.13197439441463604,
+          "reference_demand_derivative_mean": -20.22552490234059,
+          "reference_elasticity_sd": 0.012421040392247082
+        },
+        {
+          "hour": 15,
+          "reference": 29.9,
+          "billing_tou": 32.5,
+          "baseline_load": 4102.63623046875,
+          "reference_elasticity_mean": -0.14640584683035726,
+          "billing_elasticity_mean": -0.13224214947654067,
+          "reference_demand_derivative_mean": -20.101165771481234,
+          "reference_elasticity_sd": 0.01218917908652358
+        },
+        {
+          "hour": 16,
+          "reference": 29.8,
+          "billing_tou": 32.5,
+          "baseline_load": 4120.25341796875,
+          "reference_elasticity_mean": -0.14612677216387412,
+          "billing_elasticity_mean": -0.13118277235399056,
+          "reference_demand_derivative_mean": -20.195198059078873,
+          "reference_elasticity_sd": 0.013203211224101731
+        },
+        {
+          "hour": 17,
+          "reference": 30.6,
+          "billing_tou": 32.5,
+          "baseline_load": 4267.08056640625,
+          "reference_elasticity_mean": -0.1402260799826377,
+          "billing_elasticity_mean": -0.1297398109759838,
+          "reference_demand_derivative_mean": -19.552040100094597,
+          "reference_elasticity_sd": 0.014094024588954158
+        },
+        {
+          "hour": 18,
+          "reference": 30.4,
+          "billing_tou": 32.5,
+          "baseline_load": 4838.85009765625,
+          "reference_elasticity_mean": -0.1237441065249745,
+          "billing_elasticity_mean": -0.11358548929885726,
+          "reference_demand_derivative_mean": -19.71664428710629,
+          "reference_elasticity_sd": 0.01239322444582228
+        },
+        {
+          "hour": 19,
+          "reference": 30.5,
+          "billing_tou": 32.5,
+          "baseline_load": 4656.515625,
+          "reference_elasticity_mean": -0.12681641273539687,
+          "billing_elasticity_mean": -0.11654166902093906,
+          "reference_demand_derivative_mean": -19.369888305661036,
+          "reference_elasticity_sd": 0.011455765452660398
+        },
+        {
+          "hour": 20,
+          "reference": 29.2,
+          "billing_tou": 32.5,
+          "baseline_load": 4313.75244140625,
+          "reference_elasticity_mean": -0.1389391269974285,
+          "billing_elasticity_mean": -0.12198349289500264,
+          "reference_demand_derivative_mean": -20.56293487548507,
+          "reference_elasticity_sd": 0.012463106324923574
+        },
+        {
+          "hour": 21,
+          "reference": 29.0,
+          "billing_tou": 28.5,
+          "baseline_load": 4023.004150390625,
+          "reference_elasticity_mean": -0.13090012082934996,
+          "billing_elasticity_mean": -0.1288213795246148,
+          "reference_demand_derivative_mean": -18.15948486327841,
+          "reference_elasticity_sd": 0.013291620980034535
+        },
+        {
+          "hour": 22,
+          "reference": 28.6,
+          "billing_tou": 28.5,
+          "baseline_load": 3645.580322265625,
+          "reference_elasticity_mean": -0.14314033722547923,
+          "billing_elasticity_mean": -0.14176482830793802,
+          "reference_demand_derivative_mean": -18.222618103024494,
+          "reference_elasticity_sd": 0.012900968148083464
+        },
+        {
+          "hour": 23,
+          "reference": 28.5,
+          "billing_tou": 26.5,
+          "baseline_load": 3605.482421875,
+          "reference_elasticity_mean": -0.14498568823463334,
+          "billing_elasticity_mean": -0.1262834713793151,
+          "reference_demand_derivative_mean": -18.34363937377643,
+          "reference_elasticity_sd": 0.01486195101382019
+        }
+      ]
+    },
+    {
+      "curvature_mean": 0.02,
+      "curvature_std": 0.001656,
+      "reference_mean_elasticity_range": [
+        -0.18819494608911863,
+        -0.09302047560798016
+      ],
+      "billing_mean_elasticity_range": [
+        -0.16520450375883447,
+        -0.08506455391230879
+      ],
+      "hourly": [
+        {
+          "hour": 0,
+          "reference": 28.3,
+          "billing_tou": 26.5,
+          "baseline_load": 2946.4306640625,
+          "reference_elasticity_mean": -0.13320223475272222,
+          "billing_elasticity_mean": -0.11782702468773434,
+          "reference_demand_derivative_mean": -13.867759704587677,
+          "reference_elasticity_sd": 0.012128252469492085
+        },
+        {
+          "hour": 1,
+          "reference": 28.3,
+          "billing_tou": 26.5,
+          "baseline_load": 2705.141845703125,
+          "reference_elasticity_mean": -0.14562864290778768,
+          "billing_elasticity_mean": -0.12861175691024163,
+          "reference_demand_derivative_mean": -13.9152526855447,
+          "reference_elasticity_sd": 0.014631413939354255
+        },
+        {
+          "hour": 2,
+          "reference": 28.3,
+          "billing_tou": 26.5,
+          "baseline_load": 2527.49755859375,
+          "reference_elasticity_mean": -0.15182609951084228,
+          "billing_elasticity_mean": -0.13389936070437086,
+          "reference_demand_derivative_mean": -13.556861877439285,
+          "reference_elasticity_sd": 0.014756020280978983
+        },
+        {
+          "hour": 3,
+          "reference": 28.3,
+          "billing_tou": 26.5,
+          "baseline_load": 2173.306640625,
+          "reference_elasticity_mean": -0.18223763874937657,
+          "billing_elasticity_mean": -0.16008678053018022,
+          "reference_demand_derivative_mean": -13.968276977536878,
+          "reference_elasticity_sd": 0.017844775363890182
+        },
+        {
+          "hour": 4,
+          "reference": 28.3,
+          "billing_tou": 26.5,
+          "baseline_load": 2067.45849609375,
+          "reference_elasticity_mean": -0.18819494608911863,
+          "billing_elasticity_mean": -0.16520450375883447,
+          "reference_demand_derivative_mean": -13.747119903562306,
+          "reference_elasticity_sd": 0.019846772135282964
+        },
+        {
+          "hour": 5,
+          "reference": 28.3,
+          "billing_tou": 26.5,
+          "baseline_load": 2107.985595703125,
+          "reference_elasticity_mean": -0.18468284420550474,
+          "billing_elasticity_mean": -0.16217276041306555,
+          "reference_demand_derivative_mean": -13.746547698972462,
+          "reference_elasticity_sd": 0.019113108673678054
+        },
+        {
+          "hour": 6,
+          "reference": 28.3,
+          "billing_tou": 26.5,
+          "baseline_load": 2559.495849609375,
+          "reference_elasticity_mean": -0.15024415283887937,
+          "billing_elasticity_mean": -0.13243411053892046,
+          "reference_demand_derivative_mean": -13.576316833493973,
+          "reference_elasticity_sd": 0.014098298643773523
+        },
+        {
+          "hour": 7,
+          "reference": 28.3,
+          "billing_tou": 26.5,
+          "baseline_load": 3422.305419921875,
+          "reference_elasticity_mean": -0.11119252829533183,
+          "billing_elasticity_mean": -0.09851591100029675,
+          "reference_demand_derivative_mean": -13.448333740232272,
+          "reference_elasticity_sd": 0.010715105953795127
+        },
+        {
+          "hour": 8,
+          "reference": 28.6,
+          "billing_tou": 28.5,
+          "baseline_load": 3878.875244140625,
+          "reference_elasticity_mean": -0.09902444005580005,
+          "billing_elasticity_mean": -0.09903402141158887,
+          "reference_demand_derivative_mean": -13.432407379148291,
+          "reference_elasticity_sd": 0.00933342655553243
+        },
+        {
+          "hour": 9,
+          "reference": 28.7,
+          "billing_tou": 28.5,
+          "baseline_load": 4046.9287109375,
+          "reference_elasticity_mean": -0.09700255137935984,
+          "billing_elasticity_mean": -0.09697980315108651,
+          "reference_demand_derivative_mean": -13.685607910154111,
+          "reference_elasticity_sd": 0.008814242804282314
+        },
+        {
+          "hour": 10,
+          "reference": 29.0,
+          "billing_tou": 28.5,
+          "baseline_load": 4197.376953125,
+          "reference_elasticity_mean": -0.0949655370301542,
+          "billing_elasticity_mean": -0.09399197914393957,
+          "reference_demand_derivative_mean": -13.752365112302538,
+          "reference_elasticity_sd": 0.00870353228421191
+        },
+        {
+          "hour": 11,
+          "reference": 29.2,
+          "billing_tou": 28.5,
+          "baseline_load": 4212.27880859375,
+          "reference_elasticity_mean": -0.0950132259801713,
+          "billing_elasticity_mean": -0.09296272508586625,
+          "reference_demand_derivative_mean": -13.70735168456817,
+          "reference_elasticity_sd": 0.008223232437052096
+        },
+        {
+          "hour": 12,
+          "reference": 29.5,
+          "billing_tou": 28.5,
+          "baseline_load": 4145.94140625,
+          "reference_elasticity_mean": -0.09789009340811713,
+          "billing_elasticity_mean": -0.095215116850187,
+          "reference_demand_derivative_mean": -13.764190673825972,
+          "reference_elasticity_sd": 0.009912681080600911
+        },
+        {
+          "hour": 13,
+          "reference": 29.7,
+          "billing_tou": 32.5,
+          "baseline_load": 4124.17236328125,
+          "reference_elasticity_mean": -0.11021595366477702,
+          "billing_elasticity_mean": -0.09829427404820254,
+          "reference_demand_derivative_mean": -15.31591415405034,
+          "reference_elasticity_sd": 0.009862156441457326
+        },
+        {
+          "hour": 14,
+          "reference": 29.8,
+          "billing_tou": 32.5,
+          "baseline_load": 4103.63671875,
+          "reference_elasticity_mean": -0.1101395805275266,
+          "billing_elasticity_mean": -0.09833889605334095,
+          "reference_demand_derivative_mean": -15.172481536862861,
+          "reference_elasticity_sd": 0.010051120108080314
+        },
+        {
+          "hour": 15,
+          "reference": 29.9,
+          "billing_tou": 32.5,
+          "baseline_load": 4102.63623046875,
+          "reference_elasticity_mean": -0.1098943287343997,
+          "billing_elasticity_mean": -0.09865856481352023,
+          "reference_demand_derivative_mean": -15.089988708493735,
+          "reference_elasticity_sd": 0.010183074020133437
+        },
+        {
+          "hour": 16,
+          "reference": 29.8,
+          "billing_tou": 32.5,
+          "baseline_load": 4120.25341796875,
+          "reference_elasticity_mean": -0.10938599575239383,
+          "billing_elasticity_mean": -0.0975033828108377,
+          "reference_demand_derivative_mean": -15.119647979733966,
+          "reference_elasticity_sd": 0.011089247124281693
+        },
+        {
+          "hour": 17,
+          "reference": 30.6,
+          "billing_tou": 32.5,
+          "baseline_load": 4267.08056640625,
+          "reference_elasticity_mean": -0.10508839774574799,
+          "billing_elasticity_mean": -0.09681868341353768,
+          "reference_demand_derivative_mean": -14.654159545896148,
+          "reference_elasticity_sd": 0.011229613653297863
+        },
+        {
+          "hour": 18,
+          "reference": 30.4,
+          "billing_tou": 32.5,
+          "baseline_load": 4838.85009765625,
+          "reference_elasticity_mean": -0.09302047560798016,
+          "billing_elasticity_mean": -0.08506455391230879,
+          "reference_demand_derivative_mean": -14.823150634763309,
+          "reference_elasticity_sd": 0.010181097997086417
+        },
+        {
+          "hour": 19,
+          "reference": 30.5,
+          "billing_tou": 32.5,
+          "baseline_load": 4656.515625,
+          "reference_elasticity_mean": -0.09515212111629859,
+          "billing_elasticity_mean": -0.08712075845585537,
+          "reference_demand_derivative_mean": -14.535140991208667,
+          "reference_elasticity_sd": 0.00951484120715842
+        },
+        {
+          "hour": 20,
+          "reference": 29.2,
+          "billing_tou": 32.5,
+          "baseline_load": 4313.75244140625,
+          "reference_elasticity_mean": -0.10457409585796286,
+          "billing_elasticity_mean": -0.09123998157616556,
+          "reference_demand_derivative_mean": -15.478897094724143,
+          "reference_elasticity_sd": 0.010489194500726972
+        },
+        {
+          "hour": 21,
+          "reference": 29.0,
+          "billing_tou": 28.5,
+          "baseline_load": 4023.004150390625,
+          "reference_elasticity_mean": -0.09815870695692978,
+          "billing_elasticity_mean": -0.0967597044361116,
+          "reference_demand_derivative_mean": -13.616847991941231,
+          "reference_elasticity_sd": 0.010170753879571445
+        },
+        {
+          "hour": 22,
+          "reference": 28.6,
+          "billing_tou": 28.5,
+          "baseline_load": 3645.580322265625,
+          "reference_elasticity_mean": -0.10745813340424179,
+          "billing_elasticity_mean": -0.10620957004811077,
+          "reference_demand_derivative_mean": -13.679599761960752,
+          "reference_elasticity_sd": 0.009871323061305528
+        },
+        {
+          "hour": 23,
+          "reference": 28.5,
+          "billing_tou": 26.5,
+          "baseline_load": 3605.482421875,
+          "reference_elasticity_mean": -0.10871665389612373,
+          "billing_elasticity_mean": -0.0951676450256622,
+          "reference_demand_derivative_mean": -13.754177093503708,
+          "reference_elasticity_sd": 0.011430809910773068
+        }
+      ]
+    },
+    {
+      "curvature_mean": 0.025,
+      "curvature_std": 0.0020700000000000002,
+      "reference_mean_elasticity_range": [
+        -0.15053920709531562,
+        -0.07458340748038711
+      ],
+      "billing_mean_elasticity_range": [
+        -0.13275629282108184,
+        -0.06807226200917527
+      ],
+      "hourly": [
+        {
+          "hour": 0,
+          "reference": 28.3,
+          "billing_tou": 26.5,
+          "baseline_load": 2946.4306640625,
+          "reference_elasticity_mean": -0.10656058210643277,
+          "billing_elasticity_mean": -0.09455379981654027,
+          "reference_demand_derivative_mean": -11.09361648559397,
+          "reference_elasticity_sd": 0.010013778143016381
+        },
+        {
+          "hour": 1,
+          "reference": 28.3,
+          "billing_tou": 26.5,
+          "baseline_load": 2705.141845703125,
+          "reference_elasticity_mean": -0.11650413042108562,
+          "billing_elasticity_mean": -0.10327397885973835,
+          "reference_demand_derivative_mean": -11.131572723386931,
+          "reference_elasticity_sd": 0.012090060802254995
+        },
+        {
+          "hour": 2,
+          "reference": 28.3,
+          "billing_tou": 26.5,
+          "baseline_load": 2527.49755859375,
+          "reference_elasticity_mean": -0.12146608815241794,
+          "billing_elasticity_mean": -0.10754934157967073,
+          "reference_demand_derivative_mean": -10.845375061033462,
+          "reference_elasticity_sd": 0.012002554601372338
+        },
+        {
+          "hour": 3,
+          "reference": 28.3,
+          "billing_tou": 26.5,
+          "baseline_load": 2173.306640625,
+          "reference_elasticity_mean": -0.14589776468034107,
+          "billing_elasticity_mean": -0.12877307665783955,
+          "reference_demand_derivative_mean": -11.182117462156455,
+          "reference_elasticity_sd": 0.014702883125236248
+        },
+        {
+          "hour": 4,
+          "reference": 28.3,
+          "billing_tou": 26.5,
+          "baseline_load": 2067.45849609375,
+          "reference_elasticity_mean": -0.15053920709531562,
+          "billing_elasticity_mean": -0.13275629282108184,
+          "reference_demand_derivative_mean": -10.995578765867423,
+          "reference_elasticity_sd": 0.0163154450719098
+        },
+        {
+          "hour": 5,
+          "reference": 28.3,
+          "billing_tou": 26.5,
+          "baseline_load": 2107.985595703125,
+          "reference_elasticity_mean": -0.14776631866463596,
+          "billing_elasticity_mean": -0.13039157187396033,
+          "reference_demand_derivative_mean": -10.998058319090077,
+          "reference_elasticity_sd": 0.015678709072012204
+        },
+        {
+          "hour": 6,
+          "reference": 28.3,
+          "billing_tou": 26.5,
+          "baseline_load": 2559.495849609375,
+          "reference_elasticity_mean": -0.12025702357926674,
+          "billing_elasticity_mean": -0.10641276252669148,
+          "reference_demand_derivative_mean": -10.866069793699474,
+          "reference_elasticity_sd": 0.011444388454512924
+        },
+        {
+          "hour": 7,
+          "reference": 28.3,
+          "billing_tou": 26.5,
+          "baseline_load": 3422.305419921875,
+          "reference_elasticity_mean": -0.08894217300255196,
+          "billing_elasticity_mean": -0.07902331469348926,
+          "reference_demand_derivative_mean": -10.756874084470974,
+          "reference_elasticity_sd": 0.008711670719351057
+        },
+        {
+          "hour": 8,
+          "reference": 28.6,
+          "billing_tou": 28.5,
+          "baseline_load": 3878.875244140625,
+          "reference_elasticity_mean": -0.07921843038573514,
+          "billing_elasticity_mean": -0.07928387333293115,
+          "reference_demand_derivative_mean": -10.7454299926741,
+          "reference_elasticity_sd": 0.0076269577399816395
+        },
+        {
+          "hour": 9,
+          "reference": 28.7,
+          "billing_tou": 28.5,
+          "baseline_load": 4046.9287109375,
+          "reference_elasticity_mean": -0.07756654165154714,
+          "billing_elasticity_mean": -0.07768077887144065,
+          "reference_demand_derivative_mean": -10.943126678465086,
+          "reference_elasticity_sd": 0.007201660670075478
+        },
+        {
+          "hour": 10,
+          "reference": 29.0,
+          "billing_tou": 28.5,
+          "baseline_load": 4197.376953125,
+          "reference_elasticity_mean": -0.07595840610398977,
+          "billing_elasticity_mean": -0.07532120484071499,
+          "reference_demand_derivative_mean": -10.999488830564687,
+          "reference_elasticity_sd": 0.0071278277931802955
+        },
+        {
+          "hour": 11,
+          "reference": 29.2,
+          "billing_tou": 28.5,
+          "baseline_load": 4212.27880859375,
+          "reference_elasticity_mean": -0.07601750017146491,
+          "billing_elasticity_mean": -0.07445959673836818,
+          "reference_demand_derivative_mean": -10.966491699217038,
+          "reference_elasticity_sd": 0.006692455919090725
+        },
+        {
+          "hour": 12,
+          "reference": 29.5,
+          "billing_tou": 28.5,
+          "baseline_load": 4145.94140625,
+          "reference_elasticity_mean": -0.07828094677152365,
+          "billing_elasticity_mean": -0.07632474314325653,
+          "reference_demand_derivative_mean": -11.006641387937734,
+          "reference_elasticity_sd": 0.00805896903659417
+        },
+        {
+          "hour": 13,
+          "reference": 29.7,
+          "billing_tou": 32.5,
+          "baseline_load": 4124.17236328125,
+          "reference_elasticity_mean": -0.08825451093112494,
+          "billing_elasticity_mean": -0.07842095673310476,
+          "reference_demand_derivative_mean": -12.265777587888708,
+          "reference_elasticity_sd": 0.00871288961926641
+        },
+        {
+          "hour": 14,
+          "reference": 29.8,
+          "billing_tou": 32.5,
+          "baseline_load": 4103.63671875,
+          "reference_elasticity_mean": -0.08812404970273163,
+          "billing_elasticity_mean": -0.07835463306765655,
+          "reference_demand_derivative_mean": -12.141227722166072,
+          "reference_elasticity_sd": 0.008899956726620915
+        },
+        {
+          "hour": 15,
+          "reference": 29.9,
+          "billing_tou": 32.5,
+          "baseline_load": 4102.63623046875,
+          "reference_elasticity_mean": -0.0879731761379719,
+          "billing_elasticity_mean": -0.07872960011702534,
+          "reference_demand_derivative_mean": -12.081336975095768,
+          "reference_elasticity_sd": 0.009154494945252296
+        },
+        {
+          "hour": 16,
+          "reference": 29.8,
+          "billing_tou": 32.5,
+          "baseline_load": 4120.25341796875,
+          "reference_elasticity_mean": -0.08733304627718658,
+          "billing_elasticity_mean": -0.07749774445741357,
+          "reference_demand_derivative_mean": -12.073135375974676,
+          "reference_elasticity_sd": 0.00998521967674955
+        },
+        {
+          "hour": 17,
+          "reference": 30.6,
+          "billing_tou": 32.5,
+          "baseline_load": 4267.08056640625,
+          "reference_elasticity_mean": -0.0839911064042604,
+          "billing_elasticity_mean": -0.07714916204796747,
+          "reference_demand_derivative_mean": -11.713409423826294,
+          "reference_elasticity_sd": 0.009681515133286621
+        },
+        {
+          "hour": 18,
+          "reference": 30.4,
+          "billing_tou": 32.5,
+          "baseline_load": 4838.85009765625,
+          "reference_elasticity_mean": -0.07458340748038711,
+          "billing_elasticity_mean": -0.06807226200917527,
+          "reference_demand_derivative_mean": -11.886596679685642,
+          "reference_elasticity_sd": 0.00902904605202756
+        },
+        {
+          "hour": 19,
+          "reference": 30.5,
+          "billing_tou": 32.5,
+          "baseline_load": 4656.515625,
+          "reference_elasticity_mean": -0.07616204532948487,
+          "billing_elasticity_mean": -0.06954810272619198,
+          "reference_demand_derivative_mean": -11.635589599607556,
+          "reference_elasticity_sd": 0.008508482965581132
+        },
+        {
+          "hour": 20,
+          "reference": 29.2,
+          "billing_tou": 32.5,
+          "baseline_load": 4313.75244140625,
+          "reference_elasticity_mean": -0.08395508448771166,
+          "billing_elasticity_mean": -0.07299542318654653,
+          "reference_demand_derivative_mean": -12.428474426267588,
+          "reference_elasticity_sd": 0.009446162855846102
+        },
+        {
+          "hour": 21,
+          "reference": 29.0,
+          "billing_tou": 28.5,
+          "baseline_load": 4023.004150390625,
+          "reference_elasticity_mean": -0.07853309314730078,
+          "billing_elasticity_mean": -0.07748552167672285,
+          "reference_demand_derivative_mean": -10.89391708373853,
+          "reference_elasticity_sd": 0.008325640123408175
+        },
+        {
+          "hour": 22,
+          "reference": 28.6,
+          "billing_tou": 28.5,
+          "baseline_load": 3645.580322265625,
+          "reference_elasticity_mean": -0.08602876850787651,
+          "billing_elasticity_mean": -0.08486133158721043,
+          "reference_demand_derivative_mean": -10.951232910154538,
+          "reference_elasticity_sd": 0.00806409770564517
+        },
+        {
+          "hour": 23,
+          "reference": 28.5,
+          "billing_tou": 26.5,
+          "baseline_load": 3605.482421875,
+          "reference_elasticity_mean": -0.08694208092142969,
+          "billing_elasticity_mean": -0.07634396696907043,
+          "reference_demand_derivative_mean": -10.998821258543202,
+          "reference_elasticity_sd": 0.009403913210498238
+        }
+      ]
+    }
+  ],
+  "calibration_caution": "Elasticities -0.1/-0.2 are comparison targets supplied by parent task, not independently established universal customer constants. Constant absolute-demand slope generates different elasticity across hours/classes."
+}

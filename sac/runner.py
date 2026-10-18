@@ -23,7 +23,7 @@ from .config import load_config, Config
 from .replay import Replay
 from .task import Task, daily_summary
 
-VERSION = "sac-1"
+VERSION = "sac-2-profit-only"
 
 
 def write_json(path, value):
@@ -54,16 +54,21 @@ def evaluate(agent, cfg, count, seed=910000000, hourly=True):
             rows.append(info)
         summary = daily_summary(rows, task.reference_rows, task.env)
         summary.update(case=i, scenario_seed=seed + i, response_seed=response_seed)
+        summary["levels"] = {source: case[source + "_level"] for source in ("load", "wind", "price")}
         if hourly:
             summary.update(hourly=rows, reference_hourly=task.reference_rows)
         cases.append(summary)
     metrics = {}
-    for name in ("profit", "reference_profit", "storage_net", "reward", "shape_cost", "peak_cost", "satisfaction", "charge", "discharge", "excess_energy", "final_soc", "price_mean", "price_upper_fraction", "storage_boundary_fraction"):
+    for name in ("profit", "reference_profit", "storage_net", "reward", "satisfaction", "charge", "discharge", "excess_energy", "final_soc", "price_mean", "price_upper_fraction", "storage_boundary_fraction"):
         metrics[name] = float(np.mean([c[name] for c in cases]))
     for curve in ("grid", "reference_grid", "user_load", "baseline_load", "net_without_storage"):
         for name in ("peak", "valley", "peak_valley", "energy", "std", "rms_ramp"):
             metrics[curve + "_" + name] = float(np.mean([c["curves"][curve][name] for c in cases]))
-    return dict(n=count, seed=seed, deterministic=True, metrics=metrics, cases=cases)
+    return dict(n=count, seed=seed, deterministic=True, metrics=metrics, cases=cases,
+                metadata=dict(environment=task.env.spec,
+                              profile={k: v.tolist() for k, v in task.env.profile.items()},
+                              generator=asdict(task.env.generator.cfg), config=asdict(cfg),
+                              reward="original profit multiplied by reward_scale"))
 
 
 def train(cfg, output):
@@ -87,14 +92,16 @@ def train(cfg, output):
                       torch=torch.__version__, numpy=np.__version__, scipy=scipy.__version__,
                       device=cfg.device, threads=cfg.threads,
                       action_coordinates="raw normalized tanh controls; storage mapped by task only",
-                      shape_target=task.shape_target,
-                      shape_price_scale=task.price_scale, shape_load_scale=task.load_scale)
+                      reward="original profit multiplied by reward_scale")
     write_json(out / "config.json", asdict(cfg))
     write_json(out / "manifest.json", provenance)
+    write_json(out / "effective_environment.json", task.env.spec)
+    write_json(out / "effective_profile.json", {k: v.tolist() for k, v in task.env.profile.items()})
+    write_json(out / "effective_generator.json", asdict(task.env.generator.cfg))
     write_json(out / "evaluation_00000.json", evaluate(agent, cfg, cfg.evaluation_cases))
     steps = updates = 0
     started = time.perf_counter()
-    columns = ["episode", "profit", "reference_profit", "storage_net", "learning_return", "shape_cost", "peak_cost", "grid_peak", "grid_peak_valley", "grid_std", "final_soc", "price_upper_fraction", "updates", "critic_loss", "actor_loss", "alpha", "entropy", "q1_mean", "target_mean", "seconds"]
+    columns = ["episode", "profit", "reference_profit", "storage_net", "learning_return", "grid_peak", "grid_peak_valley", "grid_std", "final_soc", "price_upper_fraction", "updates", "critic_loss", "actor_loss", "alpha", "entropy", "q1_mean", "target_mean", "seconds"]
     with (out / "training.csv").open("w", encoding="utf-8", newline="") as stream:
         writer = csv.DictWriter(stream, fieldnames=columns)
         writer.writeheader()
@@ -121,7 +128,7 @@ def train(cfg, output):
                 raise
             summary = daily_summary(rows, task.reference_rows, task.env)
             row = dict(episode=episode, profit=summary["profit"], reference_profit=summary["reference_profit"],
-                       storage_net=summary["storage_net"], learning_return=summary["reward"], shape_cost=summary["shape_cost"], peak_cost=summary["peak_cost"],
+                       storage_net=summary["storage_net"], learning_return=summary["reward"],
                        grid_peak=summary["curves"]["grid"]["peak"], grid_peak_valley=summary["curves"]["grid"]["peak_valley"],
                        grid_std=summary["curves"]["grid"]["std"], final_soc=summary["final_soc"],
                        price_upper_fraction=summary["price_upper_fraction"], updates=updates, seconds=time.perf_counter() - started)

@@ -1,6 +1,6 @@
 """Explicit configuration for the joint-action scalar-value SAC baseline."""
 
-from dataclasses import dataclass, fields
+from dataclasses import dataclass, field, fields
 from pathlib import Path
 import json
 import math
@@ -25,10 +25,11 @@ class Config:
     warmup_steps: int = 1000
     reward_scale: float = 0.001
     observation: str = "full19"
-    reward: str = "profit"
-    # Explicit engineering preference, not an observed electricity tariff.
-    shape_weight: float = 0.0
-    peak_weight: float = 0.0
+    # Only response/storage/renewable parameters may change the business model.
+    # The reward is always scaled original profit; it is not a configuration knob.
+    response_parameters: dict = field(default_factory=dict)
+    storage_parameters: dict = field(default_factory=dict)
+    renewable_penetration: float = 0.2
     scenario_mode: str = "three_source"
     level_probabilities: tuple = (0.2, 0.6, 0.2)
     response_rng: str = "per_case"
@@ -56,18 +57,14 @@ class Config:
         for name in ("actor_lr", "critic_lr", "alpha_lr", "initial_alpha", "reward_scale"):
             if getattr(self, name) <= 0:
                 raise ValueError(name + " must be positive")
-        if self.device not in ("cpu", "cuda") or self.observation not in ("full19", "causal11"):
+        if self.device not in ("cpu", "cuda") or self.observation not in ("full19", "causal11", "market14", "market18"):
             raise ValueError("Unsupported device or observation")
-        if self.reward not in ("profit", "incremental_profit"):
-            raise ValueError("Unsupported reward")
         if not 0 < self.gamma <= 1 or not 0 < self.target_tau <= 1:
             raise ValueError("Invalid gamma or target_tau")
-        if self.peak_weight and self.gamma != 1:
-            raise ValueError("Daily peak increment objective requires gamma=1")
         if not 0 <= self.seed <= 2**64 - 1 - 50001 or self.reference_seed < 0:
             raise ValueError("Seed is outside the supported RNG range")
-        if self.warmup_steps < 0 or self.replay_size < self.batch_size or self.seed < 0 or min(self.shape_weight, self.peak_weight) < 0:
-            raise ValueError("Invalid exploration, replay, seed or shaping weight")
+        if self.warmup_steps < 0 or self.replay_size < self.batch_size or self.seed < 0:
+            raise ValueError("Invalid exploration, replay or seed")
         if self.scenario_mode not in ("three_source", "load_scale", "wind_scale", "price_scale"):
             raise ValueError("Unsupported scenario")
         if self.response_rng not in ("per_case", "paired_fixed"):
@@ -78,6 +75,8 @@ class Config:
             raise ValueError("Invalid scenario probabilities")
         if any(not 0 <= getattr(self, name) < 1 for name in ("load_scale_bound", "wind_scale_bound", "price_scale_bound")):
             raise ValueError("Invalid daily scale")
+        from .parameters import validate_overrides
+        validate_overrides(self)
         return self
 
 

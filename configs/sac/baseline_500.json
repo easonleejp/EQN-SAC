@@ -16,8 +16,9 @@
   "warmup_steps": 1000,
   "reward_scale": 0.001,
   "observation": "full19",
-  "reward": "profit",
-  "shape_weight": 0.0,
+  "response_parameters": {},
+  "storage_parameters": {},
+  "renewable_penetration": 0.2,
   "scenario_mode": "three_source",
   "level_probabilities": [
     0.2,

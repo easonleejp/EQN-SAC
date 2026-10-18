@@ -1,0 +1,20 @@
+{
+  "candidate": "forecast18_scale3_2000",
+  "selection_basis": "Development-only: positive storage margin; positive wholesale and TOU correlation; low load increased and high load reduced on average. TOU band order is not robust. Retain as experimental candidate, not validated final policy.",
+  "replication_seeds": [
+    7,
+    42,
+    123
+  ],
+  "final_seed": 950000000,
+  "final_cases": 108,
+  "baseline_budgets": [
+    500,
+    2000
+  ],
+  "candidate_budgets": [
+    500,
+    2000
+  ],
+  "no_further_tuning_after_holdout": true
+}

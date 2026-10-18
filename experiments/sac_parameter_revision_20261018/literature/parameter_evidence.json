@@ -1,0 +1,211 @@
+{
+  "review_date": "2026-10-18",
+  "scope": "响应参数、状态信息、新能源和储能参数的文献审查；没有修改奖励、约束或活动源码。",
+  "unit_status": {
+    "source_unit_verified": false,
+    "proposed_modelling_convention": "根据用户记忆及当前数值，将电价解释为澳分/kWh、功率为kW、能量为kWh；这是本轮建模假设，不是原xlsx或AEMO溯源结论。",
+    "cannot_conclude": "不能把历史列名wholesale price直接认定为AEMO原始$/MWh，也不能依据本次文献证明原始数据来自澳大利亚。"
+  },
+  "papers": [
+    {
+      "id": "asadinejad2017",
+      "title": "Optimal use of incentive and price based demand response to reduce costs and price volatility",
+      "authors": [
+        "Ailin Asadinejad",
+        "Kevin Tomsovic"
+      ],
+      "journal": "Electric Power Systems Research",
+      "year": 2017,
+      "volume": "144",
+      "pages": "215–223",
+      "doi": "10.1016/j.epsr.2016.12.012",
+      "publisher_url": "https://www.sciencedirect.com/science/article/am/pii/S0378779616305259",
+      "fulltext_url": "https://web.eecs.utk.edu/~ktomsovi/Vitae/Publications/ASAD17.pdf",
+      "access": "作者大学主页提供的正式排版期刊PDF；已下载并目视核对p220 Table2。",
+      "evidence": [
+        {
+          "locator": "p218, Section3.1, Eq.(3b)",
+          "fact": "负荷相对变化由各时段电价相对变化乘以自身/交叉弹性后求和决定。自身弹性与跨时段替代不可混同。"
+        },
+        {
+          "locator": "p220, Table2",
+          "fact": "WECC案例PBDR自身弹性−0.1、交叉弹性+0.07。该表引自报告[42,43]，并非作者对本项目用户实测估计。",
+          "numeric": {
+            "own_price_elasticity": -0.1,
+            "cross_price_elasticity": 0.07
+          }
+        },
+        {
+          "locator": "pp218–220, Section3.1 and Section4.2",
+          "fact": "TOU设计需要同时看负荷与LMP时段差异；昼夜LMP差异很小的月份收益有限，过强TOU可能形成新峰。"
+        },
+        {
+          "locator": "p218 Eq.(2); p220 Section4.2",
+          "fact": "论文TOU目标另含负荷变化项，峰时定义10:00–22:00；不能把其削峰结果归因于纯零售利润目标或通用时段规则。"
+        }
+      ],
+      "project_mapping": "以−0.1作为一个可复现的弱弹性对照点，而非现实用户的统一标准。项目无跨时段负荷回补状态，当前正负响应只是当小时增减，不能称为已经建模了能量守恒负荷转移。",
+      "not_recommended": "不移植论文额外目标、约束或固定峰谷时段。"
+    },
+    {
+      "id": "nakabi2021",
+      "title": "Deep reinforcement learning for energy management in a microgrid with flexible demand",
+      "authors": [
+        "T. A. Nakabi",
+        "P. Toivanen"
+      ],
+      "journal": "Sustainable Energy, Grids and Networks",
+      "year": 2021,
+      "volume": "25",
+      "article_number": "100413",
+      "doi": "10.1016/j.segan.2020.100413",
+      "publisher_url": "https://doi.org/10.1016/j.segan.2020.100413",
+      "fulltext_url": "https://www.researchgate.net/publication/347395657_Deep_reinforcement_learning_for_energy_management_in_a_microgrid_with_flexible_demand",
+      "access": "核对正式发表论文全文转写（页眉/表号保留）的镜像；出版元数据另由期刊DOI和东芬兰大学研究记录核验。没有依据ResearchGate评论或二手概述。",
+      "evidence": [
+        {
+          "locator": "p3 Section2.1, Eq.(1)",
+          "fact": "储能能量更新含独立ηc与ηd，作者将社区储能描述为覆盖至少2小时微网需求。"
+        },
+        {
+          "locator": "p11 Table1",
+          "fact": "案例Cmax=Dmax=250kW、ηc=ηd=0.9、Bmax数值500；表把Bmax单位印作kW，正文Eq1定义它为储能量，因此若解释为kWh可算2h，但不能悄悄把原表单位改写成已核实kWh。",
+          "numeric": {
+            "charge_power_kw": 250,
+            "discharge_power_kw": 250,
+            "charge_efficiency": 0.9,
+            "discharge_efficiency": 0.9,
+            "capacity_numeric": 500,
+            "capacity_unit_in_table": "kW",
+            "capacity_interpretation": "由正文能量状态推断应为kWh，保留原文单位疑点。"
+          }
+        },
+        {
+          "locator": "pp4–5 Section2.5, Eq.(6)–(9); p11 Table1",
+          "fact": "响应包含价格敏感度、耐心参数和延后回补；β为离散价格档位下的负荷比例敏感度，不能直接当微观经济学价格弹性。风电取芬兰风场小时数据的1%，不是20%需求能源占比。"
+        }
+      ],
+      "project_mapping": "提供小时级RL和几小时储能的案例参照；不能证明本项目2.4h最优，也不能移植其β数值到曲率k。"
+    },
+    {
+      "id": "wei2022",
+      "title": "Multi-objective optimal configuration of stand-alone microgrids based on Benders decomposition considering power supply reliability",
+      "authors": [
+        "Wei Wei",
+        "Herong Wang",
+        "Kai Hou",
+        "Ledong Ji"
+      ],
+      "journal": "IET Energy Systems Integration",
+      "year": 2022,
+      "volume": "4",
+      "issue": "2",
+      "pages": "281–295",
+      "doi": "10.1049/esi2.12060",
+      "fulltext_url": "https://ietresearch.onlinelibrary.wiley.com/doi/10.1049/esi2.12060",
+      "access": "出版社开放全文HTML；以节号/公式/附录定位，未声称核实PDF页内位置。",
+      "evidence": [
+        {
+          "locator": "Section2.4, Eq.(5)–(8)",
+          "fact": "SOC按充电乘ηc、放电除ηd更新，额定能量与额定功率通过独立充放电倍率关联。"
+        },
+        {
+          "locator": "AppendixB: Economic and technical parameters of the alternative equipment",
+          "fact": "ηc=ηd=95%，充放电倍率20%，SOC区间[0.2,0.8]；资本成本2000元/kWh，固定年维护25元/(kWh·年)。这些不是吞吐成本。"
+        },
+        {
+          "locator": "Section5.2, Table2, iteration7; AppendixB",
+          "fact": "最终案例储能3837.74kWh，PV997.07kW，风机1×260+2×750kW。由倍率算Pmax767.548kW，可用能量/功率3h；忽略自放电时外部满功率放电2.85h。以上时长/比值为本次审查计算，不是原文结论。"
+        }
+      ],
+      "derived_case_values": {
+        "battery_power_kw": 767.548,
+        "renewable_capacity_kw": 2757.07,
+        "usable_duration_hours_ignoring_loss": 3.0,
+        "output_duration_hours_ignoring_self_discharge": 2.85
+      },
+      "project_mapping": "直接支持分别95%作为已有期刊案例假设；其孤网可靠性规划与本项目并网售电套利不同，不据此强制相同SOC边界/规模/成本。"
+    },
+    {
+      "id": "ding2023",
+      "title": "Unintended consequences of curtailment cap policies on power system decarbonization",
+      "authors": [
+        "Yongbin Ding",
+        "Mingquan Li",
+        "Ahmed Abdulla",
+        "Rui Shan",
+        "Ziyi Liu"
+      ],
+      "journal": "iScience",
+      "year": 2023,
+      "volume": "26",
+      "issue": "7",
+      "article_number": "106967",
+      "doi": "10.1016/j.isci.2023.106967",
+      "publisher_url": "https://www.cell.com/iscience/fulltext/S2589-0042(23)01044-1",
+      "fulltext_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10391583/",
+      "xml_url": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC10391583/fullTextXML",
+      "supplement_url": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC10391583/supplementaryFiles",
+      "access": "EuropePMC公开的发表论文XML及其原始补充PDF；已目视TableS5。",
+      "evidence": [
+        {
+          "locator": "Results, paragraph following Figure2; Discussion",
+          "fact": "青海案例讨论储能功率/风光装机功率：2021政策10%和至少2h；模型后续情景建议约20%或30%。这些是配储功率比，不是可再生能源电量渗透率，不是澳洲项目通用标准。"
+        },
+        {
+          "locator": "Supplement, PDFp9, TableS5",
+          "fact": "BESS往返效率90%，小时能量损失0.05%（表头Hourly energy loss），最大SOC100%、DOD99%。与项目分别95%产生90.25%往返接近；不建议照搬其SOC区间。"
+        },
+        {
+          "locator": "Supplement, PDFp11, TableS7",
+          "fact": "BESS固定运维为资本成本的1%/年，技术寿命15年；不等价于吞吐退化成本。"
+        },
+        {
+          "locator": "STAR Methods, Method details",
+          "fact": "该论文以真实省级容量、月度典型日及逐年8760小时调度研究年度转型；本项目单日平稳合成风电不具备同等年度解释。"
+        }
+      ],
+      "project_mapping": "帮助区分功率配储比、时长、往返效率和年度能量指标；没有证据证明当前20%期望日能量比是最优或必须的值。"
+    }
+  ],
+  "current_project": {
+    "inputs": [
+      "data/environment.json",
+      "data/profile.json",
+      "eqnsac/scenarios.py",
+      "eqnsac/environment.py"
+    ],
+    "baseline_numbers_file": "baseline_parameter_ratios.json",
+    "monte_carlo_file": "penetration_sampling.json",
+    "wind_definition": "wind_capacity=target_penetration*mean(nominal_load)/mean_cf；各风力扰动档位的Weibull尺度分别求解以保持同一期望容量因子。因此20%=E[每日可用风电量]/名义日负荷电量。",
+    "wind_definition_limits": [
+      "不是每条抽样日的风电量/负荷量都20%；E[W/L]与E[W]/E[L]也不同。",
+      "不是风机额定功率/峰负荷，当前后者约38.03%。",
+      "不是小时瞬时风电/负荷；不是扣除弃风后的实际新能源消费比例。",
+      "没有季节/年度气象校准，不能写成实际年新能源渗透率20%。"
+    ],
+    "storage_scale": "现BESS功率/名义峰负荷约74.74%，BESS功率/风机装机约196.53%，可用能量/期望日风电能量50%。可以作为较强日内购电套利储能假设，不能仅用2.4h时长论证整体规模合理。",
+    "storage_duration": "ΔSOC/P=2.4h；放电侧外部满功率时长=ΔSOC*ηdis/P=2.28h；充满所需时间=ΔSOC/(ηch*P)=2.5263h。初始SOC在下限，因此初始可放能量为0。",
+    "throughput_cost": {
+      "code": "c_es*(charge+discharge)*dt",
+      "under_proposed_units": "0.5澳分/kWh分别对充、放电能量计费；不含资本回收。",
+      "round_trip_cost_aud_per_output_kwh": 0.010540166204986151,
+      "formula": "0.005*(1+1/(0.95*0.95))",
+      "interpretation": "弱吞吐成本假设；没有由已核实原始数据/电池采购和循环寿命反推出的证据。可在用户允许的储能参数范围内做成本敏感性，但不能声称论文支持此精确数值。"
+    },
+    "rational_response_derivative": "忽略需求噪声且共享价格时，理性总需求Lrat=L0−(p−pref)/(2k)，故εrat(pref)=−pref/(2kL0)。当前k=.001得到约−3.14到−6.84；实际响应还乘价格/温度/满意度相关参与比例，须用同RNG有限差分校准，不可直接用此数当最终弹性。",
+    "response_sign": "忽略需求噪声，p<pref增加当期消费，p>pref减少当期消费；pref来自hourly_demand_reference而非实时批发价。批发价影响策略经济性，不自动使响应按负荷峰谷变化。"
+  },
+  "permitted_parameter_conclusions": [
+    "保留20%可作为清楚定义的中心实验设定；10/20/30%可作由审查提出的敏感性网格，不能称为文献推荐区间。",
+    "充放效率各95%有直接期刊案例；2.4h属于可研究的几小时储能时长，但没有论文证明本项目容量、功率和成本组合最优。",
+    "优先校准最终响应的局部弹性与价格上下界处的实际需求变化；−0.1只是一个文献案例对照值，不能把它强行推广为所有用户的范围。",
+    "若目标是谷期微增、峰期微减，应先用固定价格序列做响应方程验证；利润训练是否选择这些价格是另一个待检验问题。",
+    "在正购电且其他状态/动作固定的局部近似，d[(p−c)L]/dp=L[1+ε(1−c/p)]。弱弹性ε≈−0.1且0<c<p时导数为正，纯利润目标可能选择价格上界；这不是SAC算法错误。保持用户要求的奖励不变并如实报告此现象。"
+  ],
+  "unresolved": [
+    "原始价格/负荷单位、澳洲地区、年份及数据提供者未获证实。",
+    "缺少用户实测需求对价格的反应数据，不能声明曲率/满意度/参与比例已完成经验校准。",
+    "缺少电池型号、采购成本、寿命和服务目的，不能宣布当前储能规模及吞吐成本为工程最优。"
+  ]
+}

@@ -67,15 +67,16 @@ STORAGE_INDICES = {
 class Environment:
     """一个 episode 对应一天；reset 提供外生场景，step 推进一步响应与结算。"""
 
-    def __init__(self, storage_reward_mix=0.1):
+    def __init__(self, storage_reward_mix=0.1, *, spec=None, generator_config=None):
         self.profile = {
             k: np.asarray(v, dtype=np.float32)
             for k, v in json.loads(
                 (ROOT / "data/profile.json").read_text("utf-8")
             ).items()
         }
-        self.spec = json.loads((ROOT / "data/environment.json").read_text("utf-8"))
-        self.generator = ThreeSourceGenerator(self.profile)
+        self.spec = (json.loads((ROOT / "data/environment.json").read_text("utf-8"))
+                     if spec is None else copy.deepcopy(spec))
+        self.generator = ThreeSourceGenerator(self.profile, generator_config)
         self.storage = SimpleNamespace(**self.spec["storage"])
         storage = self.storage
         if (

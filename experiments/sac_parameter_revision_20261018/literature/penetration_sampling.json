@@ -1,0 +1,29 @@
+{
+  "low": {
+    "days": 3000,
+    "seed_start": 88000000,
+    "ratio_of_mean_energies": 0.2016336900959606,
+    "mean_of_daily_ratios": 0.20261668121019466,
+    "daily_ratio_p05": 0.07484677274844455,
+    "daily_ratio_p95": 0.362352852313527,
+    "daily_ratio_std": 0.08865434691326932
+  },
+  "medium": {
+    "days": 3000,
+    "seed_start": 88000000,
+    "ratio_of_mean_energies": 0.20249329157356005,
+    "mean_of_daily_ratios": 0.20339580638968072,
+    "daily_ratio_p05": 0.03339891100417386,
+    "daily_ratio_p95": 0.4328081759252958,
+    "daily_ratio_std": 0.12436053736885756
+  },
+  "high": {
+    "days": 3000,
+    "seed_start": 88000000,
+    "ratio_of_mean_energies": 0.20336994575295744,
+    "mean_of_daily_ratios": 0.2042737439940097,
+    "daily_ratio_p05": 0.013553060439421661,
+    "daily_ratio_p95": 0.45451627696011976,
+    "daily_ratio_std": 0.13957151300614123
+  }
+}

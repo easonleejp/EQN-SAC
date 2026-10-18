@@ -1,0 +1,123 @@
+{
+  "date": "2026-10-18",
+  "scope": "literature and parameter-only calculations; no source edits or training",
+  "observed_source_sha256": {
+    "data/environment.json": "e93e1278e70567df4172131b2075824cfb64416988eacfb1606c26327fd86022",
+    "data/profile.json": "ba6149855dfe04a4a49f5564ef6cd8c46bce3975298f6d741f37a1181597602c",
+    "eqnsac/scenarios.py": "06b02c16f253d7efd296d30a57ccc7d3957a2917e5762493cfe331a306ddbe80",
+    "eqnsac/environment.py": "a0b1f0976e4aa1ace5ad7db35921bbca98bdd705c666881e2db6f5f807cfae35"
+  },
+  "archive_notice": "Derived public provenance manifest. Papers, XML, PDF, excerpts, images and supplement archives are not distributed. Local-only hashes record the original audit material and do not claim that those files are available in this repository. Use publisher/DOI URLs in parameter_evidence.json and renewable_share_supplement.json for public source attribution.",
+  "copied_metadata_sha256": {
+    "parameter_evidence.json": "c6d7dc9e3302f22b655cf0626bb6538a05fc4e39efcb05c1202893fa59c9a0f7",
+    "baseline_parameter_ratios.json": "313fb9bef438427b47a2f7bb9d6e1da6d00d4e9557295f4ad1fbcc5a62b003be",
+    "penetration_sampling.json": "36ca0b0320e588b6caad6a560855903ed351af673e49b5e21a87edf8adbc63f8",
+    "参数文献核对.md": "25f84db58eeecc9f174b57fa609739cb70235a44a62e4cb509d791d4a85c694a",
+    "renewable_share_supplement.json": "260ad3746cbac15b638c82b88a256d46ee13ffaf8ebda1eeb2558396781f54ce"
+  },
+  "original_local_hash_records": [
+    {
+      "original_local_path": "baseline_parameter_ratios.json",
+      "recorded_sha256": "313fb9bef438427b47a2f7bb9d6e1da6d00d4e9557295f4ad1fbcc5a62b003be",
+      "included_in_archive": true,
+      "archive_path": "literature/baseline_parameter_ratios.json",
+      "recorded_hash_matches_copied_file": true
+    },
+    {
+      "original_local_path": "excerpts/asadinejad2017-p4.png",
+      "recorded_sha256": "c00b28177105ba35deec24e5810f3a5e2bf3dd0832aee82e8b4d59d5fc7a4aa2",
+      "included_in_archive": false,
+      "archive_path": null,
+      "recorded_hash_matches_copied_file": null
+    },
+    {
+      "original_local_path": "excerpts/asadinejad2017-p6.png",
+      "recorded_sha256": "cfebbb319fae4a6c83eef5b059a0767c5a7c60a63fc0c5d485acdd4e3edaa8c4",
+      "included_in_archive": false,
+      "archive_path": null,
+      "recorded_hash_matches_copied_file": null
+    },
+    {
+      "original_local_path": "excerpts/asadinejad2017.txt",
+      "recorded_sha256": "d32059eabe61b7eb69485dca9adee464b1bad4744d4eec3bd743d9c185550491",
+      "included_in_archive": false,
+      "archive_path": null,
+      "recorded_hash_matches_copied_file": null
+    },
+    {
+      "original_local_path": "excerpts/ding2023-supp-p9.png",
+      "recorded_sha256": "416c9d19daff1861c0852f30098df8951245923580f3bbe3fc23a8bff19ee70a",
+      "included_in_archive": false,
+      "archive_path": null,
+      "recorded_hash_matches_copied_file": null
+    },
+    {
+      "original_local_path": "excerpts/ding2023_body.txt",
+      "recorded_sha256": "92b89f85ceac053cbbd5773dddb39529ce18fec6d9f1eb0a6eece52dfb96f077",
+      "included_in_archive": false,
+      "archive_path": null,
+      "recorded_hash_matches_copied_file": null
+    },
+    {
+      "original_local_path": "excerpts/ding2023_supp.txt",
+      "recorded_sha256": "727171eb5106a5fde11648adfe96eaab3ef9133af16c79f47ed548a974eb65c9",
+      "included_in_archive": false,
+      "archive_path": null,
+      "recorded_hash_matches_copied_file": null
+    },
+    {
+      "original_local_path": "parameter_evidence.json",
+      "recorded_sha256": "c6d7dc9e3302f22b655cf0626bb6538a05fc4e39efcb05c1202893fa59c9a0f7",
+      "included_in_archive": true,
+      "archive_path": "literature/parameter_evidence.json",
+      "recorded_hash_matches_copied_file": true
+    },
+    {
+      "original_local_path": "penetration_sampling.json",
+      "recorded_sha256": "36ca0b0320e588b6caad6a560855903ed351af673e49b5e21a87edf8adbc63f8",
+      "included_in_archive": true,
+      "archive_path": "literature/penetration_sampling.json",
+      "recorded_hash_matches_copied_file": true
+    },
+    {
+      "original_local_path": "sources/asadinejad2017.pdf",
+      "recorded_sha256": "12f7f9fb4b2681a4ed6d68706ea85e71a59269237f52884f74509fd174fe0d8f",
+      "included_in_archive": false,
+      "archive_path": null,
+      "recorded_hash_matches_copied_file": null
+    },
+    {
+      "original_local_path": "sources/ding2023.xml",
+      "recorded_sha256": "eee392b6ea9a9a2d9834830ae832b83a88e0408591f47a150b1d45f54a4d0cb6",
+      "included_in_archive": false,
+      "archive_path": null,
+      "recorded_hash_matches_copied_file": null
+    },
+    {
+      "original_local_path": "sources/ding2023_supp.zip",
+      "recorded_sha256": "70844f3026fba3cdfac27a7e88487390b2b78853606648cdc1807f8d6dc3111b",
+      "included_in_archive": false,
+      "archive_path": null,
+      "recorded_hash_matches_copied_file": null
+    },
+    {
+      "original_local_path": "sources/mmc1.pdf",
+      "recorded_sha256": "46a6af9498f7790d871eec9c805a5f8309d8cd3036087aeab76ed195b44c65d5",
+      "included_in_archive": false,
+      "archive_path": null,
+      "recorded_hash_matches_copied_file": null
+    },
+    {
+      "original_local_path": "参数文献核对.md",
+      "recorded_sha256": "25f84db58eeecc9f174b57fa609739cb70235a44a62e4cb509d791d4a85c694a",
+      "included_in_archive": true,
+      "archive_path": "literature/参数文献核对.md",
+      "recorded_hash_matches_copied_file": true
+    }
+  ],
+  "source_manifest": {
+    "path": "checks/sac_revision/literature/evidence_manifest.json",
+    "bytes": 1980,
+    "sha256": "9ea05297d103241d891047832143be044797f72c9ee68d569a65eada321250d3"
+  }
+}

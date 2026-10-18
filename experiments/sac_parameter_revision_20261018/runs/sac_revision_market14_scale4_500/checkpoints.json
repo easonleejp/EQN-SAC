@@ -1,0 +1,33 @@
+{
+  "checkpoint_files_distributed": false,
+  "note": "Paths refer to local source files; weights are not included in this Git archive. These hashes do not substitute for model weights.",
+  "final_checkpoint_path": "runs/sac_revision_market14_scale4_500/checkpoint_00500.pt",
+  "final_checkpoint_present": true,
+  "checkpoints": [
+    {
+      "path": "runs/sac_revision_market14_scale4_500/checkpoint_00100.pt",
+      "bytes": 872757,
+      "sha256": "dfeb03b9867a3406f3cd8740c087592112f689619f1df168b1c6856868e9aaba"
+    },
+    {
+      "path": "runs/sac_revision_market14_scale4_500/checkpoint_00200.pt",
+      "bytes": 872757,
+      "sha256": "ae176925f550caa0a31e35af8a02cb65e568ed2726ac40671a9cf13426923551"
+    },
+    {
+      "path": "runs/sac_revision_market14_scale4_500/checkpoint_00300.pt",
+      "bytes": 872757,
+      "sha256": "c684542d447f06766c77b26c33d89a939067446f45967508df6e0b29d1ea1fdb"
+    },
+    {
+      "path": "runs/sac_revision_market14_scale4_500/checkpoint_00400.pt",
+      "bytes": 872757,
+      "sha256": "f9dd15a96937ef06065d0c2b779abcb4bd3e031373226ad03be71fe2707ea87e"
+    },
+    {
+      "path": "runs/sac_revision_market14_scale4_500/checkpoint_00500.pt",
+      "bytes": 872757,
+      "sha256": "17884b9755ede20f9b2855db47070e9a0d2e34134b05f0db82dfe9f0d3207450"
+    }
+  ]
+}

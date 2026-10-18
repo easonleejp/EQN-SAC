@@ -1,0 +1,56 @@
+[
+  {
+    "run": "sac_revision_baseline_2000",
+    "episode": 500,
+    "checkpoint": "runs/sac_revision_baseline_2000/checkpoint_00500.pt",
+    "sha256": "408db1b03bf4d323cfb70c40049dfdc4a1c7120b6a481bb208addb441c0dda24",
+    "output": "runs/sac_revision_baseline_2000/holdout_500_108.json",
+    "seed": 950000000,
+    "cases": 108
+  },
+  {
+    "run": "sac_revision_baseline_2000",
+    "episode": 2000,
+    "checkpoint": "runs/sac_revision_baseline_2000/checkpoint_02000.pt",
+    "sha256": "9554db0439e762e22720105ae88e532862c25b3f5c6520dea4e79624f455f9f1",
+    "output": "runs/sac_revision_baseline_2000/holdout_108.json",
+    "seed": 950000000,
+    "cases": 108
+  },
+  {
+    "run": "sac_revision_forecast18_scale3_2000",
+    "episode": 500,
+    "checkpoint": "runs/sac_revision_forecast18_scale3_2000/checkpoint_00500.pt",
+    "sha256": "c70f51ccc477acc54862250b692e29aabbce71cb51463acd1dfd7a5c44e777ac",
+    "output": "runs/sac_revision_forecast18_scale3_2000/holdout_500_108.json",
+    "seed": 950000000,
+    "cases": 108
+  },
+  {
+    "run": "sac_revision_forecast18_scale3_2000",
+    "episode": 2000,
+    "checkpoint": "runs/sac_revision_forecast18_scale3_2000/checkpoint_02000.pt",
+    "sha256": "70277085d180860db4b491f70f89ef7b48a59bbf257c3fc06d8397d39f8548b6",
+    "output": "runs/sac_revision_forecast18_scale3_2000/holdout_108.json",
+    "seed": 950000000,
+    "cases": 108
+  },
+  {
+    "run": "sac_revision_forecast18_scale3_seed7_2000",
+    "episode": 2000,
+    "checkpoint": "runs/sac_revision_forecast18_scale3_seed7_2000/checkpoint_02000.pt",
+    "sha256": "90e4897a46c9625896b2bf19a4e154d84f48d4c52f347a809ebb0cb2b5900b8f",
+    "output": "runs/sac_revision_forecast18_scale3_seed7_2000/holdout_108.json",
+    "seed": 950000000,
+    "cases": 108
+  },
+  {
+    "run": "sac_revision_forecast18_scale3_seed123_2000",
+    "episode": 2000,
+    "checkpoint": "runs/sac_revision_forecast18_scale3_seed123_2000/checkpoint_02000.pt",
+    "sha256": "624cc39efe3bdad8bfe37f69c1fd2d56c80ceabc48a4064146ca0791201d3fe1",
+    "output": "runs/sac_revision_forecast18_scale3_seed123_2000/holdout_108.json",
+    "seed": 950000000,
+    "cases": 108
+  }
+]
