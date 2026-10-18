@@ -16,8 +16,9 @@ class Task:
         self.reference = make_environment(cfg)
         self.observation_dim = {"full19": 19, "causal11": 11, "market14": 14,
                                 "market18": 18, "nominal11": 11,
-                                "dispatch17": 17, "current6": 6}[cfg.observation]
-        if cfg.observation == "current6":
+                                "dispatch17": 17, "current6": 6,
+                                "causal13": 13}[cfg.observation]
+        if cfg.observation in ("current6", "causal13"):
             # Fixed numerical scales, not statistics of this day's full profile.
             # Both present load and wind use the same power scale. No clipping:
             # a larger future dataset remains distinguishable above this scale.
@@ -47,7 +48,7 @@ class Task:
         return float(2 * (price - low) / (high - low) - 1)
 
     def observe(self, state):
-        if self.cfg.observation == "current6":
+        if self.cfg.observation in ("current6", "causal13"):
             if self.env.t >= 24:
                 return np.zeros(self.observation_dim, dtype=np.float32)
             env, hour = self.env, self.env.t
@@ -55,14 +56,27 @@ class Task:
             storage = env.storage
             # Only measurements available at this decision time. Derive SOC
             # directly rather than selecting fields from the legacy full state.
-            return np.asarray([
+            features = [
                 (env.price[hour] - self.price_center) / self.price_spread,
                 env.load[hour] / self.load_scale,
                 env.wind[hour] / self.load_scale,
                 (env.soc - storage.soc_min) / (storage.soc_max - storage.soc_min),
                 (24 - hour) / 24,
                 2 * (env.profile["retail_price"][hour] - low) / (high - low) - 1,
-            ], dtype=np.float32)
+            ]
+            if self.cfg.observation == "causal13":
+                phase = 2 * np.pi * hour / 24
+                # Pad unavailable history with the first observed quote, never
+                # with the previous day's last hour or a future nominal quote.
+                past_prices = [
+                    (env.price[max(0, hour - lag)] - self.price_center) / self.price_spread
+                    for lag in (1, 2, 3)
+                ]
+                # Existing instantaneous physics, not new action restrictions.
+                # These bounds expose the SOC-dependent raw-to-executed map.
+                lower, upper = env.feasible_bounds()
+                features += [np.sin(phase), np.cos(phase), *past_prices, lower, upper]
+            return np.asarray(features, dtype=np.float32)
         if self.cfg.observation in ("nominal11", "dispatch17"):
             if self.env.t >= 24:
                 return np.zeros(self.observation_dim, dtype=np.float32)

@@ -1,0 +1,71 @@
+{
+  "created_utc": "2026-10-18T08:18:34.995172+00:00",
+  "changes": {
+    "observation": {
+      "before": "current6",
+      "after": "causal13"
+    }
+  },
+  "config_sha256": "25c21678c3f2a577f5350abe27e207c4a788872c8d855933bb43f83bdfd69f8c",
+  "source_hashes": {
+    "sac/__init__.py": "9ddcf3842e81bc1b15dc760d13eefe10f635fa484a3b640d4abec7712873e1cf",
+    "sac/agent.py": "8f2924f6dcee55335094da38bc06fc6051be8c082c56b6952950412b816d7ee1",
+    "sac/config.py": "49657a35287a2769c489e7a3990d10cc0da5797b769a14af1aa97311d3caaa30",
+    "sac/networks.py": "b375e1ba98cdc6299fe603dc1db9b00858d4100658466a835422a282dc449854",
+    "sac/parameters.py": "dcd29631215e0ff60b5ccc2c578b8aa8167458725b431f65b0ee4b8bb1fc02d0",
+    "sac/replay.py": "c0bdab55d7d3aa85b46f343d6a659f350dffab36c8363f473f9bef6adcaba4eb",
+    "sac/runner.py": "30a2f42235951ac10403be9f1e3421cf46492d523279ed52c902b42d831e432e",
+    "sac/scenarios.py": "ae5caba6754ba029d147424cc9acb2f045f38e7e01c7a341858730bc9c642e47",
+    "sac/task.py": "2543ab36b00d8de29f95bf764daeecadbc0b6b366a779ce2be900e28d95277a2",
+    "train_sac.py": "137813df3f307f45e3b33495b60ed4787c35a69e4a29233d306261999bda0fb1",
+    "eqnsac/config.py": "1d35b2712cf0869c2ed22f5b088dc1e7a1d14354c8534b4dbfb6d6c25b28bfe7",
+    "eqnsac/environment.py": "6617fae8cb909a5e8e697e61b61eef4abcca63dc44d713a5229a4c3e87fdb6b4",
+    "eqnsac/scenarios.py": "06b02c16f253d7efd296d30a57ccc7d3957a2917e5762493cfe331a306ddbe80",
+    "eqnsac/single_source.py": "80433ddee016cde0282cdf945aac5efc60620a564302c7ac413a686021e022c4",
+    "data/environment.json": "e93e1278e70567df4172131b2075824cfb64416988eacfb1606c26327fd86022",
+    "data/profile.json": "ba6149855dfe04a4a49f5564ef6cd8c46bce3975298f6d741f37a1181597602c",
+    "data/provenance.json": "07f1519c333c5650c6bc1adee7ce0a188308ff1d402d714c24788f70fd18d2dd"
+  },
+  "changed_source_files": [
+    "sac/config.py",
+    "sac/task.py"
+  ],
+  "budget": {
+    "episodes": 500,
+    "steps": 12000,
+    "updates": 86408,
+    "internal_evaluations": 0,
+    "final_test_episodes": 1
+  },
+  "comparison_run": "runs/sac_current6_tuned_500",
+  "features": [
+    "current_wholesale_fixed_scale",
+    "current_load_div5000",
+    "current_wind_div5000",
+    "usable_soc_fraction",
+    "remaining_day_fraction",
+    "current_tou_normalized",
+    "sin_current_hour",
+    "cos_current_hour",
+    "wholesale_lag1_fixed_scale",
+    "wholesale_lag2_fixed_scale",
+    "wholesale_lag3_fixed_scale",
+    "current_feasible_storage_lower",
+    "current_feasible_storage_upper"
+  ],
+  "history_padding": "price[max(0,h-lag)], no cross-day wrap",
+  "checks": {
+    "only_observation_config_changed": true,
+    "effective_environment_unchanged": true,
+    "profile_unchanged": true,
+    "generator_unchanged": true,
+    "original_reward_and_action_mapping_unchanged": true
+  },
+  "excluded_inputs": [
+    "future_realized_or_nominal_data",
+    "full_day_profile_statistics",
+    "response_reference_price",
+    "response_curvature",
+    "temperature_response_factor"
+  ]
+}

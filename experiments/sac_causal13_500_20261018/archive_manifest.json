@@ -1,0 +1,222 @@
+{
+  "created_utc": "2026-10-18T08:25:45.425344+00:00",
+  "files": [
+    {
+      "source": "runs/sac_causal13_500/complete.json",
+      "destination": "experiments/sac_causal13_500_20261018/run/complete.json",
+      "bytes": 98,
+      "sha256": "dff2490b2235dac245a1bf66c2d3965ba0b68fc04486b86865a12b5787819aff"
+    },
+    {
+      "source": "runs/sac_causal13_500/config.json",
+      "destination": "experiments/sac_causal13_500_20261018/run/config.json",
+      "bytes": 2183,
+      "sha256": "233889dfbdeafc2becfba95f056b6d26d589d186bf76beac2631ac73c021e0c3"
+    },
+    {
+      "source": "runs/sac_causal13_500/effective_environment.json",
+      "destination": "experiments/sac_causal13_500_20261018/run/effective_environment.json",
+      "bytes": 3241,
+      "sha256": "b65db20d09efcaa10a93a40beed1d1a745f2e83273a9f8476e0349fb17485391"
+    },
+    {
+      "source": "runs/sac_causal13_500/effective_generator.json",
+      "destination": "experiments/sac_causal13_500_20261018/run/effective_generator.json",
+      "bytes": 559,
+      "sha256": "e3c1c52c70cbbf5f22f6d9c9c022844b94f1f38f294fefd9f87f9ac2214c245c"
+    },
+    {
+      "source": "runs/sac_causal13_500/effective_profile.json",
+      "destination": "experiments/sac_causal13_500_20261018/run/effective_profile.json",
+      "bytes": 4010,
+      "sha256": "7d1b1f03b541c0f0a1265bd691693f22904636ab736d59e46deaa432b4337278"
+    },
+    {
+      "source": "runs/sac_causal13_500/manifest.json",
+      "destination": "experiments/sac_causal13_500_20261018/run/manifest.json",
+      "bytes": 2289,
+      "sha256": "1231498da524486558aa310fb84c96ead34d06333efb5cf337b38a8de359a1a3"
+    },
+    {
+      "source": "runs/sac_causal13_500/offline_comparison.json",
+      "destination": "experiments/sac_causal13_500_20261018/run/offline_comparison.json",
+      "bytes": 37173,
+      "sha256": "84e5ca482eeed5346c1c9ef6ca48a7dd42c9380cb8f3c093b9e570ba7215f65d"
+    },
+    {
+      "source": "runs/sac_causal13_500/provenance_test.json",
+      "destination": "experiments/sac_causal13_500_20261018/run/provenance_test.json",
+      "bytes": 842,
+      "sha256": "3b31cc928a72ed64cb5f345bb63caab3bf040222c749df21cfff21b2e2b79753"
+    },
+    {
+      "source": "runs/sac_causal13_500/source/data/environment.json",
+      "destination": "experiments/sac_causal13_500_20261018/run/source/data/environment.json",
+      "bytes": 1624,
+      "sha256": "e93e1278e70567df4172131b2075824cfb64416988eacfb1606c26327fd86022"
+    },
+    {
+      "source": "runs/sac_causal13_500/source/data/profile.json",
+      "destination": "experiments/sac_causal13_500_20261018/run/source/data/profile.json",
+      "bytes": 4285,
+      "sha256": "ba6149855dfe04a4a49f5564ef6cd8c46bce3975298f6d741f37a1181597602c"
+    },
+    {
+      "source": "runs/sac_causal13_500/source/data/provenance.json",
+      "destination": "experiments/sac_causal13_500_20261018/run/source/data/provenance.json",
+      "bytes": 10783,
+      "sha256": "07f1519c333c5650c6bc1adee7ce0a188308ff1d402d714c24788f70fd18d2dd"
+    },
+    {
+      "source": "runs/sac_causal13_500/source/eqnsac/config.py",
+      "destination": "experiments/sac_causal13_500_20261018/run/source/eqnsac/config.py",
+      "bytes": 7077,
+      "sha256": "1d35b2712cf0869c2ed22f5b088dc1e7a1d14354c8534b4dbfb6d6c25b28bfe7"
+    },
+    {
+      "source": "runs/sac_causal13_500/source/eqnsac/environment.py",
+      "destination": "experiments/sac_causal13_500_20261018/run/source/eqnsac/environment.py",
+      "bytes": 16605,
+      "sha256": "6617fae8cb909a5e8e697e61b61eef4abcca63dc44d713a5229a4c3e87fdb6b4"
+    },
+    {
+      "source": "runs/sac_causal13_500/source/eqnsac/scenarios.py",
+      "destination": "experiments/sac_causal13_500_20261018/run/source/eqnsac/scenarios.py",
+      "bytes": 9426,
+      "sha256": "06b02c16f253d7efd296d30a57ccc7d3957a2917e5762493cfe331a306ddbe80"
+    },
+    {
+      "source": "runs/sac_causal13_500/source/eqnsac/single_source.py",
+      "destination": "experiments/sac_causal13_500_20261018/run/source/eqnsac/single_source.py",
+      "bytes": 2939,
+      "sha256": "80433ddee016cde0282cdf945aac5efc60620a564302c7ac413a686021e022c4"
+    },
+    {
+      "source": "runs/sac_causal13_500/source/sac/__init__.py",
+      "destination": "experiments/sac_causal13_500_20261018/run/source/sac/__init__.py",
+      "bytes": 79,
+      "sha256": "9ddcf3842e81bc1b15dc760d13eefe10f635fa484a3b640d4abec7712873e1cf"
+    },
+    {
+      "source": "runs/sac_causal13_500/source/sac/agent.py",
+      "destination": "experiments/sac_causal13_500_20261018/run/source/sac/agent.py",
+      "bytes": 7402,
+      "sha256": "8f2924f6dcee55335094da38bc06fc6051be8c082c56b6952950412b816d7ee1"
+    },
+    {
+      "source": "runs/sac_causal13_500/source/sac/config.py",
+      "destination": "experiments/sac_causal13_500_20261018/run/source/sac/config.py",
+      "bytes": 5051,
+      "sha256": "49657a35287a2769c489e7a3990d10cc0da5797b769a14af1aa97311d3caaa30"
+    },
+    {
+      "source": "runs/sac_causal13_500/source/sac/networks.py",
+      "destination": "experiments/sac_causal13_500_20261018/run/source/sac/networks.py",
+      "bytes": 1925,
+      "sha256": "b375e1ba98cdc6299fe603dc1db9b00858d4100658466a835422a282dc449854"
+    },
+    {
+      "source": "runs/sac_causal13_500/source/sac/parameters.py",
+      "destination": "experiments/sac_causal13_500_20261018/run/source/sac/parameters.py",
+      "bytes": 5613,
+      "sha256": "dcd29631215e0ff60b5ccc2c578b8aa8167458725b431f65b0ee4b8bb1fc02d0"
+    },
+    {
+      "source": "runs/sac_causal13_500/source/sac/replay.py",
+      "destination": "experiments/sac_causal13_500_20261018/run/source/sac/replay.py",
+      "bytes": 4592,
+      "sha256": "c0bdab55d7d3aa85b46f343d6a659f350dffab36c8363f473f9bef6adcaba4eb"
+    },
+    {
+      "source": "runs/sac_causal13_500/source/sac/runner.py",
+      "destination": "experiments/sac_causal13_500_20261018/run/source/sac/runner.py",
+      "bytes": 11146,
+      "sha256": "30a2f42235951ac10403be9f1e3421cf46492d523279ed52c902b42d831e432e"
+    },
+    {
+      "source": "runs/sac_causal13_500/source/sac/scenarios.py",
+      "destination": "experiments/sac_causal13_500_20261018/run/source/sac/scenarios.py",
+      "bytes": 2010,
+      "sha256": "ae5caba6754ba029d147424cc9acb2f045f38e7e01c7a341858730bc9c642e47"
+    },
+    {
+      "source": "runs/sac_causal13_500/source/sac/task.py",
+      "destination": "experiments/sac_causal13_500_20261018/run/source/sac/task.py",
+      "bytes": 11869,
+      "sha256": "2543ab36b00d8de29f95bf764daeecadbc0b6b366a779ce2be900e28d95277a2"
+    },
+    {
+      "source": "runs/sac_causal13_500/source/train_sac.py",
+      "destination": "experiments/sac_causal13_500_20261018/run/source/train_sac.py",
+      "bytes": 125,
+      "sha256": "137813df3f307f45e3b33495b60ed4787c35a69e4a29233d306261999bda0fb1"
+    },
+    {
+      "source": "runs/sac_causal13_500/test_1ep.json",
+      "destination": "experiments/sac_causal13_500_20261018/run/test_1ep.json",
+      "bytes": 59336,
+      "sha256": "c7ff5f406297af56280fffca91729be58b968668a3c4d3acfa54add6d026880c"
+    },
+    {
+      "source": "runs/sac_causal13_500/training.csv",
+      "destination": "experiments/sac_causal13_500_20261018/run/training.csv",
+      "bytes": 146574,
+      "sha256": "f44bd9a1bbd8c3ca9f24f6535b0951d2eef4702dda55f0136023b1adc97e8580"
+    },
+    {
+      "source": "checks/sac_causal13_500/evaluation.log",
+      "destination": "experiments/sac_causal13_500_20261018/checks/evaluation.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "checks/sac_causal13_500/independent_review.txt",
+      "destination": "experiments/sac_causal13_500_20261018/checks/independent_review.txt",
+      "bytes": 4660,
+      "sha256": "533cf492963e6dcea5b09231eadc5b72e2acb1f7e1d6d61454a409d43e9e9b6f"
+    },
+    {
+      "source": "checks/sac_causal13_500/offline_analysis.py",
+      "destination": "experiments/sac_causal13_500_20261018/checks/offline_analysis.py",
+      "bytes": 22528,
+      "sha256": "18a2e36047c60de21d4acf108a4cc1f4608406c802be48d521f1510348fd9d49"
+    },
+    {
+      "source": "checks/sac_causal13_500/plot.log",
+      "destination": "experiments/sac_causal13_500_20261018/checks/plot.log",
+      "bytes": 2373,
+      "sha256": "80c0abd258ad5f2a63da61de34eae8521fc9bdf5ad1b4151880f436042b8a2e6"
+    },
+    {
+      "source": "checks/sac_causal13_500/selection_before_training.json",
+      "destination": "experiments/sac_causal13_500_20261018/checks/selection_before_training.json",
+      "bytes": 3013,
+      "sha256": "109d79f6f067a0c0cb11433df439aea36624645e35956a8e498549b34b255cbc"
+    },
+    {
+      "source": "checks/sac_causal13_500/training.log",
+      "destination": "experiments/sac_causal13_500_20261018/checks/training.log",
+      "bytes": 697,
+      "sha256": "a29a22fbe64d95a15f6b80809802415950aec3cccea39fa03b546eba9cf30e22"
+    },
+    {
+      "source": "checks/sac_causal13_500/unit_tests.log",
+      "destination": "experiments/sac_causal13_500_20261018/checks/unit_tests.log",
+      "bytes": 15150,
+      "sha256": "f5ab246f43ea321f8ddd7c6a53db25ddffdf91d7a79af201b21938cb87417db1"
+    },
+    {
+      "source": "checks/sac_causal13_500/validation.log",
+      "destination": "experiments/sac_causal13_500_20261018/checks/validation.log",
+      "bytes": 1387,
+      "sha256": "cd50d60525e838b2831f2d58ccef16c1f36c512162d2d8eeb7ade11b582b0a65"
+    }
+  ],
+  "checkpoint": {
+    "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_causal13_500/checkpoint_00500.pt",
+    "bytes": 868469,
+    "sha256": "8a984f972da3cb70983a8b8bd8ab7b79543901bc2e5c82c2a5e2715c56df397a",
+    "uploaded": false
+  },
+  "note": "Copied logs, the sole one-episode test and frozen source byte-for-byte; weights stay local. The archived offline script retains its original checks/sac_causal13_500 location assumption. All 103 unit tests passed; offline validation and independent review use saved data without policy execution."
+}

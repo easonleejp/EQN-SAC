@@ -1,0 +1,60 @@
+{
+  "outputs": [
+    "/Users/liliheng/Desktop/EQN-SAC/experiments/sac_causal13_500_20261018/figures/fixed_day_comparison.png",
+    "/Users/liliheng/Desktop/EQN-SAC/experiments/sac_causal13_500_20261018/figures/fixed_day_comparison.pdf",
+    "/Users/liliheng/Desktop/EQN-SAC/experiments/sac_causal13_500_20261018/figures/hourly_comparison.csv"
+  ],
+  "manifest": "/Users/liliheng/Desktop/EQN-SAC/experiments/sac_causal13_500_20261018/figures/comparison_manifest.json",
+  "metrics": {
+    "before": {
+      "price_h22": 30.6661434173584,
+      "price_h23": 30.634140014648438,
+      "price_change_h22_to_h23": -0.03200340270996094,
+      "midday_price_mean": 31.891996002197267,
+      "grid_max_absolute_hourly_change": 710.7601392672209,
+      "grid_max_change_hours": [
+        3,
+        4
+      ],
+      "grid_max_change_signed": 710.7601392672209,
+      "grid_rms_hourly_change": 343.68544262395193,
+      "grid_daily_peak": 3553.358844186214,
+      "grid_daily_std": 488.2449602284246,
+      "daily_profit_raw": 1165894.8774030004,
+      "midday_reduction_pct": 13.187530007691457,
+      "training_updates": 86408
+    },
+    "after": {
+      "price_h22": 30.06785774230957,
+      "price_h23": 29.985153198242188,
+      "price_change_h22_to_h23": -0.08270454406738281,
+      "midday_price_mean": 31.579305267333986,
+      "grid_max_absolute_hourly_change": 779.3016887597173,
+      "grid_max_change_hours": [
+        2,
+        3
+      ],
+      "grid_max_change_signed": 779.3016887597173,
+      "grid_rms_hourly_change": 254.8021553808245,
+      "grid_daily_peak": 3314.204866519757,
+      "grid_daily_std": 417.72071399198387,
+      "daily_profit_raw": 1169753.6425689152,
+      "midday_reduction_pct": 11.145911884165702,
+      "training_updates": 86408
+    },
+    "delta_after_minus_before": {
+      "price_h22": -0.5982856750488281,
+      "price_h23": -0.64898681640625,
+      "price_change_h22_to_h23": -0.050701141357421875,
+      "midday_price_mean": -0.31269073486328125,
+      "grid_max_absolute_hourly_change": 68.54154949249642,
+      "grid_max_change_signed": 68.54154949249642,
+      "grid_rms_hourly_change": -88.88328724312743,
+      "grid_daily_peak": -239.15397766645674,
+      "grid_daily_std": -70.52424623644072,
+      "daily_profit_raw": 3858.7651659147814,
+      "midday_reduction_pp": -2.0416181235257547,
+      "training_updates": 0
+    }
+  }
+}

@@ -30,7 +30,7 @@ class TaskTests(unittest.TestCase):
         self.assertAlmostEqual(balance, 0, places=7)
 
     def test_reward_is_original_profit_and_observation_does_not_change_physics(self):
-        tasks = [Task(replace(Config(), observation=mode)) for mode in ('full19', 'causal11', 'market14', 'market18', 'nominal11', 'dispatch17', 'current6')]
+        tasks = [Task(replace(Config(), observation=mode)) for mode in ('full19', 'causal11', 'market14', 'market18', 'nominal11', 'dispatch17', 'current6', 'causal13')]
         for task in tasks:
             task.reset(self.case, 7)
         actions = np.random.default_rng(88).uniform(-1, 1, (24, 2))
@@ -43,7 +43,7 @@ class TaskTests(unittest.TestCase):
                 self.assertEqual(done, results[0][2])
 
     def test_causal_observation_does_not_read_future_realizations(self):
-        for observation, dim in [('full19', 19), ('causal11', 11), ('market14', 14), ('market18', 18), ('nominal11', 11), ('dispatch17', 17), ('current6', 6)]:
+        for observation, dim in [('full19', 19), ('causal11', 11), ('market14', 14), ('market18', 18), ('nominal11', 11), ('dispatch17', 17), ('current6', 6), ('causal13', 13)]:
             task = Task(replace(Config(), observation=observation))
             task.reset(self.case, 42)
             for hour in range(24):
@@ -289,7 +289,7 @@ class TaskTests(unittest.TestCase):
             self.assertNotIn('peak_cost', row)
 
     def test_terminal_observation_and_profit_only_after_24_steps(self):
-        for mode, dim in (('market14', 14), ('current6', 6)):
+        for mode, dim in (('market14', 14), ('current6', 6), ('causal13', 13)):
             with self.subTest(observation=mode):
                 task = Task(replace(Config(), observation=mode))
                 task.reset(self.case, 42)
