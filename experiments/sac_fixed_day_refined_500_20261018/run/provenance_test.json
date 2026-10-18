@@ -1,0 +1,26 @@
+{
+  "command": [
+    "/Users/liliheng/Desktop/EQN-SAC/.venv/bin/python",
+    "/Users/liliheng/Desktop/EQN-SAC/runs/sac_fixed_day_refined_500/source/train_sac.py",
+    "evaluate",
+    "--checkpoint",
+    "/Users/liliheng/Desktop/EQN-SAC/runs/sac_fixed_day_refined_500/checkpoint_00500.pt",
+    "--output",
+    "/Users/liliheng/Desktop/EQN-SAC/runs/sac_fixed_day_refined_500/test_1ep.json",
+    "--cases",
+    "1",
+    "--seed",
+    "20260914"
+  ],
+  "checkpoint_episode": 500,
+  "requested_test_episodes": 1,
+  "checkpoint_sha256": "bb05498921e3fb5c4c2692f4d52623e56a317c8493832e56a418968ec1ae3674",
+  "source_manifest_sha256": "06f1e1f5fbb70e386eac8bc88bf88547e6746b9fe638bcac20811eb407db723f",
+  "started_utc": "2026-10-18T04:47:56.575304+00:00",
+  "status": "completed",
+  "returncode": 0,
+  "completed_utc": "2026-10-18T04:47:57.858157+00:00",
+  "test_sha256": "7917455f778a73034472e9f40a30b483a87ae90dd36b0e95e17210bb42b6094b",
+  "test_episodes": 1,
+  "test_steps": 24
+}

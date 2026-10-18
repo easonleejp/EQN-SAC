@@ -15,7 +15,8 @@ class Task:
         self.env = make_environment(cfg)
         self.reference = make_environment(cfg)
         self.observation_dim = {"full19": 19, "causal11": 11, "market14": 14,
-                                "market18": 18, "nominal11": 11}[cfg.observation]
+                                "market18": 18, "nominal11": 11,
+                                "dispatch17": 17}[cfg.observation]
         # Public nominal profiles, not the future realization of a sampled day.
         self.load_scale = float(self.env.norm["max_load"])
         self.price_center = float(np.mean(self.env.profile["grid_price"]))
@@ -39,7 +40,7 @@ class Task:
         return float(2 * (price - low) / (high - low) - 1)
 
     def observe(self, state):
-        if self.cfg.observation == "nominal11":
+        if self.cfg.observation in ("nominal11", "dispatch17"):
             if self.env.t >= 24:
                 return np.zeros(self.observation_dim, dtype=np.float32)
             env, hour = self.env, self.env.t
@@ -48,7 +49,7 @@ class Task:
             # Public nominal remaining prices describe economic opportunities;
             # they are observations, not prescribed actions or price thresholds.
             remaining_quotes = env.profile["grid_price"][min(hour + 1, 23):]
-            return np.asarray([
+            features = [
                 (env.price[hour] - self.price_center) / self.price_spread,
                 env.load[hour] / self.load_scale,
                 env.wind[hour] / max(float(env.generator.wind_capacity), 1.0),
@@ -57,7 +58,21 @@ class Task:
                 2 * (env.spec["hourly_demand_reference"][hour] - low) / (high - low) - 1,
                 (remaining_quotes.max() - self.price_center) / self.price_spread,
                 (remaining_quotes.min() - self.price_center) / self.price_spread,
-            ], dtype=np.float32)
+            ]
+            if self.cfg.observation == "dispatch17":
+                # Expose existing physics and finite-horizon context to the
+                # networks. These are observations only: no action target,
+                # smoothing, reward term, or new dispatch constraint is added.
+                temperatures = np.asarray(env.profile["temperature"], dtype=float)
+                lower, upper = env.feasible_bounds()
+                first_future_hour = min(hour + 1, 23)
+                features += [
+                    (temperatures[hour] - temperatures.mean()) / max(temperatures.std(), 1e-8),
+                    lower, upper, float(hour == 23),
+                    (first_future_hour + int(remaining_quotes.argmax()) - hour) / 24,
+                    (first_future_hour + int(remaining_quotes.argmin()) - hour) / 24,
+                ]
+            return np.asarray(features, dtype=np.float32)
         if self.cfg.observation in ("market14", "market18"):
             if self.env.t >= 24:
                 return np.zeros(self.observation_dim, dtype=np.float32)

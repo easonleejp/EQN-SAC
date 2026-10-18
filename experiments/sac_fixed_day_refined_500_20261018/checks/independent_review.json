@@ -1,0 +1,457 @@
+{
+  "schema_version": 1,
+  "reviewed_at_utc": "2026-10-18T04:47:23.612620+00:00",
+  "reviewer": "independent environment audit subagent",
+  "git_head": "822b216e45de086653a6dfb81bc8e9d892106ddd",
+  "verdict": "PASS_WITH_SCOPE_NOTES",
+  "scope": {
+    "description": "相对 HEAD 的静态源码/AST/哈希审查，以及此前仅离线公式价格扫描的记录；不是额外 policy evaluation。",
+    "training_runs_started_by_this_review": 0,
+    "policy_evaluations_started_by_this_review": 0,
+    "actor_or_agent_invoked": false,
+    "environment_rollouts_started_by_this_review": 0,
+    "model_checkpoint_loaded": false,
+    "tests_rerun_by_this_review": false,
+    "only_written_file": "checks/sac_fixed_day_refined/independent_review.json",
+    "existing_refined_test_results_read": false
+  },
+  "summary": [
+    "训练相关已跟踪源码差异仅为 sac/task.py 新增 dispatch17 状态与 sac/config.py 允许该状态；tests/test_sac_task.py 为相应回归测试更新。",
+    "eqnsac/environment.py、SAC agent/networks/replay/runner、场景生成、参数应用及原始数据与 HEAD 字节相同。Task.step/reset/reference_price_action 的 AST 与 HEAD 相同。",
+    "SAC 奖励仍为 info[profit] * reward_scale，缩放系数保持 0.001；没有新增平滑、峰值、跟随奖励。",
+    "原价格动作映射、按现有 SOC 可行区间映射储能动作、响应和结算方程均未改变；没有加入价格规则或新的约束形式。",
+    "新增状态只暴露名义温度、现有可行功率上下界、末小时标志、距离名义余下电价峰谷的时间。没有读取未来 env.price/load/wind 的随机实现。",
+    "整轮实验并非仅改变状态：训练超参同时调整，既有储能功率上限参数下降 10%；它们均属于许可范围，但构成归因混杂。"
+  ],
+  "source_checks": [
+    {
+      "path": "eqnsac/environment.py",
+      "current_sha256": "913310f2fecd96da4c3e3d587a9147cb680d6b1920a3e608ff2453f891a024c5",
+      "head_sha256": "913310f2fecd96da4c3e3d587a9147cb680d6b1920a3e608ff2453f891a024c5",
+      "byte_identical_to_head": true
+    },
+    {
+      "path": "eqnsac/scenarios.py",
+      "current_sha256": "06b02c16f253d7efd296d30a57ccc7d3957a2917e5762493cfe331a306ddbe80",
+      "head_sha256": "06b02c16f253d7efd296d30a57ccc7d3957a2917e5762493cfe331a306ddbe80",
+      "byte_identical_to_head": true
+    },
+    {
+      "path": "eqnsac/single_source.py",
+      "current_sha256": "80433ddee016cde0282cdf945aac5efc60620a564302c7ac413a686021e022c4",
+      "head_sha256": "80433ddee016cde0282cdf945aac5efc60620a564302c7ac413a686021e022c4",
+      "byte_identical_to_head": true
+    },
+    {
+      "path": "eqnsac/config.py",
+      "current_sha256": "1d35b2712cf0869c2ed22f5b088dc1e7a1d14354c8534b4dbfb6d6c25b28bfe7",
+      "head_sha256": "1d35b2712cf0869c2ed22f5b088dc1e7a1d14354c8534b4dbfb6d6c25b28bfe7",
+      "byte_identical_to_head": true
+    },
+    {
+      "path": "sac/agent.py",
+      "current_sha256": "8f2924f6dcee55335094da38bc06fc6051be8c082c56b6952950412b816d7ee1",
+      "head_sha256": "8f2924f6dcee55335094da38bc06fc6051be8c082c56b6952950412b816d7ee1",
+      "byte_identical_to_head": true
+    },
+    {
+      "path": "sac/networks.py",
+      "current_sha256": "b375e1ba98cdc6299fe603dc1db9b00858d4100658466a835422a282dc449854",
+      "head_sha256": "b375e1ba98cdc6299fe603dc1db9b00858d4100658466a835422a282dc449854",
+      "byte_identical_to_head": true
+    },
+    {
+      "path": "sac/replay.py",
+      "current_sha256": "c0bdab55d7d3aa85b46f343d6a659f350dffab36c8363f473f9bef6adcaba4eb",
+      "head_sha256": "c0bdab55d7d3aa85b46f343d6a659f350dffab36c8363f473f9bef6adcaba4eb",
+      "byte_identical_to_head": true
+    },
+    {
+      "path": "sac/parameters.py",
+      "current_sha256": "3836c26ebaee152269bb36b32172640b10e3a28285148b457d56fdf4ab07fd88",
+      "head_sha256": "3836c26ebaee152269bb36b32172640b10e3a28285148b457d56fdf4ab07fd88",
+      "byte_identical_to_head": true
+    },
+    {
+      "path": "sac/scenarios.py",
+      "current_sha256": "ae5caba6754ba029d147424cc9acb2f045f38e7e01c7a341858730bc9c642e47",
+      "head_sha256": "ae5caba6754ba029d147424cc9acb2f045f38e7e01c7a341858730bc9c642e47",
+      "byte_identical_to_head": true
+    },
+    {
+      "path": "sac/runner.py",
+      "current_sha256": "30a2f42235951ac10403be9f1e3421cf46492d523279ed52c902b42d831e432e",
+      "head_sha256": "30a2f42235951ac10403be9f1e3421cf46492d523279ed52c902b42d831e432e",
+      "byte_identical_to_head": true
+    },
+    {
+      "path": "train_sac.py",
+      "current_sha256": "137813df3f307f45e3b33495b60ed4787c35a69e4a29233d306261999bda0fb1",
+      "head_sha256": "137813df3f307f45e3b33495b60ed4787c35a69e4a29233d306261999bda0fb1",
+      "byte_identical_to_head": true
+    },
+    {
+      "path": "data/environment.json",
+      "current_sha256": "e93e1278e70567df4172131b2075824cfb64416988eacfb1606c26327fd86022",
+      "head_sha256": "e93e1278e70567df4172131b2075824cfb64416988eacfb1606c26327fd86022",
+      "byte_identical_to_head": true
+    },
+    {
+      "path": "data/profile.json",
+      "current_sha256": "ba6149855dfe04a4a49f5564ef6cd8c46bce3975298f6d741f37a1181597602c",
+      "head_sha256": "ba6149855dfe04a4a49f5564ef6cd8c46bce3975298f6d741f37a1181597602c",
+      "byte_identical_to_head": true
+    },
+    {
+      "path": "sac/task.py",
+      "current_sha256": "1ef5a85dbf30baede20bfee158f45502e473df2d2a9bc75c7c8f5f134eb0bd74",
+      "head_sha256": "0d04ae0b9770ae03bae86d4376cbb96e02bb44d724aaf319e3b460d6d3d6a05b",
+      "byte_identical_to_head": false
+    },
+    {
+      "path": "sac/config.py",
+      "current_sha256": "1ad1d1838012ffaebda7871ac0e76a73ddd8cc66e9e995ef68a565719564a4c9",
+      "head_sha256": "8b2cfdf9f086775d0f85bed88fec9d71bcff02936d0a6d6d6f7a0a27ebfce475",
+      "byte_identical_to_head": false
+    },
+    {
+      "path": "tests/test_sac_task.py",
+      "current_sha256": "203c74a779dd9b86e724885f4167f1a63df2682c3ee0354519c12523e8bb4126",
+      "head_sha256": "9895d3d86289dc7eb3ed7daa073f60d5416062ecf44ce9416d8b26a533d33cc0",
+      "byte_identical_to_head": false
+    }
+  ],
+  "unchanged_task_methods_ast": {
+    "step": true,
+    "reset": true,
+    "reference_price_action": true
+  },
+  "refined_frozen_source_checks": [
+    {
+      "path": "sac/__init__.py",
+      "manifest_sha256": "9ddcf3842e81bc1b15dc760d13eefe10f635fa484a3b640d4abec7712873e1cf",
+      "frozen_matches_manifest": true,
+      "current_matches_frozen": true
+    },
+    {
+      "path": "sac/agent.py",
+      "manifest_sha256": "8f2924f6dcee55335094da38bc06fc6051be8c082c56b6952950412b816d7ee1",
+      "frozen_matches_manifest": true,
+      "current_matches_frozen": true
+    },
+    {
+      "path": "sac/config.py",
+      "manifest_sha256": "1ad1d1838012ffaebda7871ac0e76a73ddd8cc66e9e995ef68a565719564a4c9",
+      "frozen_matches_manifest": true,
+      "current_matches_frozen": true
+    },
+    {
+      "path": "sac/networks.py",
+      "manifest_sha256": "b375e1ba98cdc6299fe603dc1db9b00858d4100658466a835422a282dc449854",
+      "frozen_matches_manifest": true,
+      "current_matches_frozen": true
+    },
+    {
+      "path": "sac/parameters.py",
+      "manifest_sha256": "3836c26ebaee152269bb36b32172640b10e3a28285148b457d56fdf4ab07fd88",
+      "frozen_matches_manifest": true,
+      "current_matches_frozen": true
+    },
+    {
+      "path": "sac/replay.py",
+      "manifest_sha256": "c0bdab55d7d3aa85b46f343d6a659f350dffab36c8363f473f9bef6adcaba4eb",
+      "frozen_matches_manifest": true,
+      "current_matches_frozen": true
+    },
+    {
+      "path": "sac/runner.py",
+      "manifest_sha256": "30a2f42235951ac10403be9f1e3421cf46492d523279ed52c902b42d831e432e",
+      "frozen_matches_manifest": true,
+      "current_matches_frozen": true
+    },
+    {
+      "path": "sac/scenarios.py",
+      "manifest_sha256": "ae5caba6754ba029d147424cc9acb2f045f38e7e01c7a341858730bc9c642e47",
+      "frozen_matches_manifest": true,
+      "current_matches_frozen": true
+    },
+    {
+      "path": "sac/task.py",
+      "manifest_sha256": "1ef5a85dbf30baede20bfee158f45502e473df2d2a9bc75c7c8f5f134eb0bd74",
+      "frozen_matches_manifest": true,
+      "current_matches_frozen": true
+    },
+    {
+      "path": "train_sac.py",
+      "manifest_sha256": "137813df3f307f45e3b33495b60ed4787c35a69e4a29233d306261999bda0fb1",
+      "frozen_matches_manifest": true,
+      "current_matches_frozen": true
+    },
+    {
+      "path": "eqnsac/config.py",
+      "manifest_sha256": "1d35b2712cf0869c2ed22f5b088dc1e7a1d14354c8534b4dbfb6d6c25b28bfe7",
+      "frozen_matches_manifest": true,
+      "current_matches_frozen": true
+    },
+    {
+      "path": "eqnsac/environment.py",
+      "manifest_sha256": "913310f2fecd96da4c3e3d587a9147cb680d6b1920a3e608ff2453f891a024c5",
+      "frozen_matches_manifest": true,
+      "current_matches_frozen": true
+    },
+    {
+      "path": "eqnsac/scenarios.py",
+      "manifest_sha256": "06b02c16f253d7efd296d30a57ccc7d3957a2917e5762493cfe331a306ddbe80",
+      "frozen_matches_manifest": true,
+      "current_matches_frozen": true
+    },
+    {
+      "path": "eqnsac/single_source.py",
+      "manifest_sha256": "80433ddee016cde0282cdf945aac5efc60620a564302c7ac413a686021e022c4",
+      "frozen_matches_manifest": true,
+      "current_matches_frozen": true
+    },
+    {
+      "path": "data/environment.json",
+      "manifest_sha256": "e93e1278e70567df4172131b2075824cfb64416988eacfb1606c26327fd86022",
+      "frozen_matches_manifest": true,
+      "current_matches_frozen": true
+    },
+    {
+      "path": "data/profile.json",
+      "manifest_sha256": "ba6149855dfe04a4a49f5564ef6cd8c46bce3975298f6d741f37a1181597602c",
+      "frozen_matches_manifest": true,
+      "current_matches_frozen": true
+    },
+    {
+      "path": "data/provenance.json",
+      "manifest_sha256": "07f1519c333c5650c6bc1adee7ce0a188308ff1d402d714c24788f70fd18d2dd",
+      "frozen_matches_manifest": true,
+      "current_matches_frozen": true
+    }
+  ],
+  "config_matches_running_run": true,
+  "config_changes_vs_previous_fixed_day": {
+    "actor_lr": {
+      "before": 0.0001,
+      "after": 5e-05
+    },
+    "batch_size": {
+      "before": 128,
+      "after": 256
+    },
+    "critic_lr": {
+      "before": 0.001,
+      "after": 0.0005
+    },
+    "initial_alpha": {
+      "before": 0.1,
+      "after": 0.05
+    },
+    "observation": {
+      "before": "nominal11",
+      "after": "dispatch17"
+    },
+    "storage_parameters": {
+      "before": {
+        "soc_min": 483.885009765625,
+        "soc_max": 4354.965087890625,
+        "soc_init": 483.885009765625,
+        "p_ch_max": 967.77001953125,
+        "p_dis_max": 967.77001953125
+      },
+      "after": {
+        "soc_min": 483.885009765625,
+        "soc_max": 4354.965087890625,
+        "soc_init": 483.885009765625,
+        "p_ch_max": 870.993017578125,
+        "p_dis_max": 870.993017578125
+      }
+    },
+    "target_entropy": {
+      "before": -3.0,
+      "after": -4.0
+    },
+    "updates_per_step": {
+      "before": 4,
+      "after": 8
+    }
+  },
+  "unchanged_business_parameters": {
+    "response_parameters_unchanged": true,
+    "reward_scale_unchanged": true,
+    "renewable_penetration_unchanged": true,
+    "scenario_mode": "deterministic_day",
+    "curvature_std": 0.0,
+    "demand_noise_std": 0.0,
+    "participation_noise_std": 0.0,
+    "power_limit_ratio": 0.9,
+    "power_limit_note": "P_ch/P_dis 从 967.77001953125 降到 870.993017578125 kW；既有约束参数改变，约束和动作映射形式不变。同一归一化动作的物理功率可能随此改变。"
+  },
+  "dispatch17_feature_review": {
+    "first_11": "保留 nominal11 的顺序、表达式与 float32 输出。",
+    "added_zero_based_indices": [
+      {
+        "index": 11,
+        "meaning": "当前名义温度的标准分数",
+        "source": "env.profile[temperature]",
+        "availability": "预先已知固定日的名义温度曲线；均值/标准差也仅由该曲线计算。"
+      },
+      {
+        "index": 12,
+        "meaning": "现有归一化放电可行下界",
+        "source": "env.feasible_bounds()",
+        "availability": "当前 SOC 和已知设备参数；纯读取，无状态转移。"
+      },
+      {
+        "index": 13,
+        "meaning": "现有归一化充电可行上界",
+        "source": "env.feasible_bounds()",
+        "availability": "当前 SOC 和已知设备参数；纯读取，无新增约束。"
+      },
+      {
+        "index": 14,
+        "meaning": "hour == 23 的末小时标志",
+        "source": "env.t",
+        "availability": "当前时钟；不是价格动作规则。"
+      },
+      {
+        "index": 15,
+        "meaning": "距离名义余下批发价峰值的小时数 / 24",
+        "source": "env.profile[grid_price]",
+        "availability": "已知名义曲线，不读取未来抽样实现；并列峰值取最早出现者。"
+      },
+      {
+        "index": 16,
+        "meaning": "距离名义余下批发价谷值的小时数 / 24",
+        "source": "env.profile[grid_price]",
+        "availability": "已知名义曲线，不读取未来抽样实现；并列谷值取最早出现者。"
+      }
+    ],
+    "terminal_convention": "h23 使用最后已知名义报价作为长度为 1 的占位，峰谷等待时间均为 0，并由末小时标志显式区分；h24 返回 17 维零向量。",
+    "no_future_realization_leakage_detected": true,
+    "availability_assumption": "这里的结论针对用户指定的预先固定、重复同一天设定。状态确实含名义未来报价摘要，不能描述为只使用过去报价；若将来部署为日内未知电价，则需重新确认名义曲线的信息可获得性。",
+    "no_formal_markov_bug_claim": "nominal11 已含当前时间、剩余时间及两种价格参考；dispatch17 降低函数拟合负担，不证明 nominal11 缺少理论必要状态。",
+    "source_lines": {
+      "observation": "sac/task.py:42-75",
+      "unchanged_reward_and_action": "sac/task.py:110-134",
+      "physical_bounds": "eqnsac/environment.py:196-214",
+      "response": "eqnsac/environment.py:216-264"
+    }
+  },
+  "existing_test_evidence": {
+    "path": "checks/sac_fixed_day_refined/tests.log",
+    "bytes": 12496,
+    "sha256": "b59a0fc826e22511dbf2ffa4512d5188334b11c86bb382fc9bbf354fd7e21d9a",
+    "reported_result": "Ran 87 tests in 2.438s; OK",
+    "review_action": "只读取现有日志与测试源码，没有重跑测试。",
+    "reviewed_test_intent": [
+      "同固定动作下 observation 模式不改变物理与奖励",
+      "扰动未来实际场景值不改变当前观察",
+      "新增 6 维含义、末端零向量及有限性"
+    ],
+    "limitation": "测试日志为主任务已运行的验证证据；此独立结论主要基于源码差异、AST 与源文件哈希。"
+  },
+  "prior_offline_price_diagnostic": {
+    "classification": "离线响应/结算公式扫描；不是额外 policy evaluation，也未生成新 episode。",
+    "source_run": "runs/sac_fixed_day_500",
+    "source_artifacts": [
+      {
+        "path": "runs/sac_fixed_day_500/test_1ep.json",
+        "bytes": 56153,
+        "sha256": "29b2ad1572c9c85812b632c7db8e51f8320245800d9a5c3acbbbfeaab0c20d92"
+      },
+      {
+        "path": "runs/sac_fixed_day_500/effective_environment.json",
+        "bytes": 1582,
+        "sha256": "9b8f8466f7d26b334b05254b27af70a38bd4a95b23b63b90a1a29b913d60c3c8"
+      },
+      {
+        "path": "runs/sac_fixed_day_500/effective_profile.json",
+        "bytes": 4010,
+        "sha256": "7d1b1f03b541c0f0a1265bd691693f22904636ab736d59e46deaa432b4337278"
+      }
+    ],
+    "method": "按原三次满意度—参与迭代的响应公式，用 float64 数组做确定性转写；curvature_mean=0.0011，三项噪声为 0；在 [26.5,32.5] 上以 0.0001 间隔扫描 60001 个价格。未导入或执行 Agent/Actor/Environment。",
+    "objective": "no_storage_profit(p) = p*D(p) - wholesale*max(D(p)-wind,0)。保持已存储能功率不变且购电为正时，储能只增加与 p 无关的利润常数，最优价相同。",
+    "units": "电价为澳分/kWh、利润为澳分，遵循已批准的建模单位假设，非原数据单位证实。",
+    "numerical_precision": {
+      "price_grid_step": 0.0001,
+      "arithmetic": "float64 formula transcription; saved environment used mixed float32/float64",
+      "max_abs_profit_discrepancy_vs_logged_no_storage_profit_at_h22_h23": 0.012326213691267185,
+      "interpretation": "最优值为网格近似，无解析全局最优证明；表格可按价 0.01、利润 0.1 的精度解释，勿将最后小数位视为物理精度。"
+    },
+    "hours": [
+      {
+        "hour": 22,
+        "wholesale_price": 19.597972869873047,
+        "original_tou_price": 28.5,
+        "observed_sac_price": 30.275680541992188,
+        "approx_optimal_price": 30.5171,
+        "approx_optimal_no_storage_profit": 48422.306825166685,
+        "observed_price_no_storage_profit_formula": 48398.62781992181,
+        "approx_profit_gap": 23.67900524487777,
+        "profit_gap_fraction": 0.0004890102681471384,
+        "price_band_within_0_1_percent_of_optimum": [
+          30.1715,
+          30.8604
+        ],
+        "local_profit_derivative_at_observed_price": 195.64906386221992
+      },
+      {
+        "hour": 23,
+        "wholesale_price": 19.506755828857422,
+        "original_tou_price": 26.5,
+        "observed_sac_price": 31.163026809692383,
+        "approx_optimal_price": 30.2683,
+        "approx_optimal_no_storage_profit": 47792.19829437488,
+        "observed_price_no_storage_profit_formula": 47446.250145439444,
+        "approx_profit_gap": 345.9481489354366,
+        "profit_gap_fraction": 0.007238590424415664,
+        "price_band_within_0_1_percent_of_optimum": [
+          29.9312,
+          30.6026
+        ],
+        "local_profit_derivative_at_observed_price": -779.2378467675007
+      }
+    ],
+    "h23_price_curve_no_storage_profit": [
+      {
+        "price": 30.0,
+        "profit": 47761.88283
+      },
+      {
+        "price": 30.2683,
+        "profit": 47792.19829
+      },
+      {
+        "price": 30.5,
+        "profit": 47769.30503
+      },
+      {
+        "price": 31.0,
+        "profit": 47561.50854
+      },
+      {
+        "price": 31.163026809692383,
+        "profit": 47446.25015
+      },
+      {
+        "price": 32.5,
+        "profit": 45609.68519
+      }
+    ],
+    "h23_using_observed_h22_price": {
+      "price": 30.275680541992188,
+      "profit": 47792.17513576808,
+      "gap_to_grid_optimum": 0.02315860679617687
+    },
+    "interpretation": "原公式的近似最优价由 h22 的 30.5171 降至 h23 的 30.2683，已存策略却上升约 0.88735；因此该反向不是当前原利润公式的最优激励。有限训练、函数近似与 SAC 熵目标均可能贡献偏离，离线扫描不能唯一归因。h23 价格误差仅约占整天利润 0.0301%，总利润收敛不足以证明逐时价格均最优。",
+    "not_used_for_training": "这些离线最优价没有加入状态、动作规则、奖励或训练数据；仅用于解释旧单次测试结果。"
+  },
+  "limitations": [
+    "本报告不评价正在训练的 refined 策略性能，也不预先保证 23 时反向问题已修复。",
+    "本轮同时改变状态、超参数及功率参数，且输入维度改变会影响同 seed 初始化；单轮前后对比不能独立估计任一项的因果贡献。",
+    "单个固定日的学习和一次测试不构成对未知日或随机环境泛化能力的证据。"
+  ]
+}

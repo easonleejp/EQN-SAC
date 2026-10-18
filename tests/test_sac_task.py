@@ -29,7 +29,7 @@ class TaskTests(unittest.TestCase):
         self.assertAlmostEqual(balance, 0, places=7)
 
     def test_reward_is_original_profit_and_observation_does_not_change_physics(self):
-        tasks = [Task(replace(Config(), observation=mode)) for mode in ('full19', 'causal11', 'market14', 'market18', 'nominal11')]
+        tasks = [Task(replace(Config(), observation=mode)) for mode in ('full19', 'causal11', 'market14', 'market18', 'nominal11', 'dispatch17')]
         for task in tasks:
             task.reset(self.case, 7)
         actions = np.random.default_rng(88).uniform(-1, 1, (24, 2))
@@ -42,7 +42,7 @@ class TaskTests(unittest.TestCase):
                 self.assertEqual(done, results[0][2])
 
     def test_causal_observation_does_not_read_future_realizations(self):
-        for observation, dim in [('full19', 19), ('causal11', 11), ('market14', 14), ('market18', 18), ('nominal11', 11)]:
+        for observation, dim in [('full19', 19), ('causal11', 11), ('market14', 14), ('market18', 18), ('nominal11', 11), ('dispatch17', 17)]:
             task = Task(replace(Config(), observation=observation))
             task.reset(self.case, 42)
             for hour in range(24):
@@ -68,6 +68,23 @@ class TaskTests(unittest.TestCase):
                        {'storage_parameters':{'eta_ch':float('nan')}}, {'renewable_penetration':1.1}):
             with self.assertRaises(ValueError):
                 replace(Config(), **kwargs).validate()
+
+    def test_dispatch_context_exposes_physics_and_last_hour_without_changing_actions(self):
+        task = Task(replace(Config(), observation='dispatch17'))
+        task.reset(self.case, 42)
+        for hour in range(24):
+            obs = task.observe(task.env.state())
+            lower, upper = task.env.feasible_bounds()
+            np.testing.assert_allclose(obs[12:14], [lower, upper], rtol=0, atol=1e-7)
+            self.assertEqual(obs[14], float(hour == 23))
+            nominal = task.env.profile['grid_price']
+            first = min(hour + 1, 23)
+            expected = [(first + int(fn(nominal[first:])) - hour) / 24
+                        for fn in (np.argmax, np.argmin)]
+            np.testing.assert_allclose(obs[15:], expected, rtol=0, atol=1e-7)
+            self.assertTrue(np.isfinite(obs).all())
+            task.step([.2, -.3])
+        np.testing.assert_array_equal(task.observe(task.env.state()), np.zeros(17))
 
     def test_parameters_are_isolated_and_default_physics_is_preserved(self):
         original = Environment()
