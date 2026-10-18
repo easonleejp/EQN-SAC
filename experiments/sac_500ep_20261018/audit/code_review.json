@@ -1,0 +1,1057 @@
+{
+  "reviewed_at": "2026-10-18T11:23:35.691166+08:00",
+  "scope": "独立审查纯SAC核心、动作/回放/熵坐标、奖励中心化、五组500episode及冻结源码holdout108；不是多训练种子或真实市场验证。",
+  "source_changes": {
+    "authorized_fix": [
+      "sac/replay.py",
+      "tests/test_sac.py"
+    ],
+    "reason": "恢复输入可绕过add路径语义检查并发生float64→float32溢出。父任务明确授权后修复。",
+    "run_source_modified": false,
+    "note": "peak功能由父任务实现；本子任务未改算法目标或历史run/source。"
+  },
+  "core_algorithm": [
+    {
+      "area": "scalar SAC",
+      "status": "pass",
+      "files": [
+        "sac/agent.py",
+        "sac/networks.py"
+      ],
+      "evidence": "一个联合2维tanh-Gaussian actor，两个独立标量Q，target为r+gamma*(1-done)*(min(Q1target,Q2target)-alpha*joint_logp)；无分位网络、prior、bootstrap ensemble或tail risk。"
+    },
+    {
+      "area": "action/replay/entropy coordinates",
+      "status": "pass",
+      "files": [
+        "sac/task.py:60",
+        "sac/replay.py:29",
+        "sac/agent.py:78",
+        "sac/networks.py:26",
+        "sac/runner.py:110"
+      ],
+      "evidence": "actor输出raw∈[-1,1]^2；Task只在环境执行时将储能raw映射到SOC可行区间；Replay与Q一直保存/使用raw；logp仅作tanh雅可比并对两维求和。无遗漏物理雅可比的坐标bug，因为声明的熵正是raw坐标熵。",
+      "limitation": "这种熵不是物理功率熵；raw零在SOC下限时表示半功率充电，不能把raw零策略当无储能基线。基线直接调用Environment.step(...,0)，是物理停机。"
+    },
+    {
+      "area": "gradient and targets",
+      "status": "pass",
+      "files": [
+        "sac/agent.py:33",
+        "sac/agent.py:78",
+        "sac/agent.py:89",
+        "sac/agent.py:122"
+      ],
+      "evidence": "目标网络不求导；Actor更新临时冻结Q参数但保留动作梯度；alpha在Actor/target中detach；温度用联合logp和target_entropy=-2，alpha优化不反传Actor；双target分别检查finite防止min掩盖Inf。"
+    },
+    {
+      "area": "numerics",
+      "status": "pass",
+      "evidence": "联合tanh密度与独立Normal公式最大绝对误差4.44e-16；在有限梯度约3e22引起Adam二阶矩溢出时，_checked_step能报错。",
+      "limitation": "优化器状态检查发生在step之后，是fail-fast检测而非事务回滚；温度没有人为上限属于普通SAC选择。"
+    },
+    {
+      "area": "replay sampling and restore",
+      "status": "fixed",
+      "evidence": "均匀有放回抽样、环形覆盖、快照复制、RNG恢复正确；恢复语义/float32校验缺口已修。见confirmed_findings。"
+    },
+    {
+      "area": "finite horizon",
+      "status": "pass",
+      "evidence": "每天24步、done掩码阻止terminal bootstrap；gamma=1与有限日收益目标一致。不能将此简单套用无限期discounted contraction结论。"
+    }
+  ],
+  "confirmed_findings": [
+    {
+      "id": "SAC-REPLAY-RESTORE-01",
+      "priority": "P2",
+      "status": "fixed",
+      "file": "sac/replay.py:59",
+      "title": "回放恢复缺少存储dtype及字段语义校验",
+      "reproduction_before": [
+        "给合法state_dict中的action设置2.0，被接受。",
+        "将done设置0.5，被接受。",
+        "将obs数组改float64且首值1e300，源值有限，通过检查后写入float32变inf。"
+      ],
+      "impact": "损坏/外部构造的恢复状态可违反动作和终止掩码约定。当前runner训练只走add路径，checkpoint也没有replay，因此不影响五组已有500ep结果。",
+      "fix": "先把每个字段复制到float32临时数组并检查shape/finite，再验证action∈[-1,1]、done∈{0,1}及RNG，全部通过后提交。",
+      "verification": "新增手工坏输入测试逐项检查拒绝后数据、cursor、size、RNG均不变；原精确续步测试仍通过。",
+      "evidence": [
+        "review_probe_before_fix.json",
+        "review_probe.json",
+        "replay_restore_fix.patch",
+        "tests/test_sac.py::test_replay_restore_rejects_invalid_values_without_mutation"
+      ]
+    }
+  ],
+  "reward_centering": {
+    "status": "当前任务下目标期望/最优策略集合保持不变；有限训练轨迹不保持不变",
+    "identity": "对固定外生场景及响应随机序列z，J_centered(pi,z)=J_profit(pi,z)-reward_scale*sum_t gamma^t*reference_profit_t(z)。基线与pi无关。",
+    "required_assumptions": [
+      "固定24小时horizon，不随policy提前终止。",
+      "外生曲线及响应随机流分布不由动作改变；参考策略固定且独立运行。",
+      "参考无储能收益按相同case/response seed计算，基线不进入Actor观测；使用同一初始场景分布。",
+      "相同原始reward_scale、discount和raw-coordinate entropy定义；不额外标准化、裁剪中心化奖励。"
+    ],
+    "verified": "当前两个Environment实例独立reset；每小时响应随机调用次数固定，动作不改变外生过程。三条不同动作路径的利润奖励减中心化奖励完全相同，物理状态/利润完全相同。",
+    "caveats": [
+      "若以后动作影响外生需求/终止时点、参考策略随被评估policy改变或baseline使用policy相关状态，上述保证需重新证明。",
+      "不同函数近似误差、Adam动态和自动alpha轨迹会改变有限预算学习结果；不能承诺中心化与未中心化训练逐步等价。",
+      "critic MSE由约4980降为52不等于估计精度提高同样倍数，因为Q/target尺度变了。"
+    ]
+  },
+  "peak_objective_review": {
+    "status": "数学与当前实现一致",
+    "formula": "P_-1=0; P_t=max(P_t-1,grid_t); peak_cost_t=peak_weight*mean_nominal_price*(P_t-P_t-1). gamma=1时sum peak_cost=coefficient*daily_max_import。",
+    "state": "peak_weight>0时观测追加动作前running_peak/max_load；step计算新peak后生成下一观测；reset归零；terminal全部零。full19实为20维，causal11实为12维。",
+    "discount": "Config已拒绝peak_weight>0且gamma!=1，避免折扣增量与日峰惩罚不等价。",
+    "test": "已有峰值观测/望远镜测试及独立reset/terminal检查通过。",
+    "interpretation": [
+      "系数使用名义均价只是明确的工程偏好缩放，不是已核验的需量电价。",
+      "shape_cost=sum c*(grid-shape_target)^2=c*T*(Var(grid)+(Mean(grid)-shape_target)^2)，不是仅惩罚std，更不保证峰值必降。",
+      "峰值惩罚有助于改变目标，但单种子500ep不保证最优/硬容量满足。",
+      "新peak配置也新增一维输入并改变网络随机初始化；结果应称配置比较，不能单独归因为峰值公式。"
+    ]
+  },
+  "evaluation_integrity": {
+    "status": "在此次已保存实验中通过",
+    "checks": [
+      "五组均500episode、12000环境步、11001优化步，训练CSV全部非空数值有限。",
+      "五组run/source每个manifest哈希均吻合；未修改冻结源码。",
+      "从seed+40001及逐轮level抽样顺序重建500个训练scenario seed，与27验证及108holdout均无交集；响应seed亦无交集。",
+      "五配置的验证及holdout采用相同外生曲线、response seed和reference_hourly，逐项比较相同。",
+      "deterministic Actor不消耗action_rng/update_rng；evaluate新建Task且不更新网络。",
+      "各自冻结源码重放holdout第一个case，全部hourly与保存文件完全相同。"
+    ],
+    "limitations": [
+      "只有一个训练种子42；108场景衡量同一策略的场景差异，不是108次独立训练。",
+      "27案例被每50episode反复查看并用于决定配置，应称validation，不是最终独立test。",
+      "108holdout的seed为930000000；若查看结果后继续按它选参数，它也变为开发验证集，需要新的最终测试集。",
+      "27档位组合均权；108案例每组合4次。训练档位概率是0.2/0.6/0.2，因此评估是均衡压力套件，并非训练分布加权的期望业务利润。",
+      "配置之间算法seed相同不等于初始化逐参数相同：观察维数改变会改变随机权重抽样。",
+      "训练checkpoint含model/optimizer/RNG但不含replay、scenario_rng或explore_rng；runner无resume入口，应称评估checkpoint，不能承诺断点精确续训。",
+      "当前源码哈希因peak及修复变化会拒绝加载旧checkpoint；按冻结source评估是预期审计保护，不应篡改旧manifest绕过。"
+    ]
+  },
+  "training_parameters": {
+    "episodes": 500,
+    "environment_steps": 12000,
+    "gradient_updates": 11001,
+    "warmup_random_steps": 1000,
+    "one_update_per_environment_step_after_warmup": true,
+    "batch_size": 128,
+    "hidden_layers": [
+      128,
+      128
+    ],
+    "actor_critic_alpha_learning_rates": [
+      0.0003,
+      0.0003,
+      0.0003
+    ],
+    "gamma": 1.0,
+    "target_tau": 0.005,
+    "reward_scale": 0.001,
+    "target_entropy": -2.0,
+    "comment": "设置是有限预算试验，不能由500这个数字判断收敛；同尺度初始alpha不保证不同奖励下最终alpha相同。"
+  },
+  "results": {
+    "baseline": {
+      "validation_27": {
+        "profit": 1105387.689373535,
+        "reference_profit": 1084824.966399016,
+        "storage_net": -1446.2141954391266,
+        "reward": 1105.387689373535,
+        "shape_cost": 0.0,
+        "satisfaction": 1.0170817953545332,
+        "charge": 293.99014963516663,
+        "discharge": 215.27350961692943,
+        "excess_energy": 5.412128229424705,
+        "final_soc": 534.8646568197984,
+        "price_mean": 30.409876673309892,
+        "price_upper_fraction": 0.0,
+        "storage_boundary_fraction": 0.010802469135802469,
+        "grid_peak": 3867.2516084971962,
+        "grid_valley": 1008.1429689437208,
+        "grid_peak_valley": 2859.108639553476,
+        "grid_energy": 59087.567455836914,
+        "grid_std": 782.4981524202337,
+        "grid_rms_ramp": 481.5404964530239,
+        "reference_grid_peak": 4189.902739282007,
+        "reference_grid_valley": 1418.0067456875133,
+        "reference_grid_peak_valley": 2771.895993594494,
+        "reference_grid_energy": 67852.43193755309,
+        "reference_grid_std": 785.069296570657,
+        "reference_grid_rms_ramp": 587.9042798875035,
+        "user_load_peak": 4368.8710033275465,
+        "user_load_valley": 1976.2600911458333,
+        "user_load_peak_valley": 2392.610912181713,
+        "user_load_energy": 75233.39585141782,
+        "user_load_std": 685.9075945218921,
+        "user_load_rms_ramp": 410.46031805982307,
+        "baseline_load_peak": 4857.726481119792,
+        "baseline_load_valley": 1950.8149188006366,
+        "baseline_load_peak_valley": 2906.911562319155,
+        "baseline_load_energy": 85148.69431333189,
+        "baseline_load_std": 870.4342753980519,
+        "baseline_load_rms_ramp": 383.94415178752763,
+        "net_without_storage_peak": 3881.6676124290184,
+        "net_without_storage_valley": 1016.0006905573385,
+        "net_without_storage_peak_valley": 2865.6669218716797,
+        "net_without_storage_energy": 59008.776013073926,
+        "net_without_storage_std": 788.591630258561,
+        "net_without_storage_rms_ramp": 484.4022807083027
+      },
+      "holdout_108": {
+        "profit": 1130657.0747851063,
+        "reference_profit": 1108446.1280020254,
+        "storage_net": -1413.9585561956249,
+        "reward": 1130.6570747851063,
+        "shape_cost": 0.0,
+        "satisfaction": 1.0165174781877566,
+        "charge": 320.8668702743183,
+        "discharge": 238.5451131858151,
+        "excess_energy": 19.37718865832781,
+        "final_soc": 535.9011166176391,
+        "price_mean": 30.396607542479476,
+        "price_upper_fraction": 0.0,
+        "storage_boundary_fraction": 0.006558641975308642,
+        "grid_peak": 3947.3109294226547,
+        "grid_valley": 1083.846107296618,
+        "grid_peak_valley": 2863.464822126037,
+        "grid_energy": 59416.97792686191,
+        "grid_std": 778.169824709791,
+        "grid_rms_ramp": 485.46598541387567,
+        "reference_grid_peak": 4260.037942360396,
+        "reference_grid_valley": 1388.1556741716686,
+        "reference_grid_peak_valley": 2871.882268188728,
+        "reference_grid_energy": 68165.46241210467,
+        "reference_grid_std": 806.777264804583,
+        "reference_grid_rms_ramp": 606.5547660850253,
+        "user_load_peak": 4582.012012622975,
+        "user_load_valley": 2028.7562696668838,
+        "user_load_peak_valley": 2553.2557429560907,
+        "user_load_energy": 77160.94615116826,
+        "user_load_std": 715.6211185683208,
+        "user_load_rms_ramp": 436.0550627256405,
+        "baseline_load_peak": 5066.65995506004,
+        "baseline_load_valley": 2005.7210320366753,
+        "baseline_load_peak_valley": 3060.938923023365,
+        "baseline_load_energy": 87043.84024386936,
+        "baseline_load_std": 890.4117885051638,
+        "baseline_load_rms_ramp": 401.03452876526194,
+        "net_without_storage_peak": 3959.4571380537277,
+        "net_without_storage_valley": 1074.403780543142,
+        "net_without_storage_peak_valley": 2885.053357510586,
+        "net_without_storage_energy": 59333.98907429542,
+        "net_without_storage_std": 784.4258698322097,
+        "net_without_storage_rms_ramp": 487.7869577554783
+      },
+      "complete": {
+        "episodes": 500,
+        "steps": 12000,
+        "updates": 11001,
+        "wall_seconds": 23.966989000007743
+      },
+      "config": {
+        "seed": 42,
+        "device": "cpu",
+        "threads": 1,
+        "episodes": 500,
+        "hidden_dim": 128,
+        "actor_lr": 0.0003,
+        "critic_lr": 0.0003,
+        "alpha_lr": 0.0003,
+        "initial_alpha": 0.2,
+        "target_entropy": -2.0,
+        "gamma": 1.0,
+        "target_tau": 0.005,
+        "batch_size": 128,
+        "replay_size": 50000,
+        "warmup_steps": 1000,
+        "reward_scale": 0.001,
+        "observation": "full19",
+        "reward": "profit",
+        "shape_weight": 0.0,
+        "scenario_mode": "three_source",
+        "level_probabilities": [
+          0.2,
+          0.6,
+          0.2
+        ],
+        "response_rng": "per_case",
+        "reference_seed": 20260914,
+        "load_scale_bound": 0.05,
+        "wind_scale_bound": 0.05,
+        "price_scale_bound": 0.03,
+        "evaluation_every": 50,
+        "evaluation_cases": 27,
+        "checkpoint_every": 100,
+        "log_every": 50
+      }
+    },
+    "centered": {
+      "validation_27": {
+        "profit": 1114786.936461963,
+        "reference_profit": 1084824.966399016,
+        "storage_net": 4127.067952034501,
+        "reward": 29.96197006294668,
+        "shape_cost": 0.0,
+        "satisfaction": 1.0198996298879957,
+        "charge": 5320.259066201898,
+        "discharge": 4783.868950265848,
+        "excess_energy": 1.5578746125521021,
+        "final_soc": 500.77229529617244,
+        "price_mean": 30.132125056820147,
+        "price_upper_fraction": 0.0,
+        "storage_boundary_fraction": 0.1388888888888889,
+        "grid_peak": 3844.7161014209623,
+        "grid_valley": 1276.1918069542105,
+        "grid_peak_valley": 2568.524294466752,
+        "grid_energy": 61855.50113487975,
+        "grid_std": 694.3671195801813,
+        "grid_rms_ramp": 509.7174588497871,
+        "reference_grid_peak": 4189.902739282007,
+        "reference_grid_valley": 1418.0067456875133,
+        "reference_grid_peak_valley": 2771.895993594494,
+        "reference_grid_energy": 67852.43193755309,
+        "reference_grid_std": 785.069296570657,
+        "reference_grid_rms_ramp": 587.9042798875035,
+        "user_load_peak": 4528.442337601273,
+        "user_load_valley": 1845.1340422453704,
+        "user_load_peak_valley": 2683.308295355903,
+        "user_load_energy": 77547.51030815972,
+        "user_load_std": 813.4014935644251,
+        "user_load_rms_ramp": 358.3854945733838,
+        "baseline_load_peak": 4857.726481119792,
+        "baseline_load_valley": 1950.8149188006366,
+        "baseline_load_peak_valley": 2906.911562319155,
+        "baseline_load_energy": 85148.69431333189,
+        "baseline_load_std": 870.4342753980519,
+        "baseline_load_rms_ramp": 383.94415178752763,
+        "net_without_storage_peak": 4032.2757923514755,
+        "net_without_storage_valley": 1047.8910593015175,
+        "net_without_storage_peak_valley": 2984.384733049958,
+        "net_without_storage_energy": 61318.37990847323,
+        "net_without_storage_std": 893.5280257183441,
+        "net_without_storage_rms_ramp": 439.77679223977367
+      },
+      "holdout_108": {
+        "profit": 1141900.9297903543,
+        "reference_profit": 1108446.1280020254,
+        "storage_net": 6943.596385248388,
+        "reward": 33.45480178832908,
+        "shape_cost": 0.0,
+        "satisfaction": 1.020579454111256,
+        "charge": 5223.210231246967,
+        "discharge": 4693.707381466615,
+        "excess_energy": 4.637114014708574,
+        "final_soc": 503.4828166144974,
+        "price_mean": 30.19919726951623,
+        "price_upper_fraction": 0.0023148148148148147,
+        "storage_boundary_fraction": 0.14390432098765432,
+        "grid_peak": 3914.4076540848478,
+        "grid_valley": 1256.0714475539614,
+        "grid_peak_valley": 2658.3362065308875,
+        "grid_energy": 61594.13618146432,
+        "grid_std": 704.603731241665,
+        "grid_rms_ramp": 515.1498773748697,
+        "reference_grid_peak": 4260.037942360396,
+        "reference_grid_valley": 1388.1556741716686,
+        "reference_grid_peak_valley": 2871.882268188728,
+        "reference_grid_energy": 68165.46241210467,
+        "reference_grid_std": 806.777264804583,
+        "reference_grid_rms_ramp": 606.5547660850253,
+        "user_load_peak": 4648.125244140625,
+        "user_load_valley": 1900.8486961082176,
+        "user_load_peak_valley": 2747.2765480324074,
+        "user_load_energy": 78905.66338772244,
+        "user_load_std": 826.1272234282113,
+        "user_load_rms_ramp": 371.58400561452476,
+        "baseline_load_peak": 5066.65995506004,
+        "baseline_load_valley": 2005.7210320366753,
+        "baseline_load_peak_valley": 3060.938923023365,
+        "baseline_load_energy": 87043.84024386936,
+        "baseline_load_std": 890.4117885051638,
+        "baseline_load_rms_ramp": 401.03452876526194,
+        "net_without_storage_peak": 4066.844738550691,
+        "net_without_storage_valley": 1030.7590417243816,
+        "net_without_storage_peak_valley": 3036.0856968263097,
+        "net_without_storage_energy": 61063.99992951099,
+        "net_without_storage_std": 892.9884682016709,
+        "net_without_storage_rms_ramp": 434.8247151201341
+      },
+      "complete": {
+        "episodes": 500,
+        "steps": 12000,
+        "updates": 11001,
+        "wall_seconds": 24.476804667006945
+      },
+      "config": {
+        "seed": 42,
+        "device": "cpu",
+        "threads": 1,
+        "episodes": 500,
+        "hidden_dim": 128,
+        "actor_lr": 0.0003,
+        "critic_lr": 0.0003,
+        "alpha_lr": 0.0003,
+        "initial_alpha": 0.2,
+        "target_entropy": -2.0,
+        "gamma": 1.0,
+        "target_tau": 0.005,
+        "batch_size": 128,
+        "replay_size": 50000,
+        "warmup_steps": 1000,
+        "reward_scale": 0.001,
+        "observation": "full19",
+        "reward": "incremental_profit",
+        "shape_weight": 0.0,
+        "scenario_mode": "three_source",
+        "level_probabilities": [
+          0.2,
+          0.6,
+          0.2
+        ],
+        "response_rng": "per_case",
+        "reference_seed": 20260914,
+        "load_scale_bound": 0.05,
+        "wind_scale_bound": 0.05,
+        "price_scale_bound": 0.03,
+        "evaluation_every": 50,
+        "evaluation_cases": 27,
+        "checkpoint_every": 100,
+        "log_every": 50
+      }
+    },
+    "compact": {
+      "validation_27": {
+        "profit": 1117337.1935571972,
+        "reference_profit": 1084824.966399016,
+        "storage_net": -892.6621782988915,
+        "reward": 32.51222715818114,
+        "shape_cost": 0.0,
+        "satisfaction": 1.0174593454908551,
+        "charge": 1085.2001778064543,
+        "discharge": 918.583009448157,
+        "excess_energy": 0.0,
+        "final_soc": 546.1883942864926,
+        "price_mean": 30.33122808844955,
+        "price_upper_fraction": 0.0030864197530864196,
+        "storage_boundary_fraction": 0.05092592592592592,
+        "grid_peak": 4044.664775793495,
+        "grid_valley": 1132.4572713978084,
+        "grid_peak_valley": 2912.2075043956866,
+        "grid_energy": 59880.97763148284,
+        "grid_std": 804.436127108844,
+        "grid_rms_ramp": 496.11286889658356,
+        "reference_grid_peak": 4189.902739282007,
+        "reference_grid_valley": 1418.0067456875133,
+        "reference_grid_peak_valley": 2771.895993594494,
+        "reference_grid_energy": 67852.43193755309,
+        "reference_grid_std": 785.069296570657,
+        "reference_grid_rms_ramp": 587.9042798875035,
+        "user_load_peak": 4536.276059751158,
+        "user_load_valley": 2032.7641285083912,
+        "user_load_peak_valley": 2503.5119312427664,
+        "user_load_energy": 75944.31762695312,
+        "user_load_std": 698.4324398494321,
+        "user_load_rms_ramp": 358.98962572671616,
+        "baseline_load_peak": 4857.726481119792,
+        "baseline_load_valley": 1950.8149188006366,
+        "baseline_load_peak_valley": 2906.911562319155,
+        "baseline_load_energy": 85148.69431333189,
+        "baseline_load_std": 870.4342753980519,
+        "baseline_load_rms_ramp": 383.94415178752763,
+        "net_without_storage_peak": 4039.9098182386824,
+        "net_without_storage_valley": 1135.0240375112605,
+        "net_without_storage_peak_valley": 2904.8857807274217,
+        "net_without_storage_energy": 59714.36046312456,
+        "net_without_storage_std": 809.2487454325795,
+        "net_without_storage_rms_ramp": 456.4750829568242
+      },
+      "holdout_108": {
+        "profit": 1142356.4674042743,
+        "reference_profit": 1108446.1280020254,
+        "storage_net": -1001.9757629531363,
+        "reward": 33.91033940224868,
+        "shape_cost": 0.0,
+        "satisfaction": 1.018946833357766,
+        "charge": 1037.8456487259075,
+        "discharge": 874.8916986005398,
+        "excess_energy": 0.4781990035183028,
+        "final_soc": 547.1924451837806,
+        "price_mean": 30.392080385743835,
+        "price_upper_fraction": 0.006558641975308642,
+        "storage_boundary_fraction": 0.062114197530864196,
+        "grid_peak": 4095.223549090233,
+        "grid_valley": 1128.1617506530158,
+        "grid_peak_valley": 2967.061798437217,
+        "grid_energy": 59669.180992440146,
+        "grid_std": 804.4460805083442,
+        "grid_rms_ramp": 489.7156574962846,
+        "reference_grid_peak": 4260.037942360396,
+        "reference_grid_valley": 1388.1556741716686,
+        "reference_grid_peak_valley": 2871.882268188728,
+        "reference_grid_energy": 68165.46241210467,
+        "reference_grid_std": 806.777264804583,
+        "reference_grid_rms_ramp": 606.5547660850253,
+        "user_load_peak": 4654.727480287905,
+        "user_load_valley": 2064.93233122649,
+        "user_load_peak_valley": 2589.795149061415,
+        "user_load_energy": 77351.41601336443,
+        "user_load_std": 725.406391612786,
+        "user_load_rms_ramp": 377.049626792687,
+        "baseline_load_peak": 5066.65995506004,
+        "baseline_load_valley": 2005.7210320366753,
+        "baseline_load_peak_valley": 3060.938923023365,
+        "baseline_load_energy": 87043.84024386936,
+        "baseline_load_std": 890.4117885051638,
+        "baseline_load_rms_ramp": 401.03452876526194,
+        "net_without_storage_peak": 4060.2235702374883,
+        "net_without_storage_valley": 1121.1888200832461,
+        "net_without_storage_peak_valley": 2939.034750154242,
+        "net_without_storage_energy": 59506.49832451244,
+        "net_without_storage_std": 808.5130877080926,
+        "net_without_storage_rms_ramp": 453.1217014451988
+      },
+      "complete": {
+        "episodes": 500,
+        "steps": 12000,
+        "updates": 11001,
+        "wall_seconds": 24.195548666000832
+      },
+      "config": {
+        "seed": 42,
+        "device": "cpu",
+        "threads": 1,
+        "episodes": 500,
+        "hidden_dim": 128,
+        "actor_lr": 0.0003,
+        "critic_lr": 0.0003,
+        "alpha_lr": 0.0003,
+        "initial_alpha": 0.2,
+        "target_entropy": -2.0,
+        "gamma": 1.0,
+        "target_tau": 0.005,
+        "batch_size": 128,
+        "replay_size": 50000,
+        "warmup_steps": 1000,
+        "reward_scale": 0.001,
+        "observation": "causal11",
+        "reward": "incremental_profit",
+        "shape_weight": 0.0,
+        "scenario_mode": "three_source",
+        "level_probabilities": [
+          0.2,
+          0.6,
+          0.2
+        ],
+        "response_rng": "per_case",
+        "reference_seed": 20260914,
+        "load_scale_bound": 0.05,
+        "wind_scale_bound": 0.05,
+        "price_scale_bound": 0.03,
+        "evaluation_every": 50,
+        "evaluation_cases": 27,
+        "checkpoint_every": 100,
+        "log_every": 50
+      }
+    },
+    "balanced": {
+      "validation_27": {
+        "profit": 1108768.8895035177,
+        "reference_profit": 1084824.966399016,
+        "storage_net": -3776.095739537854,
+        "reward": -4.836277620275122,
+        "shape_cost": 28780.200724776623,
+        "satisfaction": 1.0076610052540849,
+        "charge": 3752.2074097796058,
+        "discharge": 3248.5127151294346,
+        "excess_energy": 0.0,
+        "final_soc": 627.2876797333266,
+        "price_mean": 29.909999173364525,
+        "price_upper_fraction": 0.0,
+        "storage_boundary_fraction": 0.037037037037037035,
+        "grid_peak": 3944.8860544203235,
+        "grid_valley": 1649.309668089276,
+        "grid_peak_valley": 2295.576386331047,
+        "grid_energy": 63276.080150540925,
+        "grid_std": 598.9001407759747,
+        "grid_rms_ramp": 387.467124840225,
+        "reference_grid_peak": 4189.902739282007,
+        "reference_grid_valley": 1418.0067456875133,
+        "reference_grid_peak_valley": 2771.895993594494,
+        "reference_grid_energy": 67852.43193755309,
+        "reference_grid_std": 785.069296570657,
+        "reference_grid_rms_ramp": 587.9042798875035,
+        "user_load_peak": 4470.749312789352,
+        "user_load_valley": 2064.3873743127892,
+        "user_load_peak_valley": 2406.3619384765625,
+        "user_load_energy": 79002.34261971933,
+        "user_load_std": 690.4238963056513,
+        "user_load_rms_ramp": 356.0480670069749,
+        "baseline_load_peak": 4857.726481119792,
+        "baseline_load_valley": 1950.8149188006366,
+        "baseline_load_peak_valley": 2906.911562319155,
+        "baseline_load_energy": 85148.69431333189,
+        "baseline_load_std": 870.4342753980519,
+        "baseline_load_rms_ramp": 383.94415178752763,
+        "net_without_storage_peak": 3969.5588386323716,
+        "net_without_storage_valley": 1275.7690846213588,
+        "net_without_storage_peak_valley": 2693.789754011013,
+        "net_without_storage_energy": 62772.38545589076,
+        "net_without_storage_std": 758.6133298351475,
+        "net_without_storage_rms_ramp": 408.8905549244012
+      },
+      "holdout_108": {
+        "profit": 1134308.002026776,
+        "reference_profit": 1108446.1280020254,
+        "storage_net": -2757.2071531374527,
+        "reward": -4.03731292362214,
+        "shape_cost": 29899.18694837278,
+        "satisfaction": 1.00758048466239,
+        "charge": 3716.1125210866303,
+        "discharge": 3230.424513324125,
+        "excess_energy": 0.0,
+        "final_soc": 612.0377479016402,
+        "price_mean": 29.931068768471846,
+        "price_upper_fraction": 0.0007716049382716049,
+        "storage_boundary_fraction": 0.03935185185185186,
+        "grid_peak": 3968.5367123059286,
+        "grid_valley": 1693.589773925032,
+        "grid_peak_valley": 2274.9469383808964,
+        "grid_energy": 63308.7669868431,
+        "grid_std": 598.206602338467,
+        "grid_rms_ramp": 390.54091082276506,
+        "reference_grid_peak": 4260.037942360396,
+        "reference_grid_valley": 1388.1556741716686,
+        "reference_grid_peak_valley": 2871.882268188728,
+        "reference_grid_energy": 68165.46241210467,
+        "reference_grid_std": 806.777264804583,
+        "reference_grid_rms_ramp": 606.5547660850253,
+        "user_load_peak": 4641.978332519531,
+        "user_load_valley": 2113.544023301866,
+        "user_load_peak_valley": 2528.434309217665,
+        "user_load_energy": 80668.74614913376,
+        "user_load_std": 710.1710216145417,
+        "user_load_rms_ramp": 373.76049931565933,
+        "baseline_load_peak": 5066.65995506004,
+        "baseline_load_valley": 2005.7210320366753,
+        "baseline_load_peak_valley": 3060.938923023365,
+        "baseline_load_energy": 87043.84024386936,
+        "baseline_load_std": 890.4117885051638,
+        "baseline_load_rms_ramp": 401.03452876526194,
+        "net_without_storage_peak": 4025.6951474403204,
+        "net_without_storage_valley": 1258.837093534293,
+        "net_without_storage_peak_valley": 2766.858053906027,
+        "net_without_storage_energy": 62823.07897908058,
+        "net_without_storage_std": 765.970784530569,
+        "net_without_storage_rms_ramp": 416.31676207417405
+      },
+      "complete": {
+        "episodes": 500,
+        "steps": 12000,
+        "updates": 11001,
+        "wall_seconds": 23.921405375003815
+      },
+      "config": {
+        "seed": 42,
+        "device": "cpu",
+        "threads": 1,
+        "episodes": 500,
+        "hidden_dim": 128,
+        "actor_lr": 0.0003,
+        "critic_lr": 0.0003,
+        "alpha_lr": 0.0003,
+        "initial_alpha": 0.2,
+        "target_entropy": -2.0,
+        "gamma": 1.0,
+        "target_tau": 0.005,
+        "batch_size": 128,
+        "replay_size": 50000,
+        "warmup_steps": 1000,
+        "reward_scale": 0.001,
+        "observation": "full19",
+        "reward": "incremental_profit",
+        "shape_weight": 0.5,
+        "scenario_mode": "three_source",
+        "level_probabilities": [
+          0.2,
+          0.6,
+          0.2
+        ],
+        "response_rng": "per_case",
+        "reference_seed": 20260914,
+        "load_scale_bound": 0.05,
+        "wind_scale_bound": 0.05,
+        "price_scale_bound": 0.03,
+        "evaluation_every": 50,
+        "evaluation_cases": 27,
+        "checkpoint_every": 100,
+        "log_every": 50
+      }
+    },
+    "peak_balanced": {
+      "validation_27": {
+        "profit": 1108066.385563212,
+        "reference_profit": 1084824.966399016,
+        "storage_net": -3454.9584038018797,
+        "reward": -81.16551129828237,
+        "shape_cost": 29841.158363205017,
+        "peak_cost": 74565.77209927316,
+        "satisfaction": 1.0190397528062278,
+        "charge": 4718.308314823037,
+        "discharge": 4174.656452850167,
+        "excess_energy": 0.0,
+        "final_soc": 570.1953945553925,
+        "price_mean": 30.36680856751807,
+        "price_upper_fraction": 0.0015432098765432098,
+        "storage_boundary_fraction": 0.023148148148148147,
+        "grid_peak": 3671.8846998227946,
+        "grid_valley": 1611.1645392657583,
+        "grid_peak_valley": 2060.7201605570363,
+        "grid_energy": 60039.288045764384,
+        "grid_std": 536.0918933043004,
+        "grid_rms_ramp": 367.0517625057556,
+        "reference_grid_peak": 4189.902739282007,
+        "reference_grid_valley": 1418.0067456875133,
+        "reference_grid_peak_valley": 2771.895993594494,
+        "reference_grid_energy": 67852.43193755309,
+        "reference_grid_std": 785.069296570657,
+        "reference_grid_rms_ramp": 587.9042798875035,
+        "user_load_peak": 4386.9735423900465,
+        "user_load_valley": 1910.2307942708333,
+        "user_load_peak_valley": 2476.742748119213,
+        "user_load_energy": 75725.59334762009,
+        "user_load_std": 686.8169288014748,
+        "user_load_rms_ramp": 354.00676587971714,
+        "baseline_load_peak": 4857.726481119792,
+        "baseline_load_valley": 1950.8149188006366,
+        "baseline_load_peak_valley": 2906.911562319155,
+        "baseline_load_energy": 85148.69431333189,
+        "baseline_load_std": 870.4342753980519,
+        "baseline_load_rms_ramp": 383.94415178752763,
+        "net_without_storage_peak": 3881.819178439953,
+        "net_without_storage_valley": 1099.1004723354622,
+        "net_without_storage_peak_valley": 2782.7187061044906,
+        "net_without_storage_energy": 59495.63618379152,
+        "net_without_storage_std": 763.799270751211,
+        "net_without_storage_rms_ramp": 417.8174065268491
+      },
+      "holdout_108": {
+        "profit": 1138136.5039434207,
+        "reference_profit": 1108446.1280020254,
+        "storage_net": 1278.4493542551074,
+        "reward": -76.86993239532619,
+        "shape_cost": 30983.935441865477,
+        "peak_cost": 75576.37289485593,
+        "satisfaction": 1.0187174483061803,
+        "charge": 4823.195962551231,
+        "discharge": 4271.580239872439,
+        "excess_energy": 0.0,
+        "final_soc": 567.8136209263647,
+        "price_mean": 30.368026780493462,
+        "price_upper_fraction": 0.006558641975308642,
+        "storage_boundary_fraction": 0.02662037037037037,
+        "grid_peak": 3721.650289240802,
+        "grid_valley": 1619.769021165564,
+        "grid_peak_valley": 2101.8812680752376,
+        "grid_energy": 60233.19634405719,
+        "grid_std": 548.1435787084565,
+        "grid_rms_ramp": 386.7265775353911,
+        "reference_grid_peak": 4260.037942360396,
+        "reference_grid_valley": 1388.1556741716686,
+        "reference_grid_peak_valley": 2871.882268188728,
+        "reference_grid_energy": 68165.46241210467,
+        "reference_grid_std": 806.777264804583,
+        "reference_grid_rms_ramp": 606.5547660850253,
+        "user_load_peak": 4574.406622992621,
+        "user_load_valley": 1944.9566797327113,
+        "user_load_peak_valley": 2629.4499432599105,
+        "user_load_energy": 77527.24779143157,
+        "user_load_std": 723.758718341426,
+        "user_load_rms_ramp": 379.11454414540447,
+        "baseline_load_peak": 5066.65995506004,
+        "baseline_load_valley": 2005.7210320366753,
+        "baseline_load_peak_valley": 3060.938923023365,
+        "baseline_load_energy": 87043.84024386936,
+        "baseline_load_std": 890.4117885051638,
+        "baseline_load_rms_ramp": 401.03452876526194,
+        "net_without_storage_peak": 3942.145501619067,
+        "net_without_storage_valley": 1098.1789276897907,
+        "net_without_storage_peak_valley": 2843.9665739292764,
+        "net_without_storage_energy": 59681.580621378394,
+        "net_without_storage_std": 774.1229328615583,
+        "net_without_storage_rms_ramp": 424.88323527878083
+      },
+      "complete": {
+        "episodes": 500,
+        "steps": 12000,
+        "updates": 11001,
+        "wall_seconds": 24.017287666007178
+      },
+      "config": {
+        "seed": 42,
+        "device": "cpu",
+        "threads": 1,
+        "episodes": 500,
+        "hidden_dim": 128,
+        "actor_lr": 0.0003,
+        "critic_lr": 0.0003,
+        "alpha_lr": 0.0003,
+        "initial_alpha": 0.2,
+        "target_entropy": -2.0,
+        "gamma": 1.0,
+        "target_tau": 0.005,
+        "batch_size": 128,
+        "replay_size": 50000,
+        "warmup_steps": 1000,
+        "reward_scale": 0.001,
+        "observation": "full19",
+        "reward": "incremental_profit",
+        "shape_weight": 0.5,
+        "peak_weight": 1.0,
+        "scenario_mode": "three_source",
+        "level_probabilities": [
+          0.2,
+          0.6,
+          0.2
+        ],
+        "response_rng": "per_case",
+        "reference_seed": 20260914,
+        "load_scale_bound": 0.05,
+        "wind_scale_bound": 0.05,
+        "price_scale_bound": 0.03,
+        "evaluation_every": 50,
+        "evaluation_cases": 27,
+        "checkpoint_every": 100,
+        "log_every": 50
+      }
+    }
+  },
+  "comparisons": {
+    "centered_minus_baseline": {
+      "profit": {
+        "difference": 11243.855005247984,
+        "percent_of_comparator": 0.9944531596713354
+      },
+      "grid_peak": {
+        "difference": -32.90327533780692,
+        "percent_of_comparator": -0.8335617823402487
+      },
+      "grid_std": {
+        "difference": -73.56609346812604,
+        "percent_of_comparator": -9.453732479997104
+      },
+      "grid_peak_valley": {
+        "difference": -205.1286155951493,
+        "percent_of_comparator": -7.163650623891634
+      },
+      "grid_energy": {
+        "difference": 2177.1582546024074,
+        "percent_of_comparator": 3.6642022710787057
+      },
+      "storage_net": {
+        "difference": 8357.554941444014,
+        "percent_of_comparator": -591.0749579486065
+      }
+    },
+    "compact_minus_centered": {
+      "profit": {
+        "difference": 455.5376139199361,
+        "percent_of_comparator": 0.03989291908218079
+      },
+      "grid_peak": {
+        "difference": 180.8158950053853,
+        "percent_of_comparator": 4.619240278071099
+      },
+      "grid_std": {
+        "difference": 99.84234926667921,
+        "percent_of_comparator": 14.170000078020491
+      },
+      "grid_peak_valley": {
+        "difference": 308.72559190632956,
+        "percent_of_comparator": 11.613489337724312
+      },
+      "grid_energy": {
+        "difference": -1924.955189024171,
+        "percent_of_comparator": -3.125224750864276
+      },
+      "storage_net": {
+        "difference": -7945.572148201524,
+        "percent_of_comparator": -114.43021321172735
+      }
+    },
+    "balanced_minus_centered": {
+      "profit": {
+        "difference": -7592.927763578249,
+        "percent_of_comparator": -0.6649375235181095
+      },
+      "grid_peak": {
+        "difference": 54.12905822108087,
+        "percent_of_comparator": 1.382816073450984
+      },
+      "grid_std": {
+        "difference": -106.397128903198,
+        "percent_of_comparator": -15.100278949091445
+      },
+      "grid_peak_valley": {
+        "difference": -383.38926814999104,
+        "percent_of_comparator": -14.42215123911327
+      },
+      "grid_energy": {
+        "difference": 1714.6308053787798,
+        "percent_of_comparator": 2.783756558136078
+      },
+      "storage_net": {
+        "difference": -9700.80353838584,
+        "percent_of_comparator": -139.7086322441655
+      }
+    },
+    "peak_balanced_minus_balanced": {
+      "profit": {
+        "difference": 3828.501916644629,
+        "percent_of_comparator": 0.3375187259372128
+      },
+      "grid_peak": {
+        "difference": -246.88642306512656,
+        "percent_of_comparator": -6.221094598912569
+      },
+      "grid_std": {
+        "difference": -50.063023630010434,
+        "percent_of_comparator": -8.36885173689284
+      },
+      "grid_peak_valley": {
+        "difference": -173.06567030565884,
+        "percent_of_comparator": -7.607459646018448
+      },
+      "grid_energy": {
+        "difference": -3075.570642785904,
+        "percent_of_comparator": -4.858048559728027
+      },
+      "storage_net": {
+        "difference": 4035.6565073925603,
+        "percent_of_comparator": -146.36754814741968
+      }
+    },
+    "peak_balanced_minus_centered": {
+      "profit": {
+        "difference": -3764.42584693362,
+        "percent_of_comparator": -0.3296630862385535
+      },
+      "grid_peak": {
+        "difference": -192.7573648440457,
+        "percent_of_comparator": -4.924304821519939
+      },
+      "grid_std": {
+        "difference": -156.46015253320843,
+        "percent_of_comparator": -22.20541072887758
+      },
+      "grid_peak_valley": {
+        "difference": -556.4549384556499,
+        "percent_of_comparator": -20.932451549528423
+      },
+      "grid_energy": {
+        "difference": -1360.9398374071243,
+        "percent_of_comparator": -2.2095282469708137
+      },
+      "storage_net": {
+        "difference": -5665.147030993281,
+        "percent_of_comparator": -81.58808082550475
+      }
+    }
+  },
+  "interpretation": [
+    "holdout中centered相对baseline利润+0.994%、峰值-0.834%、std-9.454%，支持此seed下中心化配置改善。",
+    "compact11最终holdout利润比centered高0.040%，但峰值高4.619%、std高14.170%、储能边际收益为负；不宜笼统声称利润训练不稳定，应明确经济利润与储能/曲线质量差异。",
+    "balanced相对centered利润-0.665%、峰值+1.383%、std-15.100%，和均方偏离目标不保证max降低的数学性质一致。",
+    "peak_balanced相对balanced利润+0.338%、峰值-6.221%、std-8.369%；相对centered利润-0.330%、峰值-4.924%、std-22.205%。这是一次种子42、固定500ep预算下的配置结果。",
+    "所有指标仍用项目未完成核准的原始量纲；storage_net是固定当前用户响应下移除储能的算术边际值，不是另训无储能policy的总收益差。",
+    "纯profit/centered/shape/peak的learning_return不同，不应拿不同目标的return直接排名；统一展示现金利润与物理指标。"
+  ],
+  "verification": {
+    "sac_unit_tests": {
+      "command": ".venv/bin/python -m unittest discover -s tests -p test_sac*.py -v",
+      "passed": 15,
+      "duration_seconds": 0.381
+    },
+    "independent_probes": {
+      "joint_density_max_abs_error": 4.440892098500626e-16,
+      "centering": {
+        "return_shifts": [
+          1474.3062949218752,
+          1474.3062949218752,
+          1474.3062949218752
+        ],
+        "max_shift_difference": 0.0,
+        "physics_max_abs_errors": [
+          0,
+          0,
+          0
+        ]
+      },
+      "finite_gradient_adam_overflow": {
+        "gradient_value": 2.9999999334588925e+22,
+        "gradient_finite": true,
+        "detected": "Nonfinite parameter or optimizer state in audit",
+        "exp_avg_sq_finite": false
+      },
+      "peak": {
+        "cost_sum": 155246.73263891612,
+        "expected_daily_peak_cost": 155246.73263891612,
+        "terminal_obs_zero": true,
+        "reset_peak_zero": true,
+        "observation_dim": 20
+      },
+      "frozen_reproductions": {
+        "baseline": {
+          "exit_code": 0,
+          "first_heldout_case_exact": true
+        },
+        "centered": {
+          "exit_code": 0,
+          "first_heldout_case_exact": true
+        },
+        "compact": {
+          "exit_code": 0,
+          "first_heldout_case_exact": true
+        },
+        "balanced": {
+          "exit_code": 0,
+          "first_heldout_case_exact": true
+        },
+        "peak_balanced": {
+          "exit_code": 0,
+          "first_heldout_case_exact": true
+        }
+      }
+    },
+    "frozen_hash_mismatches": {
+      "baseline": [],
+      "centered": [],
+      "compact": [],
+      "balanced": [],
+      "peak_balanced": []
+    }
+  },
+  "evidence_files": [
+    "review_probe_before_fix.json",
+    "review_probe.json",
+    "review_probe.py",
+    "algorithm_probes.json",
+    "algorithm_probes.py",
+    "holdout_comparisons.json",
+    "replay_restore_fix.patch"
+  ],
+  "current_source_sha256": {
+    "sac/__init__.py": "9ddcf3842e81bc1b15dc760d13eefe10f635fa484a3b640d4abec7712873e1cf",
+    "sac/agent.py": "8f2924f6dcee55335094da38bc06fc6051be8c082c56b6952950412b816d7ee1",
+    "sac/config.py": "c86e2ad84783ac8be3835846133558c5e33ba6c0ee046453fe0e1ce2445585b8",
+    "sac/networks.py": "b375e1ba98cdc6299fe603dc1db9b00858d4100658466a835422a282dc449854",
+    "sac/replay.py": "c0bdab55d7d3aa85b46f343d6a659f350dffab36c8363f473f9bef6adcaba4eb",
+    "sac/runner.py": "63334e63c2a33899f5770b7bdc981c0f20d4eeeb0a4e15680dfd6e0e325dc8d0",
+    "sac/task.py": "2dd4e397bb6dc7af75fa4edd179abb2b32e9f6a7f21458b8ca7ecc4a15b6e687"
+  },
+  "remaining_work": "若要声称算法稳定性或推广性能，应在事先固定的评价协议下做多训练种子与额外最终holdout；不是此次单种子审查的已验证结论。"
+}

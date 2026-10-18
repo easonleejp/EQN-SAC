@@ -1,0 +1,771 @@
+{
+  "10.17775/CSEEJPES.2021.04330": {
+    "title": [
+      "Energy procurement and retail pricing of electricity retailers via deep reinforcement learning with long short-term memory"
+    ],
+    "author": null,
+    "published": {
+      "date-parts": [
+        [
+          2022
+        ]
+      ]
+    },
+    "published-online": {
+      "date-parts": [
+        [
+          2022
+        ]
+      ]
+    },
+    "published-print": {
+      "date-parts": [
+        [
+          2022
+        ]
+      ]
+    },
+    "link": [
+      {
+        "URL": "https://xplorestaging.ieee.org/ielx7/7054730/9901512/09713968.pdf?arnumber=9713968",
+        "content-type": "unspecified",
+        "content-version": "vor",
+        "intended-application": "similarity-checking"
+      }
+    ],
+    "volume": null,
+    "issue": null,
+    "article-number": null,
+    "page": null,
+    "publisher": "Power System Technology Press",
+    "container-title": [
+      "CSEE Journal of Power and Energy Systems"
+    ],
+    "type": "journal-article",
+    "URL": "https://doi.org/10.17775/cseejpes.2021.04330",
+    "license": null
+  },
+  "10.1016/j.segan.2020.100413": {
+    "title": [
+      "Deep reinforcement learning for energy management in a microgrid with flexible demand"
+    ],
+    "author": [
+      {
+        "given": "Taha Abdelhalim",
+        "family": "Nakabi",
+        "sequence": "first",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Pekka",
+        "family": "Toivanen",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      }
+    ],
+    "published": {
+      "date-parts": [
+        [
+          2021,
+          3
+        ]
+      ]
+    },
+    "published-online": null,
+    "published-print": {
+      "date-parts": [
+        [
+          2021,
+          3
+        ]
+      ]
+    },
+    "link": [
+      {
+        "URL": "https://api.elsevier.com/content/article/PII:S2352467720303441?httpAccept=text/xml",
+        "content-type": "text/xml",
+        "content-version": "vor",
+        "intended-application": "text-mining"
+      },
+      {
+        "URL": "https://api.elsevier.com/content/article/PII:S2352467720303441?httpAccept=text/plain",
+        "content-type": "text/plain",
+        "content-version": "vor",
+        "intended-application": "text-mining"
+      }
+    ],
+    "volume": "25",
+    "issue": null,
+    "article-number": "100413",
+    "page": "100413",
+    "publisher": "Elsevier BV",
+    "container-title": [
+      "Sustainable Energy, Grids and Networks"
+    ],
+    "type": "journal-article",
+    "URL": "https://doi.org/10.1016/j.segan.2020.100413",
+    "license": [
+      {
+        "start": {
+          "date-parts": [
+            [
+              2021,
+              3,
+              1
+            ]
+          ],
+          "date-time": "2021-03-01T00:00:00Z",
+          "timestamp": 1614556800000
+        },
+        "content-version": "tdm",
+        "delay-in-days": 0,
+        "URL": "https://www.elsevier.com/tdm/userlicense/1.0/"
+      },
+      {
+        "start": {
+          "date-parts": [
+            [
+              2021,
+              3,
+              1
+            ]
+          ],
+          "date-time": "2021-03-01T00:00:00Z",
+          "timestamp": 1614556800000
+        },
+        "content-version": "tdm",
+        "delay-in-days": 0,
+        "URL": "https://www.elsevier.com/legal/tdmrep-license"
+      },
+      {
+        "start": {
+          "date-parts": [
+            [
+              2021,
+              2,
+              4
+            ]
+          ],
+          "date-time": "2021-02-04T00:00:00Z",
+          "timestamp": 1612396800000
+        },
+        "content-version": "vor",
+        "delay-in-days": 0,
+        "URL": "http://creativecommons.org/licenses/by-nc-nd/4.0/"
+      }
+    ]
+  },
+  "10.1016/j.segy.2024.100139": {
+    "title": [
+      "Deep reinforcement learning based dynamic pricing for demand response considering market and supply constraints"
+    ],
+    "author": [
+      {
+        "ORCID": "https://orcid.org/0000-0001-6337-5342",
+        "authenticated-orcid": false,
+        "given": "Alejandro",
+        "family": "Fraija",
+        "sequence": "first",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Nilson",
+        "family": "Henao",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Kodjo",
+        "family": "Agbossou",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Sousso",
+        "family": "Kelouwani",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Michaël",
+        "family": "Fournier",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Shaival Hemant",
+        "family": "Nagarsheth",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      }
+    ],
+    "published": {
+      "date-parts": [
+        [
+          2024,
+          5
+        ]
+      ]
+    },
+    "published-online": null,
+    "published-print": {
+      "date-parts": [
+        [
+          2024,
+          5
+        ]
+      ]
+    },
+    "link": [
+      {
+        "URL": "https://api.elsevier.com/content/article/PII:S2666955224000091?httpAccept=text/xml",
+        "content-type": "text/xml",
+        "content-version": "vor",
+        "intended-application": "text-mining"
+      },
+      {
+        "URL": "https://api.elsevier.com/content/article/PII:S2666955224000091?httpAccept=text/plain",
+        "content-type": "text/plain",
+        "content-version": "vor",
+        "intended-application": "text-mining"
+      }
+    ],
+    "volume": "14",
+    "issue": null,
+    "article-number": "100139",
+    "page": "100139",
+    "publisher": "Elsevier BV",
+    "container-title": [
+      "Smart Energy"
+    ],
+    "type": "journal-article",
+    "URL": "https://doi.org/10.1016/j.segy.2024.100139",
+    "license": [
+      {
+        "start": {
+          "date-parts": [
+            [
+              2024,
+              5,
+              1
+            ]
+          ],
+          "date-time": "2024-05-01T00:00:00Z",
+          "timestamp": 1714521600000
+        },
+        "content-version": "tdm",
+        "delay-in-days": 0,
+        "URL": "https://www.elsevier.com/tdm/userlicense/1.0/"
+      },
+      {
+        "start": {
+          "date-parts": [
+            [
+              2024,
+              5,
+              1
+            ]
+          ],
+          "date-time": "2024-05-01T00:00:00Z",
+          "timestamp": 1714521600000
+        },
+        "content-version": "tdm",
+        "delay-in-days": 0,
+        "URL": "https://www.elsevier.com/legal/tdmrep-license"
+      },
+      {
+        "start": {
+          "date-parts": [
+            [
+              2024,
+              3,
+              22
+            ]
+          ],
+          "date-time": "2024-03-22T00:00:00Z",
+          "timestamp": 1711065600000
+        },
+        "content-version": "vor",
+        "delay-in-days": 0,
+        "URL": "http://creativecommons.org/licenses/by-nc-nd/4.0/"
+      }
+    ]
+  },
+  "10.1016/j.est.2024.114377": {
+    "title": [
+      "Distributional reinforcement learning-based energy arbitrage strategies in imbalance settlement mechanism"
+    ],
+    "author": [
+      {
+        "ORCID": "https://orcid.org/0000-0001-8072-4532",
+        "authenticated-orcid": false,
+        "given": "Seyed Soroush",
+        "family": "Karimi Madahi",
+        "sequence": "first",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Bert",
+        "family": "Claessens",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0003-2707-4176",
+        "authenticated-orcid": false,
+        "given": "Chris",
+        "family": "Develder",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      }
+    ],
+    "published": {
+      "date-parts": [
+        [
+          2024,
+          12
+        ]
+      ]
+    },
+    "published-online": null,
+    "published-print": {
+      "date-parts": [
+        [
+          2024,
+          12
+        ]
+      ]
+    },
+    "link": [
+      {
+        "URL": "https://api.elsevier.com/content/article/PII:S2352152X2403963X?httpAccept=text/xml",
+        "content-type": "text/xml",
+        "content-version": "vor",
+        "intended-application": "text-mining"
+      },
+      {
+        "URL": "https://api.elsevier.com/content/article/PII:S2352152X2403963X?httpAccept=text/plain",
+        "content-type": "text/plain",
+        "content-version": "vor",
+        "intended-application": "text-mining"
+      }
+    ],
+    "volume": "104",
+    "issue": null,
+    "article-number": "114377",
+    "page": "114377",
+    "publisher": "Elsevier BV",
+    "container-title": [
+      "Journal of Energy Storage"
+    ],
+    "type": "journal-article",
+    "URL": "https://doi.org/10.1016/j.est.2024.114377",
+    "license": [
+      {
+        "start": {
+          "date-parts": [
+            [
+              2024,
+              12,
+              1
+            ]
+          ],
+          "date-time": "2024-12-01T00:00:00Z",
+          "timestamp": 1733011200000
+        },
+        "content-version": "tdm",
+        "delay-in-days": 0,
+        "URL": "https://www.elsevier.com/tdm/userlicense/1.0/"
+      },
+      {
+        "start": {
+          "date-parts": [
+            [
+              2024,
+              12,
+              1
+            ]
+          ],
+          "date-time": "2024-12-01T00:00:00Z",
+          "timestamp": 1733011200000
+        },
+        "content-version": "tdm",
+        "delay-in-days": 0,
+        "URL": "https://www.elsevier.com/legal/tdmrep-license"
+      },
+      {
+        "start": {
+          "date-parts": [
+            [
+              2024,
+              12,
+              1
+            ]
+          ],
+          "date-time": "2024-12-01T00:00:00Z",
+          "timestamp": 1733011200000
+        },
+        "content-version": "stm-asf",
+        "delay-in-days": 0,
+        "URL": "https://doi.org/10.15223/policy-017"
+      },
+      {
+        "start": {
+          "date-parts": [
+            [
+              2024,
+              12,
+              1
+            ]
+          ],
+          "date-time": "2024-12-01T00:00:00Z",
+          "timestamp": 1733011200000
+        },
+        "content-version": "stm-asf",
+        "delay-in-days": 0,
+        "URL": "https://doi.org/10.15223/policy-037"
+      },
+      {
+        "start": {
+          "date-parts": [
+            [
+              2024,
+              12,
+              1
+            ]
+          ],
+          "date-time": "2024-12-01T00:00:00Z",
+          "timestamp": 1733011200000
+        },
+        "content-version": "stm-asf",
+        "delay-in-days": 0,
+        "URL": "https://doi.org/10.15223/policy-012"
+      },
+      {
+        "start": {
+          "date-parts": [
+            [
+              2024,
+              12,
+              1
+            ]
+          ],
+          "date-time": "2024-12-01T00:00:00Z",
+          "timestamp": 1733011200000
+        },
+        "content-version": "stm-asf",
+        "delay-in-days": 0,
+        "URL": "https://doi.org/10.15223/policy-029"
+      },
+      {
+        "start": {
+          "date-parts": [
+            [
+              2024,
+              12,
+              1
+            ]
+          ],
+          "date-time": "2024-12-01T00:00:00Z",
+          "timestamp": 1733011200000
+        },
+        "content-version": "stm-asf",
+        "delay-in-days": 0,
+        "URL": "https://doi.org/10.15223/policy-004"
+      }
+    ]
+  },
+  "10.1002/bte2.70132": {
+    "title": [
+      "Optimal Control of Mobile Energy Storage via Knowledge‐Guided Deep Reinforcement Learning"
+    ],
+    "author": [
+      {
+        "given": "Xinlei",
+        "family": "Cai",
+        "sequence": "first",
+        "affiliation": [
+          {
+            "name": "Power Dispatch Control Department Power Dispatch Control Center of Guangdong Power Grid Co., Ltd Guangzhou Guangdong China"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Zijie",
+        "family": "Meng",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Power Dispatch Control Department Power Dispatch Control Center of Guangdong Power Grid Co., Ltd Guangzhou Guangdong China"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Qian",
+        "family": "Guo",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Power Dispatch Control Department Power Dispatch Control Center of Guangdong Power Grid Co., Ltd Guangzhou Guangdong China"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Lizhou",
+        "family": "Jiang",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Power Dispatch Control Department Power Dispatch Control Center of Guangdong Power Grid Co., Ltd Guangzhou Guangdong China"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Zhijun",
+        "family": "Shen",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Power Dispatch Control Department Power Dispatch Control Center of Guangdong Power Grid Co., Ltd Guangzhou Guangdong China"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Yuheng",
+        "family": "Cheng",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "School of Science and Engineering The Chinese University of Hong Kong Shenzhen Guangdong China"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0002-5666-0417",
+        "authenticated-orcid": false,
+        "given": "Xuanang",
+        "family": "Gui",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "School of Science and Engineering The Chinese University of Hong Kong Shenzhen Guangdong China"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Junhua",
+        "family": "Zhao",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "School of Science and Engineering The Chinese University of Hong Kong Shenzhen Guangdong China"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      }
+    ],
+    "published": {
+      "date-parts": [
+        [
+          2026,
+          6,
+          7
+        ]
+      ]
+    },
+    "published-online": {
+      "date-parts": [
+        [
+          2026,
+          6,
+          7
+        ]
+      ]
+    },
+    "published-print": {
+      "date-parts": [
+        [
+          2026,
+          7
+        ]
+      ]
+    },
+    "link": [
+      {
+        "URL": "https://onlinelibrary.wiley.com/doi/pdf/10.1002/bte2.70132",
+        "content-type": "application/pdf",
+        "content-version": "vor",
+        "intended-application": "text-mining"
+      },
+      {
+        "URL": "https://onlinelibrary.wiley.com/doi/full-xml/10.1002/bte2.70132",
+        "content-type": "application/xml",
+        "content-version": "vor",
+        "intended-application": "text-mining"
+      },
+      {
+        "URL": "https://onlinelibrary.wiley.com/doi/pdf/10.1002/bte2.70132",
+        "content-type": "unspecified",
+        "content-version": "vor",
+        "intended-application": "similarity-checking"
+      }
+    ],
+    "volume": "5",
+    "issue": "4",
+    "article-number": "e70132",
+    "page": null,
+    "publisher": "Wiley",
+    "container-title": [
+      "Battery Energy"
+    ],
+    "type": "journal-article",
+    "URL": "https://doi.org/10.1002/bte2.70132",
+    "license": [
+      {
+        "start": {
+          "date-parts": [
+            [
+              2026,
+              6,
+              7
+            ]
+          ],
+          "date-time": "2026-06-07T00:00:00Z",
+          "timestamp": 1780790400000
+        },
+        "content-version": "vor",
+        "delay-in-days": 0,
+        "URL": "http://creativecommons.org/licenses/by/4.0/"
+      },
+      {
+        "start": {
+          "date-parts": [
+            [
+              2026,
+              6,
+              7
+            ]
+          ],
+          "date-time": "2026-06-07T00:00:00Z",
+          "timestamp": 1780790400000
+        },
+        "content-version": "tdm",
+        "delay-in-days": 0,
+        "URL": "http://doi.wiley.com/10.1002/tdm_license_1.1"
+      }
+    ]
+  }
+}

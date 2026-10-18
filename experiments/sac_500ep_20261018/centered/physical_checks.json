@@ -1,0 +1,666 @@
+{
+  "passed": true,
+  "cases": 108,
+  "aggregate": {
+    "curves.grid.peak": {
+      "mean": 3914.4076540848478,
+      "std": 598.0088063183931,
+      "n": 108
+    },
+    "curves.grid.valley": {
+      "mean": 1256.0714475539614,
+      "std": 620.4254258835696,
+      "n": 108
+    },
+    "curves.grid.peak_valley": {
+      "mean": 2658.3362065308875,
+      "std": 765.8211509834335,
+      "n": 108
+    },
+    "curves.grid.mean": {
+      "mean": 2566.4223408943476,
+      "std": 474.9978746838946,
+      "n": 108
+    },
+    "curves.grid.par": {
+      "mean": 1.5538634937670381,
+      "std": 0.24331991092864252,
+      "n": 108
+    },
+    "curves.grid.std": {
+      "mean": 704.603731241665,
+      "std": 200.74441890036005,
+      "n": 108
+    },
+    "curves.grid.cv": {
+      "mean": 0.2874381726868718,
+      "std": 0.1058689350021122,
+      "n": 108
+    },
+    "curves.grid.energy": {
+      "mean": 61594.13618146432,
+      "std": 11399.94899241347,
+      "n": 108
+    },
+    "curves.grid.mean_abs_ramp": {
+      "mean": 405.2826983858665,
+      "std": 101.29456093633169,
+      "n": 108
+    },
+    "curves.grid.rms_ramp": {
+      "mean": 515.1498773748697,
+      "std": 134.9757770519626,
+      "n": 108
+    },
+    "curves.grid.max_abs_ramp": {
+      "mean": 1227.2848721179967,
+      "std": 418.40499279048544,
+      "n": 108
+    },
+    "curves.user_load.peak": {
+      "mean": 4648.125244140625,
+      "std": 492.03061809633255,
+      "n": 108
+    },
+    "curves.user_load.valley": {
+      "mean": 1900.8486961082176,
+      "std": 214.18990052673058,
+      "n": 108
+    },
+    "curves.user_load.peak_valley": {
+      "mean": 2747.2765480324074,
+      "std": 415.4733985957137,
+      "n": 108
+    },
+    "curves.user_load.mean": {
+      "mean": 3287.7359744884357,
+      "std": 292.7764787070127,
+      "n": 108
+    },
+    "curves.user_load.par": {
+      "mean": 1.4149014907026152,
+      "std": 0.09892150281674883,
+      "n": 108
+    },
+    "curves.user_load.std": {
+      "mean": 826.1272234282113,
+      "std": 129.54166318318192,
+      "n": 108
+    },
+    "curves.user_load.cv": {
+      "mean": 0.2509564550643094,
+      "std": 0.030244675822558287,
+      "n": 108
+    },
+    "curves.user_load.energy": {
+      "mean": 78905.66338772244,
+      "std": 7026.635488968307,
+      "n": 108
+    },
+    "curves.user_load.mean_abs_ramp": {
+      "mean": 282.9161113548586,
+      "std": 46.81984608193129,
+      "n": 108
+    },
+    "curves.user_load.rms_ramp": {
+      "mean": 371.58400561452476,
+      "std": 61.8297465118337,
+      "n": 108
+    },
+    "curves.user_load.max_abs_ramp": {
+      "mean": 888.1573045518663,
+      "std": 194.26401260295657,
+      "n": 108
+    },
+    "curves.baseline_load.peak": {
+      "mean": 5066.65995506004,
+      "std": 577.7464971389257,
+      "n": 108
+    },
+    "curves.baseline_load.valley": {
+      "mean": 2005.7210320366753,
+      "std": 258.1290533924465,
+      "n": 108
+    },
+    "curves.baseline_load.peak_valley": {
+      "mean": 3060.938923023365,
+      "std": 473.28459740073674,
+      "n": 108
+    },
+    "curves.baseline_load.mean": {
+      "mean": 3626.82667682789,
+      "std": 356.37269935910314,
+      "n": 108
+    },
+    "curves.baseline_load.par": {
+      "mean": 1.3979567915749203,
+      "std": 0.09526637914906991,
+      "n": 108
+    },
+    "curves.baseline_load.std": {
+      "mean": 890.4117885051638,
+      "std": 138.9614168481555,
+      "n": 108
+    },
+    "curves.baseline_load.cv": {
+      "mean": 0.24531088008191534,
+      "std": 0.029368841208524694,
+      "n": 108
+    },
+    "curves.baseline_load.energy": {
+      "mean": 87043.84024386936,
+      "std": 8552.944784618474,
+      "n": 108
+    },
+    "curves.baseline_load.mean_abs_ramp": {
+      "mean": 307.3882763259076,
+      "std": 63.53840209928613,
+      "n": 108
+    },
+    "curves.baseline_load.rms_ramp": {
+      "mean": 401.03452876526194,
+      "std": 77.04625793325394,
+      "n": 108
+    },
+    "curves.baseline_load.max_abs_ramp": {
+      "mean": 1001.2339454933449,
+      "std": 209.3161786920541,
+      "n": 108
+    },
+    "curves.baseline_grid.peak": {
+      "mean": 4496.9740201774985,
+      "std": 708.6610242668219,
+      "n": 108
+    },
+    "curves.baseline_grid.valley": {
+      "mean": 1099.011187001511,
+      "std": 654.5940821904255,
+      "n": 108
+    },
+    "curves.baseline_grid.peak_valley": {
+      "mean": 3397.9628331759877,
+      "std": 757.0585380017721,
+      "n": 108
+    },
+    "curves.baseline_grid.mean": {
+      "mean": 2883.816163175411,
+      "std": 543.0455545399751,
+      "n": 108
+    },
+    "curves.baseline_grid.par": {
+      "mean": 1.582906905430165,
+      "std": 0.2113383367734481,
+      "n": 108
+    },
+    "curves.baseline_grid.std": {
+      "mean": 986.4178028246903,
+      "std": 225.4070965021,
+      "n": 108
+    },
+    "curves.baseline_grid.cv": {
+      "mean": 0.3540692326391063,
+      "std": 0.1065331673040125,
+      "n": 108
+    },
+    "curves.baseline_grid.energy": {
+      "mean": 69211.58791620984,
+      "std": 13033.093308959404,
+      "n": 108
+    },
+    "curves.baseline_grid.mean_abs_ramp": {
+      "mean": 394.72153144174627,
+      "std": 91.86042570417922,
+      "n": 108
+    },
+    "curves.baseline_grid.rms_ramp": {
+      "mean": 504.6011712960547,
+      "std": 118.21729752644332,
+      "n": 108
+    },
+    "curves.baseline_grid.max_abs_ramp": {
+      "mean": 1193.4194066255457,
+      "std": 344.7036710985281,
+      "n": 108
+    },
+    "curves.response_grid_without_storage.peak": {
+      "mean": 4066.844738550691,
+      "std": 632.1006746996156,
+      "n": 108
+    },
+    "curves.response_grid_without_storage.valley": {
+      "mean": 1030.7590417243816,
+      "std": 546.4941167715566,
+      "n": 108
+    },
+    "curves.response_grid_without_storage.peak_valley": {
+      "mean": 3036.0856968263097,
+      "std": 654.0159484232234,
+      "n": 108
+    },
+    "curves.response_grid_without_storage.mean": {
+      "mean": 2544.33333039629,
+      "std": 471.03009022091675,
+      "n": 108
+    },
+    "curves.response_grid_without_storage.par": {
+      "mean": 1.6238506564688235,
+      "std": 0.232122284611299,
+      "n": 108
+    },
+    "curves.response_grid_without_storage.std": {
+      "mean": 892.9884682016709,
+      "std": 191.2382989741577,
+      "n": 108
+    },
+    "curves.response_grid_without_storage.cv": {
+      "mean": 0.3617939923175945,
+      "std": 0.10044108579438608,
+      "n": 108
+    },
+    "curves.response_grid_without_storage.energy": {
+      "mean": 61063.99992951099,
+      "std": 11304.722165302004,
+      "n": 108
+    },
+    "curves.response_grid_without_storage.mean_abs_ramp": {
+      "mean": 339.1913798204592,
+      "std": 75.06253670243328,
+      "n": 108
+    },
+    "curves.response_grid_without_storage.rms_ramp": {
+      "mean": 434.8247151201341,
+      "std": 95.66866090919838,
+      "n": 108
+    },
+    "curves.response_grid_without_storage.max_abs_ramp": {
+      "mean": 1027.5394787718024,
+      "std": 306.1683486621051,
+      "n": 108
+    },
+    "storage.initial_soc": {
+      "mean": 482.177709,
+      "std": 0.0,
+      "n": 108
+    },
+    "storage.final_soc": {
+      "mean": 503.4828166144974,
+      "std": 12.188991810179783,
+      "n": 108
+    },
+    "storage.soc_change": {
+      "mean": 21.30510761449747,
+      "std": 12.188991810179783,
+      "n": 108
+    },
+    "storage.charge_energy": {
+      "mean": 5223.210231246967,
+      "std": 1184.0967257621076,
+      "n": 108
+    },
+    "storage.discharge_energy": {
+      "mean": 4693.707381466614,
+      "std": 1067.4542674470401,
+      "n": 108
+    },
+    "storage.bus_throughput": {
+      "mean": 9916.91761271358,
+      "std": 2251.518350042877,
+      "n": 108
+    },
+    "storage.cell_throughput": {
+      "mean": 9902.794331754736,
+      "std": 2248.495273416883,
+      "n": 108
+    },
+    "storage.equivalent_full_cycles": {
+      "mean": 0.5704901225428208,
+      "std": 0.12953357417060013,
+      "n": 108
+    },
+    "storage.conversion_losses": {
+      "mean": 508.1977421658542,
+      "std": 115.38496360278312,
+      "n": 108
+    },
+    "storage.self_discharge_losses": {
+      "mean": 0.0,
+      "std": 0.0,
+      "n": 108
+    },
+    "storage.surplus_energy": {
+      "mean": 4.637114014708574,
+      "std": 44.16496578385913,
+      "n": 108
+    },
+    "prices.mean": {
+      "mean": 30.19919726951623,
+      "std": 0.28732437368147723,
+      "n": 108
+    },
+    "prices.minimum": {
+      "mean": 28.325324376424152,
+      "std": 0.41523087155183314,
+      "n": 108
+    },
+    "prices.maximum": {
+      "mean": 32.09995831383599,
+      "std": 0.2839763076026615,
+      "n": 108
+    },
+    "prices.std": {
+      "mean": 1.0621812912441724,
+      "std": 0.16596275863048127,
+      "n": 108
+    },
+    "prices.lower_fraction": {
+      "mean": 0.0,
+      "std": 0.0,
+      "n": 108
+    },
+    "prices.upper_fraction": {
+      "mean": 0.0023148148148148147,
+      "std": 0.011101461859520182,
+      "n": 108
+    },
+    "prices.out_of_bounds_hours": {
+      "mean": 0.0,
+      "std": 0.0,
+      "n": 108
+    },
+    "economics.profit": {
+      "mean": 1141900.9297903543,
+      "std": 237975.69925134053,
+      "n": 108
+    },
+    "economics.storage_marginal_profit_reward": {
+      "mean": 6943.596385248389,
+      "std": 14552.106723412582,
+      "n": 108
+    },
+    "economics.learning_reward": {
+      "mean": 33.45480178832908,
+      "std": 21.935225950075925,
+      "n": 108
+    },
+    "economics.shape_cost": {
+      "mean": 0.0,
+      "std": 0.0,
+      "n": 108
+    },
+    "reference.curves.grid.peak": {
+      "mean": 4260.037942360396,
+      "std": 680.8230655011089,
+      "n": 108
+    },
+    "reference.curves.grid.valley": {
+      "mean": 1388.1556741716686,
+      "std": 657.4574556477621,
+      "n": 108
+    },
+    "reference.curves.grid.peak_valley": {
+      "mean": 2871.882268188728,
+      "std": 671.7759367827218,
+      "n": 108
+    },
+    "reference.curves.grid.mean": {
+      "mean": 2840.227600504361,
+      "std": 546.4217131725821,
+      "n": 108
+    },
+    "reference.curves.grid.par": {
+      "mean": 1.5216262387585742,
+      "std": 0.19676252675953237,
+      "n": 108
+    },
+    "reference.curves.grid.std": {
+      "mean": 806.777264804583,
+      "std": 187.29060339902725,
+      "n": 108
+    },
+    "reference.curves.grid.cv": {
+      "mean": 0.2961106525669685,
+      "std": 0.09328337553029388,
+      "n": 108
+    },
+    "reference.curves.grid.energy": {
+      "mean": 68165.46241210467,
+      "std": 13114.121116141972,
+      "n": 108
+    },
+    "reference.curves.grid.mean_abs_ramp": {
+      "mean": 474.86452575489466,
+      "std": 88.25439833040966,
+      "n": 108
+    },
+    "reference.curves.grid.rms_ramp": {
+      "mean": 606.5547660850253,
+      "std": 109.22289188096954,
+      "n": 108
+    },
+    "reference.curves.grid.max_abs_ramp": {
+      "mean": 1403.5922854171583,
+      "std": 352.7091029082585,
+      "n": 108
+    },
+    "reference.curves.user_load.peak": {
+      "mean": 4749.047930682147,
+      "std": 554.677493305959,
+      "n": 108
+    },
+    "reference.curves.user_load.valley": {
+      "mean": 2399.2052239312065,
+      "std": 275.7011839063048,
+      "n": 108
+    },
+    "reference.curves.user_load.peak_valley": {
+      "mean": 2349.8427067509406,
+      "std": 409.11021114974267,
+      "n": 108
+    },
+    "reference.curves.user_load.mean": {
+      "mean": 3583.7970659232437,
+      "std": 360.28996892755833,
+      "n": 108
+    },
+    "reference.curves.user_load.par": {
+      "mean": 1.3255605756514295,
+      "std": 0.0858025117269296,
+      "n": 108
+    },
+    "reference.curves.user_load.std": {
+      "mean": 678.5302287495365,
+      "std": 109.8227303975134,
+      "n": 108
+    },
+    "reference.curves.user_load.cv": {
+      "mean": 0.18926481604772222,
+      "std": 0.023705534039974382,
+      "n": 108
+    },
+    "reference.curves.user_load.energy": {
+      "mean": 86011.12958215784,
+      "std": 8646.959254261401,
+      "n": 108
+    },
+    "reference.curves.user_load.mean_abs_ramp": {
+      "mean": 402.71203750880636,
+      "std": 58.24229247230075,
+      "n": 108
+    },
+    "reference.curves.user_load.rms_ramp": {
+      "mean": 523.4826900901485,
+      "std": 71.8346988072876,
+      "n": 108
+    },
+    "reference.curves.user_load.max_abs_ramp": {
+      "mean": 1212.7864086009838,
+      "std": 215.20533300032486,
+      "n": 108
+    },
+    "reference.storage.initial_soc": {
+      "mean": 482.177709,
+      "std": 0.0,
+      "n": 108
+    },
+    "reference.storage.final_soc": {
+      "mean": 482.177709,
+      "std": 0.0,
+      "n": 108
+    },
+    "reference.storage.soc_change": {
+      "mean": 0.0,
+      "std": 0.0,
+      "n": 108
+    },
+    "reference.storage.charge_energy": {
+      "mean": 0.0,
+      "std": 0.0,
+      "n": 108
+    },
+    "reference.storage.discharge_energy": {
+      "mean": 0.0,
+      "std": 0.0,
+      "n": 108
+    },
+    "reference.storage.bus_throughput": {
+      "mean": 0.0,
+      "std": 0.0,
+      "n": 108
+    },
+    "reference.storage.cell_throughput": {
+      "mean": 0.0,
+      "std": 0.0,
+      "n": 108
+    },
+    "reference.storage.equivalent_full_cycles": {
+      "mean": 0.0,
+      "std": 0.0,
+      "n": 108
+    },
+    "reference.storage.conversion_losses": {
+      "mean": 0.0,
+      "std": 0.0,
+      "n": 108
+    },
+    "reference.storage.self_discharge_losses": {
+      "mean": 0.0,
+      "std": 0.0,
+      "n": 108
+    },
+    "reference.storage.surplus_energy": {
+      "mean": 0.0,
+      "std": 0.0,
+      "n": 108
+    },
+    "reference.prices.mean": {
+      "mean": 29.083333333333332,
+      "std": 0.0,
+      "n": 108
+    },
+    "reference.prices.minimum": {
+      "mean": 26.5,
+      "std": 0.0,
+      "n": 108
+    },
+    "reference.prices.maximum": {
+      "mean": 32.5,
+      "std": 0.0,
+      "n": 108
+    },
+    "reference.prices.std": {
+      "mean": 2.548147475236775,
+      "std": 8.881784197001252e-16,
+      "n": 108
+    },
+    "reference.prices.lower_fraction": {
+      "mean": 0.375,
+      "std": 0.0,
+      "n": 108
+    },
+    "reference.prices.upper_fraction": {
+      "mean": 0.3333333333333334,
+      "std": 1.1102230246251565e-16,
+      "n": 108
+    },
+    "reference.prices.out_of_bounds_hours": {
+      "mean": 0.0,
+      "std": 0.0,
+      "n": 108
+    },
+    "reference.economics.profit": {
+      "mean": 1108446.1280020254,
+      "std": 236658.04674878705,
+      "n": 108
+    },
+    "reference.economics.storage_marginal_profit_reward": {
+      "mean": 0.0,
+      "std": 0.0,
+      "n": 108
+    },
+    "paired_comparison.peak_reduction": {
+      "mean": 345.6302882755484,
+      "std": 421.10861789699925,
+      "n": 108
+    },
+    "paired_comparison.peak_reduction_fraction": {
+      "mean": 0.0720267864913213,
+      "std": 0.11929309364973097,
+      "n": 108
+    },
+    "paired_comparison.peak_valley_reduction": {
+      "mean": 213.54606165784114,
+      "std": 584.130128527476,
+      "n": 108
+    },
+    "paired_comparison.peak_valley_reduction_fraction": {
+      "mean": 0.060202241050129564,
+      "std": 0.23418794975374188,
+      "n": 108
+    },
+    "paired_comparison.std_reduction": {
+      "mean": 102.17353356291785,
+      "std": 116.52630640787486,
+      "n": 108
+    },
+    "paired_comparison.std_reduction_fraction": {
+      "mean": 0.12291570418539673,
+      "std": 0.16336774199646142,
+      "n": 108
+    },
+    "paired_comparison.par_reduction": {
+      "mean": -0.032237255008464034,
+      "std": 0.18153554491931237,
+      "n": 108
+    },
+    "paired_comparison.par_reduction_fraction": {
+      "mean": -0.023438417545425947,
+      "std": 0.11453710171323461,
+      "n": 108
+    },
+    "paired_comparison.rms_ramp_reduction": {
+      "mean": 91.40488871015579,
+      "std": 118.99982806717821,
+      "n": 108
+    },
+    "paired_comparison.rms_ramp_reduction_fraction": {
+      "mean": 0.14383826981123315,
+      "std": 0.20079448639345504,
+      "n": 108
+    },
+    "paired_comparison.valley_lift": {
+      "mean": -132.08422661770732,
+      "std": 358.2734199959074,
+      "n": 108
+    },
+    "paired_comparison.grid_energy_change": {
+      "mean": -6571.326230640341,
+      "std": 2080.9669075571915,
+      "n": 108
+    },
+    "paired_comparison.profit_change": {
+      "mean": 33454.80178832908,
+      "std": 21935.225950075932,
+      "n": 108
+    }
+  }
+}

@@ -1,4 +1,12 @@
-# EQN-SAC
+# EQN-SAC / SAC
+
+当前 `sac` 分支新增独立的**纯 SAC** 实验入口：`train_sac.py`、`sac/` 和 `configs/sac/`。已完成五组各 500 episode 训练及独立 108 场景评价；针对“利润与削峰并重”的本轮候选为 `peak_balanced_500.json`。从 [SAC 运行指南](docs/sac/README.md)、[审核与期刊对照报告](docs/sac/review-20261018.md)及[实验记录](experiments/sac_500ep_20261018/README.md)开始阅读。
+
+```sh
+python train_sac.py train --config configs/sac/peak_balanced_500.json --output runs/sac_peak_balanced_new
+```
+
+SAC 采用一个联合价格/储能 Actor、两个标量 Q 和自动温度，不启用 EQN、CVaR 或 Tail 模块。`eqnsac/` 中的物理环境与场景生成器继续共享。下方保留原 EQN 项目的使用说明；其 `train.py --arm original` 不是纯 SAC。
 
 面向24小时售电定价与储能联合控制的强化学习研究项目。两个 Actor 分别控制零售价与储能动作，两套集中式 IQN 集成学习各自奖励。当前根目录是唯一开发入口；三组已有5000轮实验使用各自冻结代码。
 

@@ -1,0 +1,350 @@
+{
+  "reviewed_at": "2026-10-18T11:14:04.425907+08:00",
+  "root": "/Users/liliheng/Desktop/EQN-SAC",
+  "scope": "只读对照当前root代码。纯SAC分支/500ep训练对象未识别；以下不是该未知分支的验收。",
+  "git_head": "ccdd161193e90bfdea75d428a6605c947ac41197",
+  "source_snapshot": {
+    "environment": {
+      "path": "eqnsac/environment.py",
+      "sha256": "22fd289ae65e1b27c0556b0a5513ef31fbe39fe87dbd260841bfdccae0332504"
+    },
+    "config": {
+      "path": "eqnsac/config.py",
+      "sha256": "1d35b2712cf0869c2ed22f5b088dc1e7a1d14354c8534b4dbfb6d6c25b28bfe7"
+    },
+    "agent": {
+      "path": "eqnsac/agent.py",
+      "sha256": "b8bd2f3f9a50671559fd889fdcd0a4385737cd9ececeedc0d80c526af21c40ae"
+    },
+    "data_environment": {
+      "path": "data/environment.json",
+      "sha256": "e93e1278e70567df4172131b2075824cfb64416988eacfb1606c26327fd86022"
+    }
+  },
+  "papers": [
+    {
+      "id": "xu2022",
+      "title": "Energy Procurement and Retail Pricing for Electricity Retailers via Deep Reinforcement Learning with Long Short-term Memory",
+      "authors": [
+        "Hongsheng Xu",
+        "Jinyu Wen",
+        "Qinran Hu",
+        "Jiao Shu",
+        "Jixiang Lu",
+        "Zhihong Yang"
+      ],
+      "journal": "CSEE Journal of Power and Energy Systems",
+      "year": 2022,
+      "volume": "8",
+      "issue": "5",
+      "pages": "1338–1351",
+      "doi": "10.17775/CSEEJPES.2021.04330",
+      "publisher_url": "https://www.sciopen.com/article/10.17775/CSEEJPES.2021.04330",
+      "full_text_url": "https://www.researchgate.net/publication/370340786_Energy_procurement_and_retail_pricing_of_electricity_retailers_via_deep_reinforcement_learning_with_long_short-term_memory",
+      "access_note": "出版信息由期刊官网确认；全文使用作者 Qinran Hu 上传的期刊原文，非 ResearchGate 评论或二手概述。未取得本地 PDF，公式按网页全文转录。",
+      "evidence": [
+        {
+          "locator": "p.1340, §II.A; p.1341, §II.D",
+          "fact": "price-taker 假设下分离采购与定价；定价前已知当前批发出清价。状态由当前及过去 m 期批发价、过去 m 期零售价和消费组成。"
+        },
+        {
+          "locator": "pp.1340–1341, §II.C, equations (2)–(3)",
+          "fact": "用户当期选择效用减电费最大化；需求通过延期系数跨时段演化。",
+          "formula": "d_i,t+1 = chi_i,t*d_i,t + varsigma_i,t*(d_i,t-e_i,t) + delta_i,t"
+        },
+        {
+          "locator": "p.1341, §II.D, equation (7)",
+          "fact": "奖励是零售毛利扣采购不平衡损失。",
+          "formula": "r_t = (lambda_t-xi_t)*e_t - phi_t(e_t,epsilon_t)"
+        }
+      ],
+      "not_established": [
+        "此文不是储能终端 SOC 依据。",
+        "历史长度/LSTM 是其需求动态下的设计，不能直接推断本项目必须相同。"
+      ],
+      "publication_type": "journal-article",
+      "review_scope": "只比较环境、信息时序、用户响应、目标与终端口径；不讨论创新点"
+    },
+    {
+      "id": "nakabi2021",
+      "title": "Deep reinforcement learning for energy management in a microgrid with flexible demand",
+      "authors": [
+        "Taha Abdelhalim Nakabi",
+        "Pekka Toivanen"
+      ],
+      "journal": "Sustainable Energy, Grids and Networks",
+      "year": 2021,
+      "volume": "25",
+      "article_number": "100413",
+      "doi": "10.1016/j.segan.2020.100413",
+      "publisher_url": "https://doi.org/10.1016/j.segan.2020.100413",
+      "institution_url": "https://uef.cris.fi/en/publications/UEF-75427484",
+      "full_text_url": "https://www.researchgate.net/publication/347395657_Deep_reinforcement_learning_for_energy_management_in_a_microgrid_with_flexible_demand",
+      "access_note": "期刊版 2021 年卷25；在线日期为2020-11-27。全文为开放获取期刊版的网页文本，出版元数据亦由 Elsevier API 核对。没有用同名学位论文作依据。",
+      "evidence": [
+        {
+          "locator": "pp.4–5, §2.5, equations (6)–(9)",
+          "fact": "用户有价格敏感度和等待期限；负荷含延后/提前消费的补偿项。",
+          "formula": "L_i,t = L_b,t - SL_i,t + PB_i,t; SL_i,t = L_b,t*beta_i*delta_t; PB_i,t = sum_j<t omega_i,j*SL_i,j"
+        },
+        {
+          "locator": "p.6, §3.1, equation (22)",
+          "fact": "状态含 TCL 平均 SoC、储能 BSC、价格计数器、温度、发电、上调价、基荷、时刻；正文假设可准确预测后三类外生量的下一小时值。"
+        },
+        {
+          "locator": "p.6, §§3.2–3.3, equations (23)–(26)",
+          "fact": "联合管理价格、TCL 和储能/电网优先级；奖励为本地及向电网销售收入减成本，含进出电网交易。",
+          "formula": "R_t = Rev_t - Costs_t"
+        }
+      ],
+      "not_established": [
+        "该准确预测假设不等于现实可获得，也不授权用未来实现值作普通观测。",
+        "本文已核查段落不能证明一个通用的日末 SOC 等式。"
+      ],
+      "publication_type": "journal-article",
+      "review_scope": "只比较环境、信息时序、用户响应、目标与终端口径；不讨论创新点"
+    },
+    {
+      "id": "fraija2024",
+      "title": "Deep reinforcement learning based dynamic pricing for demand response considering market and supply constraints",
+      "authors": [
+        "Alejandro Fraija",
+        "Nilson Henao",
+        "Kodjo Agbossou",
+        "Sousso Kelouwani",
+        "Michaël Fournier",
+        "Shaival Hemant Nagarsheth"
+      ],
+      "journal": "Smart Energy",
+      "year": 2024,
+      "volume": "14",
+      "article_number": "100139",
+      "doi": "10.1016/j.segy.2024.100139",
+      "publisher_url": "https://doi.org/10.1016/j.segy.2024.100139",
+      "full_text_url": "https://depot-e.uqtr.ca/12552/1/AGBOSSOU_K_26_ED.pdf",
+      "local_pdf": "sources/fraija2024.pdf",
+      "access_note": "作者所在大学知识库公开的正式期刊 PDF；公式(3)–(5)已目视复核。",
+      "evidence": [
+        {
+          "locator": "PDF p.5, §2.1, equation (1); PDF p.6, §2.2, equations (2)–(3)",
+          "fact": "价格函数受价格上下限和容量 M 控制；目标含销售收入、相对初始计划的发电成本节省及峰值相对 M 的项。",
+          "formula": "xi(pi)=w1*(sum_k y_k*pi_k+psi)-w2*(max_k y_k-M)",
+          "caution": "原式是 max(y)-M，没有额外正部截断；本记录不把它改写成 max(0,max(y)-M)。"
+        },
+        {
+          "locator": "PDF p.6, §2.2.2, equations (4)–(5)",
+          "fact": "状态是归一化整段聚合消费计划；动作调价格函数参数 eta、alpha；episode 为聚合商与住户的协调迭代。",
+          "formula": "R_t = xi(pi_dot)"
+        },
+        {
+          "locator": "PDF p.7, §2.3",
+          "fact": "用户模型针对电采暖及舒适度，不是本项目的三类随机满意度响应。"
+        }
+      ],
+      "not_established": [
+        "不是以真实未来负荷作为实时观测的依据。",
+        "利润改善和峰值改善在此依赖明确的容量机制，不是所有利润奖励的性质。"
+      ],
+      "publication_type": "journal-article",
+      "review_scope": "只比较环境、信息时序、用户响应、目标与终端口径；不讨论创新点",
+      "sha256": "a812f5009be00b84d190d96616e78058f76a9815b1910f8b73753cf101d5d7de"
+    },
+    {
+      "id": "karimi2024",
+      "title": "Distributional reinforcement learning-based energy arbitrage strategies in imbalance settlement mechanism",
+      "authors": [
+        "Seyed Soroush Karimi Madahi",
+        "Bert Claessens",
+        "Chris Develder"
+      ],
+      "journal": "Journal of Energy Storage",
+      "year": 2024,
+      "volume": "104",
+      "article_number": "114377",
+      "doi": "10.1016/j.est.2024.114377",
+      "publisher_url": "https://www.sciencedirect.com/science/article/abs/pii/S2352152X2403963X",
+      "institution_url": "https://imec-publications.be/entities/publication/b4d579fe-1203-4500-9ea6-80038fbeb2c5",
+      "full_text_url": "https://flexmyheat.ilabt.imec.be/sites/default/files/publications/DistributionalRL.pdf",
+      "local_pdf": "sources/karimi2024.pdf",
+      "access_note": "已拿到课题机构公开的正式期刊 PDF，不以 arXiv 版单独充当发表证明；PDF p.5 已目视复核。",
+      "evidence": [
+        {
+          "locator": "PDF p.5, §3.2, equations (1)–(5)",
+          "fact": "状态含时段内分钟、日内时段、月份、SOC 和当期不平衡价预测；动作是三档充/停/放。真实价格在时段结束后用于结算。",
+          "formula": "r_t = -a_t*pi_imb,t"
+        },
+        {
+          "locator": "PDF p.5, §3.3, equations (6)–(9)",
+          "fact": "增加已用日循环次数状态和备份控制器限制放电；SOC/功率也由执行控制保证。"
+        },
+        {
+          "locator": "PDF p.9, §5.1",
+          "fact": "一分钟决策，一天一 episode；按月内日期分离训练、验证、测试。"
+        }
+      ],
+      "not_established": [
+        "文中未找到明确的日末 SOC 等于日初 SOC 或残值条款，不据此臆补。",
+        "这是可向市场买卖的套利，并非本项目不返售电网的零售环境。",
+        "原奖励式写法没有显式 Delta-t，本记录忠实定位，不能直接搬来替换本项目货币量纲。"
+      ],
+      "publication_type": "journal-article",
+      "review_scope": "只比较环境、信息时序、用户响应、目标与终端口径；不讨论创新点",
+      "sha256": "b83e7a2d0afdd30e438e58daf6bcb00359842711bf1abc345d4589930f48fb4c"
+    },
+    {
+      "id": "cai2026",
+      "title": "Optimal Control of Mobile Energy Storage via Knowledge-Guided Deep Reinforcement Learning",
+      "authors": [
+        "Xinlei Cai",
+        "Zijie Meng",
+        "Qian Guo",
+        "Lizhou Jiang",
+        "Zhijun Shen",
+        "Yuheng Cheng",
+        "Xuanang Gui",
+        "Junhua Zhao"
+      ],
+      "journal": "Battery Energy",
+      "year": 2026,
+      "volume": "5",
+      "issue": "4",
+      "article_number": "e70132",
+      "doi": "10.1002/bte2.70132",
+      "publisher_url": "https://onlinelibrary.wiley.com/doi/10.1002/bte2.70132",
+      "full_text_url": "https://onlinelibrary.wiley.com/doi/full/10.1002/bte2.70132",
+      "access_note": "出版商全文网页；2026-06-07 首次发表，早于本次审查日。未获取本地PDF，不声称PDF页码。",
+      "evidence": [
+        {
+          "locator": "§3.1, State / Discount factor / Terminal state paragraphs",
+          "fact": "观测含当前节点价格、时间、位置/目的地、剩余能量；没有显式价格预测；一天48步，gamma=1。"
+        },
+        {
+          "locator": "§4.2, first paragraph, immediately before Table 2",
+          "fact": "各策略以50% SOC开始；期末余电按最后地点的末期价格估值，只用于评估，不属于训练奖励。"
+        }
+      ],
+      "not_established": [
+        "该处理用于移动储能的交通延迟情境，不是所有固定储能实验必须采用的残值公式。",
+        "评估中增列残值与修改训练奖励是不同操作，不能混同。"
+      ],
+      "publication_type": "journal-article",
+      "review_scope": "只比较环境、信息时序、用户响应、目标与终端口径；不讨论创新点"
+    }
+  ],
+  "project_mapping": [
+    {
+      "id": "observations",
+      "classification": "建模/信息设计，不能仅靠文献判定为实现错误",
+      "code": [
+        "eqnsac/environment.py:18",
+        "eqnsac/environment.py:43",
+        "eqnsac/environment.py:46",
+        "eqnsac/environment.py:158"
+      ],
+      "fact": "全状态19维；价格Actor仅当前购电价、响应前净负荷、温度、小时。compact10储能Actor没有当期定价动作、响应后需求或独立风电量；causal15增加风电、上期响应和负荷预测。上期三类零售价不是三个时间滞后。",
+      "mapping": [
+        "xu2022",
+        "nakabi2021",
+        "karimi2024",
+        "cai2026"
+      ],
+      "assessment": "观测应在决策时真实可用，并与环境跨时段状态匹配。论文所用预测、历史、完整计划不能不加区分照搬。集中Critic看到全状态不能让执行Actor获得缺失信息；是否增加观测应固定训练预算做消融，而非只凭500episode曲线定论。"
+    },
+    {
+      "id": "terminal_soc",
+      "classification": "实验边界；如声称连续逐日运营则需补充说明/验证",
+      "code": [
+        "eqnsac/environment.py:145",
+        "eqnsac/environment.py:160",
+        "eqnsac/environment.py:261",
+        "eqnsac/environment.py:299",
+        "eqnsac/environment.py:334"
+      ],
+      "fact": "每日reset设soc_init，24步终止；没有日末SOC等式、残值项或跨日SOC继承。当前data中soc_init=soc_min。",
+      "mapping": [
+        "cai2026",
+        "karimi2024",
+        "nakabi2021"
+      ],
+      "assessment": "这是零终端价值的单日任务，可能低估晚间存电价值；并不自动构成bug。由于日初在下限，不能把它简单指称为每天免费给一满电池。比较策略应同时报日初/日末可用能量、纯现金利润；若引入残值，单独报告估值口径并统一所有策略。需要连续运营结论时再选择跨日承接/终端目标/残值方案。"
+    },
+    {
+      "id": "response_not_shift",
+      "classification": "任务定义差异；若宣称严格移峰则是表述或建模不一致",
+      "code": [
+        "eqnsac/environment.py:206",
+        "eqnsac/environment.py:222",
+        "eqnsac/environment.py:237",
+        "eqnsac/environment.py:311"
+      ],
+      "fact": "当前响应由本小时价格、基荷、温度、随机曲率及三次满意度迭代形成；无延期负荷队列、补偿消费或日能量守恒。previous_response被记录，但不进入下一小时response方程。",
+      "mapping": [
+        "xu2022",
+        "nakabi2021",
+        "fraija2024"
+      ],
+      "assessment": "应称价格响应造成的需求增减，不应直接称可延期负荷搬移。削减总电量本身可压低峰值；评估须同时给每日用户电量/响应量和舒适度，区分节电与移峰。先明确研究任务再决定是否增加跨时段需求模型。"
+    },
+    {
+      "id": "peak_valley_objective",
+      "classification": "目标与宣称一致性；非利润计算公式bug",
+      "code": [
+        "eqnsac/environment.py:299",
+        "eqnsac/environment.py:303",
+        "eqnsac/environment.py:307",
+        "eqnsac/environment.py:310"
+      ],
+      "fact": "价格奖励为零售总利润，储能奖励是mix*总利润+(1-mix)*储能边际收益。无直接峰谷差、方差、容量超限或需量电费项；grid_purchase下限为0且不返售。",
+      "mapping": [
+        "fraija2024",
+        "nakabi2021",
+        "xu2022"
+      ],
+      "assessment": "高价低购电可能带来削峰，但无目标保证。应分开报告用户负荷与净电网购电的峰值/谷值/峰谷差/PAR/总电量。先评估现有利润目标下的实际曲线，再决定是否增加显式电网目标；改奖励会改变问题，不属于无损代码优化。"
+    },
+    {
+      "id": "storage_physics",
+      "classification": "可接受的当前建模选择及尚未覆盖的边界",
+      "code": [
+        "eqnsac/environment.py:189",
+        "eqnsac/environment.py:284",
+        "eqnsac/environment.py:289",
+        "eqnsac/environment.py:299"
+      ],
+      "fact": "执行动作受SOC与功率限制；充放电效率进入能量平衡；吞吐线性费用表示储能成本。没有循环次数状态/日循环硬限。",
+      "mapping": [
+        "karimi2024"
+      ],
+      "assessment": "物理可行性不应只靠软奖励惩罚，现有执行限幅符合这一原则。线性费用与循环硬限是不同成本/约束假设；除非声称复现循环约束，缺少日循环硬限不能单列为bug。"
+    }
+  ],
+  "general_principles": [
+    "观测只能使用决策时可得的信息；是否需要预测和历史取决于任务动态。",
+    "奖励、约束、报告指标必须和研究目标一致；利润、用户电量、峰谷形状是不同量。",
+    "有限任务需明确终端能量口径；没有跨论文统一的固定终端SOC规则。",
+    "共同初始条件、独立评估、固定场景种子及资源边界有助于公平比较。"
+  ],
+  "paper_specific_choices": [
+    "price-taker vs影响出清的竞价",
+    "对外买卖 vs只购电不返售",
+    "协调迭代的整日计划 vs逐小时实时动作",
+    "移峰补偿负荷 vs非守恒的价格响应",
+    "移动储能交通延误残值 vs固定储能单日边界"
+  ],
+  "not_concluded": [
+    "没有评估未知纯SAC分支的实现。",
+    "没有查看或判定500ep是否收敛。",
+    "没有修改任何源码、参数或实验目标。",
+    "未发现可由这些期刊差异单独证明的SAC实现bug。"
+  ],
+  "excluded": [
+    {
+      "title": "Demand Responsive Dynamic Pricing Framework for Prosumer Dominated Microgrids using Multiagent Reinforcement Learning",
+      "reason": "检索到的是2020 52nd North American Power Symposium会议版本，DOI10.1109/NAPS50074.2021.9449714；未计入期刊证据。"
+    },
+    {
+      "title": "Learning reachability of energy storage arbitrage",
+      "reason": "检索页显示2027年卷期；未为本次2026-10-18的期刊样本采用，也未借其终端SOC结论。"
+    }
+  ]
+}
