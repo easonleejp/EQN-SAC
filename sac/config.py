@@ -60,7 +60,7 @@ class Config:
         for name in ("actor_lr", "critic_lr", "alpha_lr", "initial_alpha", "reward_scale"):
             if getattr(self, name) <= 0:
                 raise ValueError(name + " must be positive")
-        if self.device not in ("cpu", "cuda") or self.observation not in ("full19", "causal11", "market14", "market18", "nominal11", "dispatch17"):
+        if self.device not in ("cpu", "cuda") or self.observation not in ("full19", "causal11", "market14", "market18", "nominal11", "dispatch17", "current6"):
             raise ValueError("Unsupported device or observation")
         if not 0 < self.gamma <= 1 or not 0 < self.target_tau <= 1:
             raise ValueError("Invalid gamma or target_tau")

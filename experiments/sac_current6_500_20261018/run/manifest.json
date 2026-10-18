@@ -1,0 +1,31 @@
+{
+  "version": "sac-3-fixed-day",
+  "hashes": {
+    "sac/__init__.py": "9ddcf3842e81bc1b15dc760d13eefe10f635fa484a3b640d4abec7712873e1cf",
+    "sac/agent.py": "8f2924f6dcee55335094da38bc06fc6051be8c082c56b6952950412b816d7ee1",
+    "sac/config.py": "202218c39f772109c4e63e2c003a82ae4c414c3dbc9a0aa3bdd4e097f4de9009",
+    "sac/networks.py": "b375e1ba98cdc6299fe603dc1db9b00858d4100658466a835422a282dc449854",
+    "sac/parameters.py": "dcd29631215e0ff60b5ccc2c578b8aa8167458725b431f65b0ee4b8bb1fc02d0",
+    "sac/replay.py": "c0bdab55d7d3aa85b46f343d6a659f350dffab36c8363f473f9bef6adcaba4eb",
+    "sac/runner.py": "30a2f42235951ac10403be9f1e3421cf46492d523279ed52c902b42d831e432e",
+    "sac/scenarios.py": "ae5caba6754ba029d147424cc9acb2f045f38e7e01c7a341858730bc9c642e47",
+    "sac/task.py": "d8e35988c7bfa6ce8a66f656b0deb8f3ab372ab9356701977b6a8db42d84aedd",
+    "train_sac.py": "137813df3f307f45e3b33495b60ed4787c35a69e4a29233d306261999bda0fb1",
+    "eqnsac/config.py": "1d35b2712cf0869c2ed22f5b088dc1e7a1d14354c8534b4dbfb6d6c25b28bfe7",
+    "eqnsac/environment.py": "6617fae8cb909a5e8e697e61b61eef4abcca63dc44d713a5229a4c3e87fdb6b4",
+    "eqnsac/scenarios.py": "06b02c16f253d7efd296d30a57ccc7d3957a2917e5762493cfe331a306ddbe80",
+    "eqnsac/single_source.py": "80433ddee016cde0282cdf945aac5efc60620a564302c7ac413a686021e022c4",
+    "data/environment.json": "e93e1278e70567df4172131b2075824cfb64416988eacfb1606c26327fd86022",
+    "data/profile.json": "ba6149855dfe04a4a49f5564ef6cd8c46bce3975298f6d741f37a1181597602c",
+    "data/provenance.json": "07f1519c333c5650c6bc1adee7ce0a188308ff1d402d714c24788f70fd18d2dd"
+  },
+  "python": "3.12.14",
+  "torch": "2.7.1",
+  "numpy": "2.5.4",
+  "scipy": "1.18.1",
+  "device": "cpu",
+  "threads": 1,
+  "action_coordinates": "raw normalized tanh controls; storage mapped by task only",
+  "reward": "original profit multiplied by reward_scale",
+  "scenario_definition": "One fixed 24-hour day: baseline load and wholesale price are copied from the original nominal profile; wind power is constant at mean nominal load times renewable_penetration. No scenario, shift, spike, or wind-speed draws are made. All response noise standard deviations are explicitly zero. reference_seed identifies this same day; repeats are not independent unseen scenarios."
+}

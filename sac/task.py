@@ -16,11 +16,18 @@ class Task:
         self.reference = make_environment(cfg)
         self.observation_dim = {"full19": 19, "causal11": 11, "market14": 14,
                                 "market18": 18, "nominal11": 11,
-                                "dispatch17": 17}[cfg.observation]
-        # Public nominal profiles, not the future realization of a sampled day.
-        self.load_scale = float(self.env.norm["max_load"])
-        self.price_center = float(np.mean(self.env.profile["grid_price"]))
-        self.price_spread = float(np.std(self.env.profile["grid_price"]))
+                                "dispatch17": 17, "current6": 6}[cfg.observation]
+        if cfg.observation == "current6":
+            # Fixed numerical scales, not statistics of this day's full profile.
+            # Both present load and wind use the same power scale. No clipping:
+            # a larger future dataset remains distinguishable above this scale.
+            self.load_scale = 5000.0
+            self.price_center, self.price_spread = 20.0, 2.0
+        else:
+            # Legacy experiments retain their original nominal normalization.
+            self.load_scale = float(self.env.norm["max_load"])
+            self.price_center = float(np.mean(self.env.profile["grid_price"]))
+            self.price_spread = float(np.std(self.env.profile["grid_price"]))
 
     def reset(self, case, response_seed):
         self.reference.reset(case, response_seed)
@@ -40,6 +47,22 @@ class Task:
         return float(2 * (price - low) / (high - low) - 1)
 
     def observe(self, state):
+        if self.cfg.observation == "current6":
+            if self.env.t >= 24:
+                return np.zeros(self.observation_dim, dtype=np.float32)
+            env, hour = self.env, self.env.t
+            low, high = env.user.price_min[0], env.user.price_max[0]
+            storage = env.storage
+            # Only measurements available at this decision time. Derive SOC
+            # directly rather than selecting fields from the legacy full state.
+            return np.asarray([
+                (env.price[hour] - self.price_center) / self.price_spread,
+                env.load[hour] / self.load_scale,
+                env.wind[hour] / self.load_scale,
+                (env.soc - storage.soc_min) / (storage.soc_max - storage.soc_min),
+                (24 - hour) / 24,
+                2 * (env.profile["retail_price"][hour] - low) / (high - low) - 1,
+            ], dtype=np.float32)
         if self.cfg.observation in ("nominal11", "dispatch17"):
             if self.env.t >= 24:
                 return np.zeros(self.observation_dim, dtype=np.float32)

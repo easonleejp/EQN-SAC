@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
 import numpy as np
 
 from sac.config import Config, load_config
@@ -29,7 +30,7 @@ class TaskTests(unittest.TestCase):
         self.assertAlmostEqual(balance, 0, places=7)
 
     def test_reward_is_original_profit_and_observation_does_not_change_physics(self):
-        tasks = [Task(replace(Config(), observation=mode)) for mode in ('full19', 'causal11', 'market14', 'market18', 'nominal11', 'dispatch17')]
+        tasks = [Task(replace(Config(), observation=mode)) for mode in ('full19', 'causal11', 'market14', 'market18', 'nominal11', 'dispatch17', 'current6')]
         for task in tasks:
             task.reset(self.case, 7)
         actions = np.random.default_rng(88).uniform(-1, 1, (24, 2))
@@ -42,7 +43,7 @@ class TaskTests(unittest.TestCase):
                 self.assertEqual(done, results[0][2])
 
     def test_causal_observation_does_not_read_future_realizations(self):
-        for observation, dim in [('full19', 19), ('causal11', 11), ('market14', 14), ('market18', 18), ('nominal11', 11), ('dispatch17', 17)]:
+        for observation, dim in [('full19', 19), ('causal11', 11), ('market14', 14), ('market18', 18), ('nominal11', 11), ('dispatch17', 17), ('current6', 6)]:
             task = Task(replace(Config(), observation=observation))
             task.reset(self.case, 42)
             for hour in range(24):
@@ -60,6 +61,112 @@ class TaskTests(unittest.TestCase):
                     setattr(task.env, key, value)
                 task.env.case = original_case
                 task.step([.2, -.3])
+
+    def test_current6_initialization_does_not_read_profile_statistics(self):
+        cfg = replace(Config(), observation='current6')
+        cfg.validate()
+        env, reference = make_environment(cfg), make_environment(cfg)
+
+        class NoProfileReads(dict):
+            def __getitem__(self, key):
+                raise AssertionError('current6 initialization read profile/normalizer: ' + key)
+
+        # Environment construction legitimately calibrates scenarios. The Task
+        # observation layer must not derive its scales from those full-day data.
+        env.profile = NoProfileReads(env.profile)
+        env.norm = NoProfileReads(env.norm)
+        with patch('sac.task.make_environment', side_effect=[env, reference]):
+            task = Task(cfg)
+        self.assertEqual(task.observation_dim, 6)
+
+    def test_current6_contains_only_current_inputs_with_fixed_scales(self):
+        cfg = replace(Config(), observation='current6', storage_parameters={
+            'soc_min': 100, 'soc_init': 600, 'soc_max': 2100,
+        })
+        task = Task(cfg)
+        task.env.reset(self.case, 42)
+        env = task.env
+        low, high = env.user.price_min[0], env.user.price_max[0]
+        for hour, fraction in ((0, 0.0), (7, 0.25), (12, 0.75), (23, 1.0)):
+            with self.subTest(hour=hour):
+                env.t = hour
+                env.soc = env.storage.soc_min + fraction * (env.storage.soc_max - env.storage.soc_min)
+                expected = np.asarray([
+                    (env.price[hour] - 20) / 2,
+                    env.load[hour] / 5000,
+                    env.wind[hour] / 5000,
+                    fraction, (24 - hour) / 24,
+                    2 * (env.profile['retail_price'][hour] - low) / (high - low) - 1,
+                ], dtype=np.float32)
+                actual = task.observe(None)
+                self.assertEqual(actual.shape, (6,))
+                self.assertEqual(actual.dtype, np.float32)
+                np.testing.assert_allclose(actual, expected, rtol=0, atol=1e-7)
+
+        # Positive control: the currently published TOU is an allowed feature.
+        before = task.observe(None)
+        env.profile['retail_price'][env.t] += .25
+        after = task.observe(None)
+        np.testing.assert_array_equal(after[:5], before[:5])
+        self.assertAlmostEqual(float(after[5] - before[5]), .5 / (high - low), places=6)
+
+    def test_current6_ignores_future_realized_and_nominal_inputs(self):
+        task = Task(replace(Config(), observation='current6'))
+        # Include early and late hours so leakage through remaining-day extrema
+        # or normalization cannot hide behind a particular position in the day.
+        for hour in (0, 8, 12, 22):
+            with self.subTest(hour=hour):
+                task.env.reset(self.case, 42)
+                env = task.env
+                env.t = hour
+                before = task.observe(None)
+                for key in ('load', 'price', 'wind'):
+                    getattr(env, key)[hour + 1:] = getattr(env, key)[hour + 1:] * 1.7 + 10
+                for key in ('baseline_load', 'grid_price', 'wind_power'):
+                    env.case[key][hour + 1:] = env.case[key][hour + 1:] * 1.9 + 20
+                # Nominal load/price/TOU and any other hourly profile must not
+                # influence this hour through means, maxima or future quotes.
+                for profile in (env.profile, env.generator.profile):
+                    for values in profile.values():
+                        if values.ndim and len(values) == 24:
+                            values[hour + 1:] = values[hour + 1:] * 1.4 + 5
+                    # Temperature is forbidden even when it is currently known.
+                    profile['temperature'][:] += 30
+                env.generator.load[hour + 1:] *= 2
+                env.generator.price[hour + 1:] *= 2
+                env.generator.wind_capacity *= 2
+                for key in env.norm:
+                    env.norm[key] *= 3
+                env.previous_response = 9999.0
+                env.previous_price[:] = env.user.price_max
+                np.testing.assert_array_equal(before, task.observe(None))
+
+    def test_current6_does_not_use_response_parameters_or_derived_state_helpers(self):
+        cfg = replace(Config(), observation='current6')
+        changed = replace(cfg, response_parameters={
+            'curvature_mean': .0014, 'curvature_std': 0,
+            'demand_noise_std': 0, 'participation_noise_std': 0,
+        }, hourly_utility={'a': [-.0008] * 24, 'b': [38.0] * 24})
+        original, modified = Task(cfg), Task(changed)
+        original.env.reset(self.case, 42)
+        modified.env.reset(self.case, 42)
+        self.assertNotEqual(original.env.effective_demand_reference(12),
+                            modified.env.effective_demand_reference(12))
+        for hour in (0, 12, 23, 24):
+            for task in (original, modified):
+                task.env.t = hour
+            with self.subTest(hour=hour):
+                expected = original.observe(None)
+                # Restrict the observation layer, leaving Environment.step free
+                # to use its existing response and physical feasibility logic.
+                with patch.object(modified.env, 'state', side_effect=AssertionError('state leaked')), \
+                     patch.object(modified.env, 'effective_demand_reference', side_effect=AssertionError('response leaked')), \
+                     patch.object(modified.env, 'feasible_bounds', side_effect=AssertionError('bounds leaked')), \
+                     patch.object(modified.env.generator, 'observations', side_effect=AssertionError('forecast leaked')):
+                    np.testing.assert_array_equal(expected, modified.observe(None))
+                    np.testing.assert_array_equal(expected, modified.observe(np.full(19, np.nan)))
+                if hour == 24:
+                    np.testing.assert_array_equal(expected, np.zeros(6, dtype=np.float32))
 
     def test_config_validation(self):
         for kwargs in ({'batch_size':True},{'reward_scale':0},{'episodes':0},{'observation':'future_truth'},
@@ -182,13 +289,15 @@ class TaskTests(unittest.TestCase):
             self.assertNotIn('peak_cost', row)
 
     def test_terminal_observation_and_profit_only_after_24_steps(self):
-        task = Task(replace(Config(), observation='market14'))
-        task.reset(self.case, 42)
-        for _ in range(24):
-            obs, reward, done, info = task.step([0, 0])
-            self.assertEqual(reward, task.cfg.reward_scale * info['profit'])
-        self.assertTrue(done)
-        np.testing.assert_array_equal(obs, np.zeros(14))
+        for mode, dim in (('market14', 14), ('current6', 6)):
+            with self.subTest(observation=mode):
+                task = Task(replace(Config(), observation=mode))
+                task.reset(self.case, 42)
+                for _ in range(24):
+                    obs, reward, done, info = task.step([0, 0])
+                    self.assertEqual(reward, task.cfg.reward_scale * info['profit'])
+                self.assertTrue(done)
+                np.testing.assert_array_equal(obs, np.zeros(dim))
 
 
 if __name__ == '__main__':
