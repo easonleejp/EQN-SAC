@@ -1,0 +1,560 @@
+{
+  "cleaned_utc": "2026-10-18T08:34:53.745694+00:00",
+  "retained_version": "sac-causal13-fixed-day-500+1",
+  "previous_head": "090ea7a7919599b3fddc1f9cf638409be38a6a3e",
+  "deleted_entries": [
+    {
+      "path": "checks/dispatch_balanced_500",
+      "type": "directory",
+      "files": 7,
+      "bytes": 10412462
+    },
+    {
+      "path": "checks/dispatch_baseline_500",
+      "type": "directory",
+      "files": 7,
+      "bytes": 10309350
+    },
+    {
+      "path": "checks/dispatch_centered_500",
+      "type": "directory",
+      "files": 7,
+      "bytes": 10292491
+    },
+    {
+      "path": "checks/dispatch_compact_500",
+      "type": "directory",
+      "files": 7,
+      "bytes": 10266687
+    },
+    {
+      "path": "checks/dispatch_tests.log",
+      "type": "file",
+      "files": 1,
+      "bytes": 1540
+    },
+    {
+      "path": "checks/price_response_legacy",
+      "type": "directory",
+      "files": 2,
+      "bytes": 4365175
+    },
+    {
+      "path": "checks/price_response_revision_scale4",
+      "type": "directory",
+      "files": 2,
+      "bytes": 4171574
+    },
+    {
+      "path": "checks/profit_only_study",
+      "type": "directory",
+      "files": 3,
+      "bytes": 79220
+    },
+    {
+      "path": "checks/sac_audit",
+      "type": "directory",
+      "files": 80,
+      "bytes": 61548053
+    },
+    {
+      "path": "checks/sac_causal13_500/independent_review.txt",
+      "type": "file",
+      "files": 1,
+      "bytes": 4660
+    },
+    {
+      "path": "checks/sac_causal13_500/offline_analysis.py",
+      "type": "file",
+      "files": 1,
+      "bytes": 22528
+    },
+    {
+      "path": "checks/sac_causal13_500/plot.log",
+      "type": "file",
+      "files": 1,
+      "bytes": 2373
+    },
+    {
+      "path": "checks/sac_causal13_500/validation.log",
+      "type": "file",
+      "files": 1,
+      "bytes": 1387
+    },
+    {
+      "path": "checks/sac_core_tests.log",
+      "type": "file",
+      "files": 1,
+      "bytes": 1164
+    },
+    {
+      "path": "checks/sac_current6_500",
+      "type": "directory",
+      "files": 6,
+      "bytes": 38111
+    },
+    {
+      "path": "checks/sac_current6_tuned_500",
+      "type": "directory",
+      "files": 6,
+      "bytes": 29906
+    },
+    {
+      "path": "checks/sac_fixed_day",
+      "type": "directory",
+      "files": 18,
+      "bytes": 1284759
+    },
+    {
+      "path": "checks/sac_fixed_day_refined",
+      "type": "directory",
+      "files": 22,
+      "bytes": 1500971
+    },
+    {
+      "path": "checks/sac_hourly_utility",
+      "type": "directory",
+      "files": 25,
+      "bytes": 1645297
+    },
+    {
+      "path": "checks/sac_midday_price",
+      "type": "directory",
+      "files": 25,
+      "bytes": 1600835
+    },
+    {
+      "path": "checks/sac_profit_only_independent_tests.log",
+      "type": "file",
+      "files": 1,
+      "bytes": 11622
+    },
+    {
+      "path": "checks/sac_revision",
+      "type": "directory",
+      "files": 622,
+      "bytes": 167464090
+    },
+    {
+      "path": "configs/sac/baseline_2000.json",
+      "type": "file",
+      "files": 1,
+      "bytes": 797
+    },
+    {
+      "path": "configs/sac/baseline_500.json",
+      "type": "file",
+      "files": 1,
+      "bytes": 794
+    },
+    {
+      "path": "configs/sac/current6_500.json",
+      "type": "file",
+      "files": 1,
+      "bytes": 2182
+    },
+    {
+      "path": "configs/sac/current6_tuned_500.json",
+      "type": "file",
+      "files": 1,
+      "bytes": 2183
+    },
+    {
+      "path": "configs/sac/experimental_market18_2000.json",
+      "type": "file",
+      "files": 1,
+      "bytes": 969
+    },
+    {
+      "path": "configs/sac/fixed_day_500.json",
+      "type": "file",
+      "files": 1,
+      "bytes": 1116
+    },
+    {
+      "path": "configs/sac/fixed_day_refined_500.json",
+      "type": "file",
+      "files": 1,
+      "bytes": 1120
+    },
+    {
+      "path": "configs/sac/hourly_utility_500.json",
+      "type": "file",
+      "files": 1,
+      "bytes": 2269
+    },
+    {
+      "path": "configs/sac/midday_price_500.json",
+      "type": "file",
+      "files": 1,
+      "bytes": 2184
+    },
+    {
+      "path": "configs/sac/studies",
+      "type": "directory",
+      "files": 16,
+      "bytes": 15112
+    },
+    {
+      "path": "docs/sac/current-observation.md",
+      "type": "file",
+      "files": 1,
+      "bytes": 7852
+    },
+    {
+      "path": "docs/sac/current6-training.md",
+      "type": "file",
+      "files": 1,
+      "bytes": 2879
+    },
+    {
+      "path": "docs/sac/fixed-day-500.md",
+      "type": "file",
+      "files": 1,
+      "bytes": 4648
+    },
+    {
+      "path": "docs/sac/fixed-day-refinement.md",
+      "type": "file",
+      "files": 1,
+      "bytes": 3898
+    },
+    {
+      "path": "docs/sac/hourly-utility.md",
+      "type": "file",
+      "files": 1,
+      "bytes": 6649
+    },
+    {
+      "path": "docs/sac/midday-price.md",
+      "type": "file",
+      "files": 1,
+      "bytes": 9707
+    },
+    {
+      "path": "docs/sac/parameter-review-20261018.md",
+      "type": "file",
+      "files": 1,
+      "bytes": 27597
+    },
+    {
+      "path": "docs/sac/review-20261018.md",
+      "type": "file",
+      "files": 1,
+      "bytes": 21204
+    },
+    {
+      "path": "experiments/sac_500ep_20261018",
+      "type": "directory",
+      "files": 188,
+      "bytes": 20671419
+    },
+    {
+      "path": "experiments/sac_causal13_500_20261018/checks/independent_review.txt",
+      "type": "file",
+      "files": 1,
+      "bytes": 4660
+    },
+    {
+      "path": "experiments/sac_causal13_500_20261018/checks/offline_analysis.py",
+      "type": "file",
+      "files": 1,
+      "bytes": 22528
+    },
+    {
+      "path": "experiments/sac_causal13_500_20261018/checks/plot.log",
+      "type": "file",
+      "files": 1,
+      "bytes": 2373
+    },
+    {
+      "path": "experiments/sac_causal13_500_20261018/checks/validation.log",
+      "type": "file",
+      "files": 1,
+      "bytes": 1387
+    },
+    {
+      "path": "experiments/sac_causal13_500_20261018/figures/comparison_manifest.json",
+      "type": "file",
+      "files": 1,
+      "bytes": 18305
+    },
+    {
+      "path": "experiments/sac_causal13_500_20261018/figures/fixed_day_comparison.pdf",
+      "type": "file",
+      "files": 1,
+      "bytes": 91776
+    },
+    {
+      "path": "experiments/sac_causal13_500_20261018/figures/fixed_day_comparison.png",
+      "type": "file",
+      "files": 1,
+      "bytes": 697366
+    },
+    {
+      "path": "experiments/sac_causal13_500_20261018/figures/hourly_comparison.csv",
+      "type": "file",
+      "files": 1,
+      "bytes": 15576
+    },
+    {
+      "path": "experiments/sac_causal13_500_20261018/run/offline_comparison.json",
+      "type": "file",
+      "files": 1,
+      "bytes": 37173
+    },
+    {
+      "path": "experiments/sac_current6_500_20261018",
+      "type": "directory",
+      "files": 39,
+      "bytes": 1215930
+    },
+    {
+      "path": "experiments/sac_current6_tuned_500_20261018",
+      "type": "directory",
+      "files": 39,
+      "bytes": 1219282
+    },
+    {
+      "path": "experiments/sac_fixed_day_500_20261018",
+      "type": "directory",
+      "files": 35,
+      "bytes": 978750
+    },
+    {
+      "path": "experiments/sac_fixed_day_refined_500_20261018",
+      "type": "directory",
+      "files": 37,
+      "bytes": 1179404
+    },
+    {
+      "path": "experiments/sac_hourly_utility_500_20261018",
+      "type": "directory",
+      "files": 40,
+      "bytes": 1236092
+    },
+    {
+      "path": "experiments/sac_midday_price_500_20261018",
+      "type": "directory",
+      "files": 41,
+      "bytes": 1248913
+    },
+    {
+      "path": "experiments/sac_parameter_revision_20261018",
+      "type": "directory",
+      "files": 582,
+      "bytes": 87245087
+    },
+    {
+      "path": "runs/sac_balanced_500",
+      "type": "directory",
+      "files": 47,
+      "bytes": 23560901
+    },
+    {
+      "path": "runs/sac_baseline_500",
+      "type": "directory",
+      "files": 47,
+      "bytes": 23394217
+    },
+    {
+      "path": "runs/sac_causal13_500/offline_comparison.json",
+      "type": "file",
+      "files": 1,
+      "bytes": 37173
+    },
+    {
+      "path": "runs/sac_centered_500",
+      "type": "directory",
+      "files": 47,
+      "bytes": 23407358
+    },
+    {
+      "path": "runs/sac_compact_500",
+      "type": "directory",
+      "files": 47,
+      "bytes": 23175550
+    },
+    {
+      "path": "runs/sac_current6_500",
+      "type": "directory",
+      "files": 41,
+      "bytes": 1313261
+    },
+    {
+      "path": "runs/sac_current6_tuned_500",
+      "type": "directory",
+      "files": 41,
+      "bytes": 1315162
+    },
+    {
+      "path": "runs/sac_fixed_day_500",
+      "type": "directory",
+      "files": 41,
+      "bytes": 1308274
+    },
+    {
+      "path": "runs/sac_fixed_day_refined_500",
+      "type": "directory",
+      "files": 41,
+      "bytes": 1339845
+    },
+    {
+      "path": "runs/sac_hourly_utility_500",
+      "type": "directory",
+      "files": 42,
+      "bytes": 1360599
+    },
+    {
+      "path": "runs/sac_midday_price_500",
+      "type": "directory",
+      "files": 42,
+      "bytes": 1360163
+    },
+    {
+      "path": "runs/sac_peak_balanced_500",
+      "type": "directory",
+      "files": 47,
+      "bytes": 24362497
+    },
+    {
+      "path": "runs/sac_revision_baseline_2000",
+      "type": "directory",
+      "files": 50,
+      "bytes": 24737382
+    },
+    {
+      "path": "runs/sac_revision_critic_first_full19_2000",
+      "type": "directory",
+      "files": 36,
+      "bytes": 15140458
+    },
+    {
+      "path": "runs/sac_revision_critic_first_market14_2000",
+      "type": "directory",
+      "files": 36,
+      "bytes": 15027013
+    },
+    {
+      "path": "runs/sac_revision_forecast18_2000",
+      "type": "directory",
+      "files": 36,
+      "bytes": 15115462
+    },
+    {
+      "path": "runs/sac_revision_forecast18_scale3_2000",
+      "type": "directory",
+      "files": 50,
+      "bytes": 24785625
+    },
+    {
+      "path": "runs/sac_revision_forecast18_scale3_seed123_2000",
+      "type": "directory",
+      "files": 49,
+      "bytes": 20005446
+    },
+    {
+      "path": "runs/sac_revision_forecast18_scale3_seed7_2000",
+      "type": "directory",
+      "files": 49,
+      "bytes": 20007539
+    },
+    {
+      "path": "runs/sac_revision_market14_scale3_500",
+      "type": "directory",
+      "files": 39,
+      "bytes": 17803832
+    },
+    {
+      "path": "runs/sac_revision_market14_scale4_500",
+      "type": "directory",
+      "files": 39,
+      "bytes": 17803212
+    },
+    {
+      "path": "runs/sac_revision_market14_scale5_500",
+      "type": "directory",
+      "files": 39,
+      "bytes": 17810729
+    },
+    {
+      "path": "runs/sac_revision_response11_storage20_scale4_500",
+      "type": "directory",
+      "files": 39,
+      "bytes": 17851969
+    },
+    {
+      "path": "runs/sac_revision_storage20_scale3_2000",
+      "type": "directory",
+      "files": 36,
+      "bytes": 15020804
+    },
+    {
+      "path": "runs/sac_revision_storage20_scale4_2000",
+      "type": "directory",
+      "files": 36,
+      "bytes": 15025749
+    },
+    {
+      "path": "runs/sac_revision_storage20_scale4_500",
+      "type": "directory",
+      "files": 39,
+      "bytes": 17850692
+    },
+    {
+      "path": "runs/sac_revision_storage20_scale5_500",
+      "type": "directory",
+      "files": 39,
+      "bytes": 17858730
+    },
+    {
+      "path": "runs/sac_revision_wind_sized_full19_2000",
+      "type": "directory",
+      "files": 36,
+      "bytes": 15151835
+    },
+    {
+      "path": "tools/compare_sac_runs.py",
+      "type": "file",
+      "files": 1,
+      "bytes": 18748
+    },
+    {
+      "path": "tools/plot_sac_convergence.py",
+      "type": "file",
+      "files": 1,
+      "bytes": 14759
+    },
+    {
+      "path": "tools/plot_sac_dispatch.py",
+      "type": "file",
+      "files": 1,
+      "bytes": 9464
+    },
+    {
+      "path": "tools/plot_sac_fixed_day_comparison.py",
+      "type": "file",
+      "files": 1,
+      "bytes": 26959
+    },
+    {
+      "path": "tools/summarize_profit_only_study.py",
+      "type": "file",
+      "files": 1,
+      "bytes": 16543
+    }
+  ],
+  "deleted_path_count": 90,
+  "deleted_file_count_before_replacing_plot_log": 3026,
+  "deleted_bytes_before_replacing_plot_log": 814071386,
+  "checks": {
+    "protected_current_source_and_run_hashes_unchanged": true,
+    "checkpoint_matches_original_test_provenance": true,
+    "only_current_sac_config": true,
+    "only_current_sac_run": true,
+    "only_current_sac_experiment": true,
+    "unit_tests": 103,
+    "additional_training_or_policy_test_runs": 0
+  },
+  "scope": "Deleted obsolete pure-SAC working-tree files; Git commit history, main branch and EQN historical sources remain. Retired-tool bytecode also removed. Original selection/provenance records retain historical source names without retaining old versions."
+}

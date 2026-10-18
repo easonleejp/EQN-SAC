@@ -1,0 +1,24 @@
+{
+  "policy_loaded_or_evaluated": false,
+  "test_source": "run/test_1ep.json",
+  "test_sha256": "c7ff5f406297af56280fffca91729be58b968668a3c4d3acfa54add6d026880c",
+  "profit": 1169753.642568915,
+  "storage_marginal_profit": 4195.425772039968,
+  "midday_price_h10_14": 31.579305267333986,
+  "midday_reduction_h11_15_percent": 11.145911884165704,
+  "grid_peak": 3314.204866519757,
+  "grid_rms_adjacent_change": 254.8021553808245,
+  "grid_max_adjacent_change": 779.3016887597173,
+  "grid_max_change_hours": [
+    2,
+    3
+  ],
+  "available_energy_h18_start": 1976.142136131033,
+  "discharge_h17_20_energy": 2547.9922564299814,
+  "discharge_h17_20_percent": 69.92257380394433,
+  "charge_weighted_wholesale": 18.109931425593693,
+  "discharge_weighted_wholesale": 22.290560841759298,
+  "price_h22": 30.06785774230957,
+  "price_h23": 29.985153198242188,
+  "units": "Model convention: Australian cents/kWh, kW, kWh, profit cents; original source units unverified."
+}

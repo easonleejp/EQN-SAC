@@ -1,5 +1,0 @@
-New configuration validated. Only hourly_utility differs from previous configuration.
-All frozen training source/data hashes equal previous run. No implementation changes to reward, response, actor, critic, observation, storage or sampling.
-500 training episodes; evaluation_every=0; one final test required.
-Previous identical core implementation passed 92 local tests and GitHub CI 39099461773; those tests were not rerun for this parameter-only change.
-Static proposal coefficients match fixed training config within 1e-12; proposal report serialized after train launch, selection/config fixed before.

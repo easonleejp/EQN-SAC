@@ -1,0 +1,163 @@
+{
+  "review_date": "2026-10-18",
+  "scope": "Previously checked journal evidence only; not a saved SAC variant. Current parameters are in configs/sac/causal13_500.json.",
+  "sources": [
+    {
+      "id": "asadinejad2017",
+      "title": "Optimal use of incentive and price based demand response to reduce costs and price volatility",
+      "authors": [
+        "Ailin Asadinejad",
+        "Kevin Tomsovic"
+      ],
+      "journal": "Electric Power Systems Research",
+      "year": 2017,
+      "volume": "144",
+      "pages": "215–223",
+      "doi": "10.1016/j.epsr.2016.12.012",
+      "publisher_url": "https://www.sciencedirect.com/science/article/am/pii/S0378779616305259",
+      "fulltext_url": "https://web.eecs.utk.edu/~ktomsovi/Vitae/Publications/ASAD17.pdf",
+      "access": "作者大学主页提供的正式排版期刊PDF；已下载并目视核对p220 Table2。",
+      "evidence": [
+        {
+          "locator": "p218, Section3.1, Eq.(3b)",
+          "fact": "负荷相对变化由各时段电价相对变化乘以自身/交叉弹性后求和决定。自身弹性与跨时段替代不可混同。"
+        },
+        {
+          "locator": "p220, Table2",
+          "fact": "WECC案例PBDR自身弹性−0.1、交叉弹性+0.07。该表引自报告[42,43]，并非作者对本项目用户实测估计。",
+          "numeric": {
+            "own_price_elasticity": -0.1,
+            "cross_price_elasticity": 0.07
+          }
+        },
+        {
+          "locator": "pp218–220, Section3.1 and Section4.2",
+          "fact": "TOU设计需要同时看负荷与LMP时段差异；昼夜LMP差异很小的月份收益有限，过强TOU可能形成新峰。"
+        },
+        {
+          "locator": "p218 Eq.(2); p220 Section4.2",
+          "fact": "论文TOU目标另含负荷变化项，峰时定义10:00–22:00；不能把其削峰结果归因于纯零售利润目标或通用时段规则。"
+        }
+      ]
+    },
+    {
+      "id": "nakabi2021",
+      "title": "Deep reinforcement learning for energy management in a microgrid with flexible demand",
+      "authors": [
+        "T. A. Nakabi",
+        "P. Toivanen"
+      ],
+      "journal": "Sustainable Energy, Grids and Networks",
+      "year": 2021,
+      "volume": "25",
+      "article_number": "100413",
+      "doi": "10.1016/j.segan.2020.100413",
+      "publisher_url": "https://doi.org/10.1016/j.segan.2020.100413",
+      "fulltext_url": "https://www.researchgate.net/publication/347395657_Deep_reinforcement_learning_for_energy_management_in_a_microgrid_with_flexible_demand",
+      "access": "核对正式发表论文全文转写（页眉/表号保留）的镜像；出版元数据另由期刊DOI和东芬兰大学研究记录核验。没有依据ResearchGate评论或二手概述。",
+      "evidence": [
+        {
+          "locator": "p3 Section2.1, Eq.(1)",
+          "fact": "储能能量更新含独立ηc与ηd，作者将社区储能描述为覆盖至少2小时微网需求。"
+        },
+        {
+          "locator": "p11 Table1",
+          "fact": "案例Cmax=Dmax=250kW、ηc=ηd=0.9、Bmax数值500；表把Bmax单位印作kW，正文Eq1定义它为储能量，因此若解释为kWh可算2h，但不能悄悄把原表单位改写成已核实kWh。",
+          "numeric": {
+            "charge_power_kw": 250,
+            "discharge_power_kw": 250,
+            "charge_efficiency": 0.9,
+            "discharge_efficiency": 0.9,
+            "capacity_numeric": 500,
+            "capacity_unit_in_table": "kW",
+            "capacity_interpretation": "由正文能量状态推断应为kWh，保留原文单位疑点。"
+          }
+        },
+        {
+          "locator": "pp4–5 Section2.5, Eq.(6)–(9); p11 Table1",
+          "fact": "响应包含价格敏感度、耐心参数和延后回补；β为离散价格档位下的负荷比例敏感度，不能直接当微观经济学价格弹性。风电取芬兰风场小时数据的1%，不是20%需求能源占比。"
+        }
+      ]
+    },
+    {
+      "id": "wei2022",
+      "title": "Multi-objective optimal configuration of stand-alone microgrids based on Benders decomposition considering power supply reliability",
+      "authors": [
+        "Wei Wei",
+        "Herong Wang",
+        "Kai Hou",
+        "Ledong Ji"
+      ],
+      "journal": "IET Energy Systems Integration",
+      "year": 2022,
+      "volume": "4",
+      "issue": "2",
+      "pages": "281–295",
+      "doi": "10.1049/esi2.12060",
+      "fulltext_url": "https://ietresearch.onlinelibrary.wiley.com/doi/10.1049/esi2.12060",
+      "access": "出版社开放全文HTML；以节号/公式/附录定位，未声称核实PDF页内位置。",
+      "evidence": [
+        {
+          "locator": "Section2.4, Eq.(5)–(8)",
+          "fact": "SOC按充电乘ηc、放电除ηd更新，额定能量与额定功率通过独立充放电倍率关联。"
+        },
+        {
+          "locator": "AppendixB: Economic and technical parameters of the alternative equipment",
+          "fact": "ηc=ηd=95%，充放电倍率20%，SOC区间[0.2,0.8]；资本成本2000元/kWh，固定年维护25元/(kWh·年)。这些不是吞吐成本。"
+        },
+        {
+          "locator": "Section5.2, Table2, iteration7; AppendixB",
+          "fact": "最终案例储能3837.74kWh，PV997.07kW，风机1×260+2×750kW。由倍率算Pmax767.548kW，可用能量/功率3h；忽略自放电时外部满功率放电2.85h。以上时长/比值为本次审查计算，不是原文结论。"
+        }
+      ],
+      "derived_case_values": {
+        "battery_power_kw": 767.548,
+        "renewable_capacity_kw": 2757.07,
+        "usable_duration_hours_ignoring_loss": 3.0,
+        "output_duration_hours_ignoring_self_discharge": 2.85
+      }
+    },
+    {
+      "id": "ding2023",
+      "title": "Unintended consequences of curtailment cap policies on power system decarbonization",
+      "authors": [
+        "Yongbin Ding",
+        "Mingquan Li",
+        "Ahmed Abdulla",
+        "Rui Shan",
+        "Ziyi Liu"
+      ],
+      "journal": "iScience",
+      "year": 2023,
+      "volume": "26",
+      "issue": "7",
+      "article_number": "106967",
+      "doi": "10.1016/j.isci.2023.106967",
+      "publisher_url": "https://www.cell.com/iscience/fulltext/S2589-0042(23)01044-1",
+      "fulltext_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10391583/",
+      "xml_url": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC10391583/fullTextXML",
+      "supplement_url": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC10391583/supplementaryFiles",
+      "access": "EuropePMC公开的发表论文XML及其原始补充PDF；已目视TableS5。",
+      "evidence": [
+        {
+          "locator": "Results, paragraph following Figure2; Discussion",
+          "fact": "青海案例讨论储能功率/风光装机功率：2021政策10%和至少2h；模型后续情景建议约20%或30%。这些是配储功率比，不是可再生能源电量渗透率，不是澳洲项目通用标准。"
+        },
+        {
+          "locator": "Supplement, PDFp9, TableS5",
+          "fact": "BESS往返效率90%，小时能量损失0.05%（表头Hourly energy loss），最大SOC100%、DOD99%。与项目分别95%产生90.25%往返接近；不建议照搬其SOC区间。"
+        },
+        {
+          "locator": "Supplement, PDFp11, TableS7",
+          "fact": "BESS固定运维为资本成本的1%/年，技术寿命15年；不等价于吞吐退化成本。"
+        },
+        {
+          "locator": "STAR Methods, Method details",
+          "fact": "该论文以真实省级容量、月度典型日及逐年8760小时调度研究年度转型；本项目单日平稳合成风电不具备同等年度解释。"
+        }
+      ]
+    }
+  ],
+  "extracted_from_git_commit": "090ea7a7919599b3fddc1f9cf638409be38a6a3e",
+  "extracted_from_path": "experiments/sac_parameter_revision_20261018/literature/parameter_evidence.json"
+}

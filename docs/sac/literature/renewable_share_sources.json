@@ -1,0 +1,65 @@
+{
+  "review_date": "2026-10-18",
+  "scope": "Previously checked journal evidence only; not a saved SAC variant. Current parameters are in configs/sac/causal13_500.json.",
+  "sources": [
+    {
+      "id": "elliston_2016_nem",
+      "authors": [
+        "Ben Elliston",
+        "Jenny Riesz",
+        "Iain MacGill"
+      ],
+      "title": "What cost for more renewables? The incremental cost of renewable generation – An Australian National Electricity Market case study",
+      "journal": "Renewable Energy",
+      "year": 2016,
+      "volume": 95,
+      "pages": "127–139",
+      "doi": "10.1016/j.renene.2016.03.080",
+      "doi_url": "https://doi.org/10.1016/j.renene.2016.03.080",
+      "full_text_url": "https://arena.gov.au/assets/2017/06/Elliston_etal_2016_6.pdf",
+      "version_verified": "正式发表排版版本；原文PDF含期刊、卷页、DOI、出版信息；非仅预印本。",
+      "downloaded_pdf_sha256": "f07676dcd0356776e72b552d828e59c494834278bfb759717e03d92925374cde",
+      "verification": "已全文提取并目视核对PDF第4、12页的定义和表格；未将全文或截图复制入项目。",
+      "locators": [
+        {
+          "printed_page": 130,
+          "pdf_page_1_based": 4,
+          "section": "3 Methods",
+          "finding": "使用2010年负荷与模拟可再生发电序列，配合2030年技术成本；属于全年电量仿真。"
+        },
+        {
+          "printed_page": 130,
+          "pdf_page_1_based": 4,
+          "section": "3.1 Mandating the minimum share of renewable generation",
+          "finding": "最低可再生供电份额设为0–100%，步长10%，共11组优化，明确包括20%。"
+        },
+        {
+          "printed_page": 138,
+          "pdf_page_1_based": 12,
+          "section": "Appendix B, Tables B.11 and B.12",
+          "finding": "两表均有%RE=20的场景行；另列各技术发电量。"
+        },
+        {
+          "printed_page": 130,
+          "pdf_page_1_based": 4,
+          "section": "2.6 System non-synchronous penetration limits",
+          "finding": "另设85%瞬时非同步发电比例上限，与年度RE电量份额是不同指标。"
+        }
+      ],
+      "share_definition": {
+        "numerator": "可再生能源满足需求的年度电量；技术集合含风、光、光热、水电和生物能。",
+        "denominator": "同一全年模拟的用电需求电量。",
+        "time_basis": "年度；2010年时序样本。",
+        "parameter_type": "最低份额场景参数，20%是研究网格中的一档；不是观测实绩或装机比例。",
+        "case_scope": "澳洲国家电力市场NEM；并非单个微网或配网。"
+      },
+      "transfer_limitations": [
+        "不能把含水电的全年可再生供电份额等同于项目纯风电可用发电量占名义日负荷的期望比例。",
+        "可证明20%作为研究场景已有先例，不能证明项目20%最优、典型或已经由澳洲实测数据标定。",
+        "表B.11/B.12表题标GWh，与正文全年约200 TWh量级存在表内单位疑点；本核对只使用明确的%RE场景标签，不搬用发电量数值。"
+      ]
+    }
+  ],
+  "extracted_from_git_commit": "090ea7a7919599b3fddc1f9cf638409be38a6a3e",
+  "extracted_from_path": "experiments/sac_parameter_revision_20261018/literature/renewable_share_supplement.json"
+}

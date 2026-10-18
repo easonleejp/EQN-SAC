@@ -1,7 +1,7 @@
 """Analyze saved hourly dispatch and learning curves without loading an agent.
 
 Examples:
-  python tools/analyze_dispatch.py --run-dir runs/sac_baseline --output checks/dispatch
+  python tools/analyze_dispatch.py --evaluation experiments/sac_causal13_500_20261018/run/test_1ep.json --environment experiments/sac_causal13_500_20261018/run/effective_environment.json --output checks/dispatch
   python tools/analyze_dispatch.py --evaluation evaluation_00500.json \
       --environment data/environment.json --output checks/dispatch
 

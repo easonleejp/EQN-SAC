@@ -1,31 +1,22 @@
-> 以下五组 SAC 对照属于已撤回推荐的奖励修改试验。当前原利润参数试验请使用 [新指南](sac/README.md)中的分析工具与实际参数快照。
-
 # 调度与训练诊断
 
 `tools/analyze_dispatch.py` 只读取逐小时结果，不载入模型、不训练、不改动运行产物。可用于纯 SAC 或任何使用相同环境记录格式的策略。
 
 ## 命令
 
-```bash
-.venv/bin/python tools/analyze_dispatch.py \
-  --run-dir runs/sac_baseline_500 \
-  --output checks/sac_audit/dispatch/baseline \
-  --window 20 --plots
-```
-
-脚本读取运行目录中的全部 `evaluation_*.json` 和可选 `training.csv`。环境参数默认取该运行保存的 `source/data/environment.json`，保证效率、SOC 和电价边界与历史运行一致。输出目录必须不存在，避免覆盖旧报告。
-
-也可指定一个或多个独立评价文件：
+当前SAC只有一个已保存的 `test_1ep.json`，使用显式评价文件和本轮有效环境快照：
 
 ```bash
 .venv/bin/python tools/analyze_dispatch.py \
-  --evaluation runs/sac_baseline_500/evaluation_00500.json \
-  --environment runs/sac_baseline_500/source/data/environment.json \
-  --training runs/sac_baseline_500/training.csv \
-  --output checks/single_evaluation --plots
+  --evaluation experiments/sac_causal13_500_20261018/run/test_1ep.json \
+  --environment experiments/sac_causal13_500_20261018/run/effective_environment.json \
+  --training experiments/sac_causal13_500_20261018/run/training.csv \
+  --output checks/current_dispatch --window 20 --plots
 ```
 
-训练期间反复查看的定期评价是开发验证集，不是未经使用的独立测试集。脚本不推断一个外部文件是否属于独立测试集。学习曲线来自随机训练场景和随机动作，不能代替固定场景下的配对评价。
+输出目录必须不存在。此操作仅读取已保存结果，不增加策略测试回合。环境快照包含本次响应、储能与新能源覆盖参数；不能用未覆盖的 `source/data/environment.json` 替代。
+
+`--run-dir` 模式只搜索 `evaluation_*.json`，适用于具有定期评价文件的其他运行；当前固定日结果应使用上面的 `--evaluation`。训练期间反复查看的评价属于开发验证，同一固定日上的单次测试也不代表未知日期泛化。
 
 ## 文件
 
@@ -97,29 +88,3 @@ probe_analysis = analyze_case(trace, env.spec)
 ```
 
 测试覆盖手算的峰谷/PAR/爬坡、充放电损耗与能量守恒、半小时时步、自放电、无出口余能、错误轨迹、配对外生输入、缺失训练损失及无模型固定策略探针。
-
-## 复现五组 500 回合比较
-
-`tools/compare_sac_runs.py` 专门复现 2026-10-18 的五组探索实验：`baseline`、`centered`、`compact`、`balanced`、`peak_balanced`。它不是自动挑选任意实验或最优策略的工具。输入必须包含五个完整运行目录、每组的 11 次开发验证、`holdout_108.json`、最终检查点及冻结 `source/`。
-
-```bash
-.venv/bin/python -m pip install -r requirements-analysis.txt
-.venv/bin/python tools/compare_sac_runs.py
-
-# 也可明确指定路径。
-.venv/bin/python tools/compare_sac_runs.py \
-  --runs-root runs \
-  --output experiments/sac_500ep_20261018
-```
-
-默认输入和输出相对于脚本所在项目根目录解析，不依赖当前工作目录。显式传入的相对路径仍按调用者工作目录解析；可以从任意目录使用解释器和脚本的绝对路径执行。支持 `python -m tools.compare_sac_runs`。
-
-工具只更新输出目录中的 `comparison.csv`、`comparison.json`、`development_comparison.png`、`heldout_dispatch.png`；不会重训、重新评价、复制或改写已有冻结源码和逐案例原始结果。输入的训练回合、训练步数、共同设置、最终检查点存在性、冻结文件哈希、案例数量/顺序、参考策略及外生曲线一致性均会核验。日汇总与逐小时重算的主要比较指标也必须相符。
-
-旧评价文件没有显式储存扰动档位标签。工具读取经过哈希检查的冻结场景生成器和 profile，按原协议 `case_id % 27` 对应的 `low/medium/high` 三源组合重建曲线，与记录逐点核对。108 案例必须每组恰好 4 个实现；开发集必须每组恰好 1 个实现，且两者场景种子集合不相交。
-
-候选 `peak_balanced` 分别与 `baseline`、`centered` 比较。按 27 组分别有放回抽取 4 个配对案例，共重采样 2,000 次；不同指标和参考策略复用相同重采样索引。95% 区间是配对均值差的 2.5%/97.5% 百分位数。bootstrap 种子 `20261018` 属于固定研究协议；训练和评价种子从实际文件读取。区间只描述给定这一次训练所得模型的场景变化，不包含重新训练种子的方差。
-
-`delta` 始终为“候选均值减参考均值”；参考均值大于 0 时才报告百分比。参考均值为负或零时 `percent` 为 `null`，尤其不能把负的储能净利润作为常规百分比改善的分母。实际电池功率使用 `charge - discharge`，不会假定最大充电和放电功率相等。图中价格界限来自运行保存的环境参数。
-
-所需分析依赖为 NumPy、SciPy、Matplotlib；SciPy 用于冻结场景重建，Matplotlib 用于两张静态图。`requirements-analysis.txt` 提供安装入口，历史精确版本见各运行 `manifest.json`。源代码哈希验证和逐点重建是严格检查；跨数值库版本导致的场景差异会明确报错，不会自动放宽匹配条件。

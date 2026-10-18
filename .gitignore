@@ -12,6 +12,7 @@ __pycache__/
 /smoke_clean/
 *.pt
 *.pth
+!experiments/sac_causal13_500_20261018/run/checkpoint_00500.pt
 
 # Complete original handoff and audit backups remain on this computer
 /archive/local/

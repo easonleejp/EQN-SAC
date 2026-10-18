@@ -5,8 +5,8 @@
 
 Example:
     .venv/bin/python tools/plot_sac_fixed_day.py \
-        --run-dir runs/sac_fixed_day_500 \
-        --output experiments/sac_fixed_day_500_20261018/figures
+        --run-dir experiments/sac_causal13_500_20261018/run \
+        --output experiments/sac_causal13_500_20261018/figures
 """
 
 import argparse
@@ -224,7 +224,7 @@ def write_hourly(path, env, profile, values):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--run-dir", type=Path, default=ROOT / "runs/sac_fixed_day_500")
+    parser.add_argument("--run-dir", type=Path, default=ROOT / "experiments/sac_causal13_500_20261018/run")
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--font", default="PingFang SC")
     args = parser.parse_args()

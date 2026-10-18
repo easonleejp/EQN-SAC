@@ -1,0 +1,90 @@
+{
+  "purpose": "固定同一天：500 回合训练及一个已保存测试回合的只读绘图",
+  "training_episodes": 500,
+  "test_episodes": 1,
+  "test_hours": 24,
+  "policy_loaded_or_evaluated": false,
+  "test_aggregation": "none",
+  "test_smoothing": "none",
+  "training_smoothing": "20-episode trailing arithmetic mean, begins at episode 20",
+  "grid_decomposition": "All import curves use max(load - wind + charge - discharge, 0); zero-storage curve holds actual response fixed.",
+  "unit_assumption": {
+    "price": "Australian cents/kWh",
+    "power": "kW",
+    "energy": "kWh",
+    "profit": "Australian cents",
+    "source_units_verified": false
+  },
+  "environment_noise": {
+    "curvature_std": 0.0,
+    "demand_noise_std": 0.0,
+    "participation_noise_std": 0.0
+  },
+  "inputs": [
+    {
+      "path": "/Users/liliheng/Desktop/EQN-SAC/experiments/sac_causal13_500_20261018/run/config.json",
+      "bytes": 2183,
+      "sha256": "233889dfbdeafc2becfba95f056b6d26d589d186bf76beac2631ac73c021e0c3"
+    },
+    {
+      "path": "/Users/liliheng/Desktop/EQN-SAC/experiments/sac_causal13_500_20261018/run/complete.json",
+      "bytes": 98,
+      "sha256": "dff2490b2235dac245a1bf66c2d3965ba0b68fc04486b86865a12b5787819aff"
+    },
+    {
+      "path": "/Users/liliheng/Desktop/EQN-SAC/experiments/sac_causal13_500_20261018/run/manifest.json",
+      "bytes": 2289,
+      "sha256": "1231498da524486558aa310fb84c96ead34d06333efb5cf337b38a8de359a1a3"
+    },
+    {
+      "path": "/Users/liliheng/Desktop/EQN-SAC/experiments/sac_causal13_500_20261018/run/training.csv",
+      "bytes": 146574,
+      "sha256": "f44bd9a1bbd8c3ca9f24f6535b0951d2eef4702dda55f0136023b1adc97e8580"
+    },
+    {
+      "path": "/Users/liliheng/Desktop/EQN-SAC/experiments/sac_causal13_500_20261018/run/test_1ep.json",
+      "bytes": 59336,
+      "sha256": "c7ff5f406297af56280fffca91729be58b968668a3c4d3acfa54add6d026880c"
+    },
+    {
+      "path": "/Users/liliheng/Desktop/EQN-SAC/experiments/sac_causal13_500_20261018/run/effective_environment.json",
+      "bytes": 3241,
+      "sha256": "b65db20d09efcaa10a93a40beed1d1a745f2e83273a9f8476e0349fb17485391"
+    },
+    {
+      "path": "/Users/liliheng/Desktop/EQN-SAC/experiments/sac_causal13_500_20261018/run/effective_profile.json",
+      "bytes": 4010,
+      "sha256": "7d1b1f03b541c0f0a1265bd691693f22904636ab736d59e46deaa432b4337278"
+    }
+  ],
+  "script": {
+    "path": "/Users/liliheng/Desktop/EQN-SAC/tools/plot_sac_fixed_day.py",
+    "bytes": 14091,
+    "sha256": "80771c539b0135beaa6e91002c684696a6a3a2e108cfb05fa1ff3690602d7f9a"
+  },
+  "outputs": [
+    {
+      "path": "/Users/liliheng/Desktop/EQN-SAC/experiments/sac_causal13_500_20261018/figures/fixed_day_results.png",
+      "bytes": 555160,
+      "sha256": "447d6fa2d7827546c736a42a0f5457ed29713bd57eed22c0567a5f67b03a98b0"
+    },
+    {
+      "path": "/Users/liliheng/Desktop/EQN-SAC/experiments/sac_causal13_500_20261018/figures/fixed_day_results.pdf",
+      "bytes": 73308,
+      "sha256": "706fbd489705363aee4788e84494b555d29e884540abc6fc6c08df98b510e4bf"
+    },
+    {
+      "path": "/Users/liliheng/Desktop/EQN-SAC/experiments/sac_causal13_500_20261018/figures/hourly.csv",
+      "bytes": 8302,
+      "sha256": "ccde55b48c141fc030408921dbe58d026b97cb78d08540005774da52ca3d38f8"
+    }
+  ],
+  "software": {
+    "python": "3.12.14",
+    "numpy": "2.5.4",
+    "matplotlib": "3.11.2",
+    "font": "PingFang SC",
+    "font_path": "/System/Library/AssetsV2/com_apple_MobileAsset_Font8/86ba2c91f017a3749571a82f2c6d890ac7ffb2fb.asset/AssetData/PingFang.ttc"
+  },
+  "manifest_note": "This manifest records inputs/script/three artifacts; it does not hash itself."
+}

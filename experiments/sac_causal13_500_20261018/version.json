@@ -1,0 +1,52 @@
+{
+  "version": "sac-causal13-fixed-day-500+1",
+  "recorded_utc": "2026-10-18T08:34:53.744437+00:00",
+  "training_source_commit": "090ea7a7919599b3fddc1f9cf638409be38a6a3e",
+  "observation_dim": 13,
+  "action_dim": 2,
+  "training": {
+    "episodes": 500,
+    "steps": 12000,
+    "updates": 86408,
+    "wall_seconds": 179.23827679199167
+  },
+  "test": {
+    "episodes": 1,
+    "hours": 24,
+    "additional_policy_evaluations_during_cleanup": 0
+  },
+  "files": {
+    "checkpoint_00500.pt": {
+      "path": "run/checkpoint_00500.pt",
+      "bytes": 868469,
+      "sha256": "8a984f972da3cb70983a8b8bd8ab7b79543901bc2e5c82c2a5e2715c56df397a"
+    },
+    "config.json": {
+      "path": "run/config.json",
+      "bytes": 2183,
+      "sha256": "233889dfbdeafc2becfba95f056b6d26d589d186bf76beac2631ac73c021e0c3"
+    },
+    "test_1ep.json": {
+      "path": "run/test_1ep.json",
+      "bytes": 59336,
+      "sha256": "c7ff5f406297af56280fffca91729be58b968668a3c4d3acfa54add6d026880c"
+    },
+    "training.csv": {
+      "path": "run/training.csv",
+      "bytes": 146574,
+      "sha256": "f44bd9a1bbd8c3ca9f24f6535b0951d2eef4702dda55f0136023b1adc97e8580"
+    },
+    "manifest.json": {
+      "path": "run/manifest.json",
+      "bytes": 2289,
+      "sha256": "1231498da524486558aa310fb84c96ead34d06333efb5cf337b38a8de359a1a3"
+    },
+    "provenance_test.json": {
+      "path": "run/provenance_test.json",
+      "bytes": 842,
+      "sha256": "3b31cc928a72ed64cb5f345bb63caab3bf040222c749df21cfff21b2e2b79753"
+    }
+  },
+  "code_and_parameters_changed": false,
+  "checkpoint_included": true
+}
