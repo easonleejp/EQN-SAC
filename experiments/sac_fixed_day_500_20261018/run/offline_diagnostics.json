@@ -1,0 +1,534 @@
+{
+  "protocol": {
+    "episodes": 500,
+    "environment_steps": 12000,
+    "final_policy_tests": 1,
+    "internal_evaluations": 0
+  },
+  "all_physical_checks_passed": true,
+  "checks": {
+    "soc_balance_ok": true,
+    "soc_balance_max_abs_error": 0.0,
+    "grid_balance_ok": true,
+    "grid_balance_max_abs_error": 0.0,
+    "initial_soc_chain_ok": true,
+    "soc_bounds_ok": true,
+    "simultaneous_charge_discharge_hours": 0,
+    "power_bounds_ok": true,
+    "response_balance_ok": true,
+    "response_balance_max_abs_error": 0.000244140625,
+    "all_ok": true
+  },
+  "prices": {
+    "correlation_with_realized_wholesale": {
+      "pearson": 0.862961383260445,
+      "spearman": 0.9452173913043478
+    },
+    "correlation_with_original_tou": {
+      "pearson": 0.7457304153629559,
+      "spearman": 0.9270106140718537
+    },
+    "correlation_with_nominal_wholesale": {
+      "pearson": 0.862961383260445,
+      "spearman": 0.9452173913043478
+    },
+    "tou_means_nondecreasing": true,
+    "tou_high_minus_low_mean": 4.018592622545029,
+    "tou_bands_ranked_by_policy_mean": [
+      26.5,
+      28.5,
+      32.5
+    ],
+    "tou_bands": {
+      "26.5": {
+        "hours": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          23
+        ],
+        "count": 9,
+        "retail_price_mean": 28.443704817030167,
+        "wholesale_price_mean": 18.735923343234592,
+        "baseline_load_mean": 2679.4560546875,
+        "user_load_mean": 2616.4654405381943,
+        "response_reduction_mean": 62.99061414930556,
+        "grid_mean": 2339.8384613997396,
+        "baseline_grid_mean": 1956.1895141601562,
+        "demand_grid_effect_mean": -62.99061414930556,
+        "storage_grid_effect_mean": 446.63956138888915,
+        "total_grid_effect_mean": 383.6489472395836,
+        "charge_energy": 4029.6655871013354,
+        "discharge_energy": 9.909534601333121
+      },
+      "28.5": {
+        "hours": [
+          8,
+          9,
+          10,
+          11,
+          12,
+          21,
+          22
+        ],
+        "count": 7,
+        "retail_price_mean": 31.872907638549805,
+        "wholesale_price_mean": 20.473938260759628,
+        "baseline_load_mean": 4021.426513671875,
+        "user_load_mean": 3203.7266671316966,
+        "response_reduction_mean": 817.6998465401786,
+        "grid_mean": 2471.878325057551,
+        "baseline_grid_mean": 3298.1599731445312,
+        "demand_grid_effect_mean": -817.6998465401786,
+        "storage_grid_effect_mean": -8.581801546801412,
+        "total_grid_effect_mean": -826.2816480869799,
+        "charge_energy": 31.86013293909582,
+        "discharge_energy": 91.9327437667057
+      },
+      "32.5": {
+        "hours": [
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20
+        ],
+        "count": 8,
+        "retail_price_mean": 32.462297439575195,
+        "wholesale_price_mean": 21.929054260253906,
+        "baseline_load_mean": 4315.8621826171875,
+        "user_load_mean": 3665.0167236328125,
+        "response_reduction_mean": 650.845458984375,
+        "grid_mean": 2496.654306019548,
+        "baseline_grid_mean": 3592.5956420898438,
+        "demand_grid_effect_mean": -650.845458984375,
+        "storage_grid_effect_mean": -445.09587708592085,
+        "total_grid_effect_mean": -1095.9413360702958,
+        "charge_energy": 0.0,
+        "discharge_energy": 3560.767016687367
+      }
+    }
+  },
+  "storage": {
+    "charge_energy": 4061.525720040431,
+    "discharge_energy": 3662.6092950554057,
+    "weighted_charge_wholesale_price": 18.02435391606626,
+    "weighted_discharge_wholesale_price": 22.308245402951613,
+    "discharge_minus_charge_price": 4.283891486885352,
+    "both_charge_and_discharge": true,
+    "same_price_grid_cost_saving": 8500.009952013019,
+    "throughput_cost": 3862.0675075479185,
+    "same_price_storage_margin": 4637.9424444651,
+    "initial_soc": 483.885009765625,
+    "final_soc": 486.95623848255434,
+    "soc_change": 3.0712287169293404,
+    "nominal_wholesale_low_charge_fraction": 0.9816487706377394,
+    "nominal_wholesale_high_charge_fraction": 0.0,
+    "nominal_wholesale_low_discharge_fraction": 0.0,
+    "nominal_wholesale_high_discharge_fraction": 0.797764231250119,
+    "realized_wholesale_low_charge_fraction": 0.9816487706377394,
+    "realized_wholesale_high_charge_fraction": 0.0,
+    "realized_wholesale_low_discharge_fraction": 0.0,
+    "realized_wholesale_high_discharge_fraction": 0.797764231250119
+  },
+  "response": {
+    "baseline_energy": 86791.98754882812,
+    "user_energy": 75294.40942382812,
+    "reduction_energy": 11497.578125
+  },
+  "bands": {
+    "nominal_wholesale": {
+      "low": {
+        "hours": [
+          1,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "count": 6,
+        "retail_price_mean": 27.897852897644043,
+        "wholesale_price_mean": 18.271114985148113,
+        "baseline_load_mean": 2505.948974609375,
+        "user_load_mean": 2573.6273193359375,
+        "response_reduction_mean": -67.6783447265625,
+        "grid_mean": 2514.859400473802,
+        "baseline_grid_mean": 1782.6824340820312,
+        "demand_grid_effect_mean": 67.6783447265625,
+        "storage_grid_effect_mean": 664.4986216652081,
+        "total_grid_effect_mean": 732.1769663917706,
+        "charge_energy": 3986.9917299912486,
+        "discharge_energy": 0.0
+      },
+      "middle": {
+        "hours": [
+          0,
+          2,
+          8,
+          9,
+          10,
+          11,
+          14,
+          15,
+          20,
+          21,
+          22,
+          23
+        ],
+        "count": 12,
+        "retail_price_mean": 31.38801638285319,
+        "wholesale_price_mean": 20.396114826202393,
+        "baseline_load_mean": 3800.2900187174478,
+        "user_load_mean": 3124.3886922200522,
+        "response_reduction_mean": 675.9013264973959,
+        "grid_mean": 2345.607433662141,
+        "baseline_grid_mean": 3077.023478190104,
+        "demand_grid_effect_mean": -675.9013264973959,
+        "storage_grid_effect_mean": -55.51471803056726,
+        "total_grid_effect_mean": -731.4160445279631,
+        "charge_energy": 74.53399004918265,
+        "discharge_energy": 740.7106064159896
+      },
+      "high": {
+        "hours": [
+          12,
+          13,
+          16,
+          17,
+          18,
+          19
+        ],
+        "count": 6,
+        "retail_price_mean": 32.45979372660319,
+        "wholesale_price_mean": 22.16554069519043,
+        "baseline_load_mean": 4358.80224609375,
+        "user_load_mean": 3726.663533528646,
+        "response_reduction_mean": 632.1387125651041,
+        "grid_mean": 2516.413878228066,
+        "baseline_grid_mean": 3635.5357055664062,
+        "demand_grid_effect_mean": -632.1387125651041,
+        "storage_grid_effect_mean": -486.98311477323597,
+        "total_grid_effect_mean": -1119.1218273383402,
+        "charge_energy": 0.0,
+        "discharge_energy": 2921.898688639416
+      }
+    },
+    "realized_wholesale": {
+      "low": {
+        "hours": [
+          1,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "count": 6,
+        "retail_price_mean": 27.897852897644043,
+        "wholesale_price_mean": 18.271114985148113,
+        "baseline_load_mean": 2505.948974609375,
+        "user_load_mean": 2573.6273193359375,
+        "response_reduction_mean": -67.6783447265625,
+        "grid_mean": 2514.859400473802,
+        "baseline_grid_mean": 1782.6824340820312,
+        "demand_grid_effect_mean": 67.6783447265625,
+        "storage_grid_effect_mean": 664.4986216652081,
+        "total_grid_effect_mean": 732.1769663917706,
+        "charge_energy": 3986.9917299912486,
+        "discharge_energy": 0.0
+      },
+      "middle": {
+        "hours": [
+          0,
+          2,
+          8,
+          9,
+          10,
+          11,
+          14,
+          15,
+          20,
+          21,
+          22,
+          23
+        ],
+        "count": 12,
+        "retail_price_mean": 31.38801638285319,
+        "wholesale_price_mean": 20.396114826202393,
+        "baseline_load_mean": 3800.2900187174478,
+        "user_load_mean": 3124.3886922200522,
+        "response_reduction_mean": 675.9013264973959,
+        "grid_mean": 2345.607433662141,
+        "baseline_grid_mean": 3077.023478190104,
+        "demand_grid_effect_mean": -675.9013264973959,
+        "storage_grid_effect_mean": -55.51471803056726,
+        "total_grid_effect_mean": -731.4160445279631,
+        "charge_energy": 74.53399004918265,
+        "discharge_energy": 740.7106064159896
+      },
+      "high": {
+        "hours": [
+          12,
+          13,
+          16,
+          17,
+          18,
+          19
+        ],
+        "count": 6,
+        "retail_price_mean": 32.45979372660319,
+        "wholesale_price_mean": 22.16554069519043,
+        "baseline_load_mean": 4358.80224609375,
+        "user_load_mean": 3726.663533528646,
+        "response_reduction_mean": 632.1387125651041,
+        "grid_mean": 2516.413878228066,
+        "baseline_grid_mean": 3635.5357055664062,
+        "demand_grid_effect_mean": -632.1387125651041,
+        "storage_grid_effect_mean": -486.98311477323597,
+        "total_grid_effect_mean": -1119.1218273383402,
+        "charge_energy": 0.0,
+        "discharge_energy": 2921.898688639416
+      }
+    },
+    "nominal_load": {
+      "low": {
+        "hours": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "count": 6,
+        "retail_price_mean": 27.506673494974773,
+        "wholesale_price_mean": 18.330236434936523,
+        "baseline_load_mean": 2356.8143310546875,
+        "user_load_mean": 2530.4794921875,
+        "response_reduction_mean": -173.6651611328125,
+        "grid_mean": 2423.287930154888,
+        "baseline_grid_mean": 1633.5477905273438,
+        "demand_grid_effect_mean": 173.6651611328125,
+        "storage_grid_effect_mean": 616.0749784947317,
+        "total_grid_effect_mean": 789.7401396275442,
+        "charge_energy": 3704.295193182101,
+        "discharge_energy": 7.845322213710915
+      },
+      "middle": {
+        "hours": [
+          0,
+          7,
+          8,
+          9,
+          12,
+          13,
+          14,
+          15,
+          16,
+          21,
+          22,
+          23
+        ],
+        "count": 12,
+        "retail_price_mean": 31.598151524861652,
+        "wholesale_price_mean": 20.55954392751058,
+        "baseline_load_mean": 3847.1039225260415,
+        "user_load_mean": 3154.1683146158853,
+        "response_reduction_mean": 692.9356079101562,
+        "grid_mean": 2392.5606040339535,
+        "baseline_grid_mean": 3123.8373819986978,
+        "demand_grid_effect_mean": -692.9356079101562,
+        "storage_grid_effect_mean": -38.341170054587714,
+        "total_grid_effect_mean": -731.2767779647439,
+        "charge_energy": 357.23052685833045,
+        "discharge_energy": 817.3245675133828
+      },
+      "high": {
+        "hours": [
+          10,
+          11,
+          17,
+          18,
+          19,
+          20
+        ],
+        "count": 6,
+        "retail_price_mean": 32.43070284525553,
+        "wholesale_price_mean": 21.779561042785645,
+        "baseline_load_mean": 4414.30908203125,
+        "user_load_mean": 3710.2521158854165,
+        "response_reduction_mean": 704.0569661458334,
+        "grid_mean": 2514.079007803354,
+        "baseline_grid_mean": 3691.0425415039062,
+        "demand_grid_effect_mean": -704.0569661458334,
+        "storage_grid_effect_mean": -472.9065675547186,
+        "total_grid_effect_mean": -1176.963533700552,
+        "charge_energy": 0.0,
+        "discharge_energy": 2837.4394053283118
+      }
+    },
+    "realized_load": {
+      "low": {
+        "hours": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "count": 6,
+        "retail_price_mean": 27.506673494974773,
+        "wholesale_price_mean": 18.330236434936523,
+        "baseline_load_mean": 2356.8143310546875,
+        "user_load_mean": 2530.4794921875,
+        "response_reduction_mean": -173.6651611328125,
+        "grid_mean": 2423.287930154888,
+        "baseline_grid_mean": 1633.5477905273438,
+        "demand_grid_effect_mean": 173.6651611328125,
+        "storage_grid_effect_mean": 616.0749784947317,
+        "total_grid_effect_mean": 789.7401396275442,
+        "charge_energy": 3704.295193182101,
+        "discharge_energy": 7.845322213710915
+      },
+      "middle": {
+        "hours": [
+          0,
+          7,
+          8,
+          9,
+          12,
+          13,
+          14,
+          15,
+          16,
+          21,
+          22,
+          23
+        ],
+        "count": 12,
+        "retail_price_mean": 31.598151524861652,
+        "wholesale_price_mean": 20.55954392751058,
+        "baseline_load_mean": 3847.1039225260415,
+        "user_load_mean": 3154.1683146158853,
+        "response_reduction_mean": 692.9356079101562,
+        "grid_mean": 2392.5606040339535,
+        "baseline_grid_mean": 3123.8373819986978,
+        "demand_grid_effect_mean": -692.9356079101562,
+        "storage_grid_effect_mean": -38.341170054587714,
+        "total_grid_effect_mean": -731.2767779647439,
+        "charge_energy": 357.23052685833045,
+        "discharge_energy": 817.3245675133828
+      },
+      "high": {
+        "hours": [
+          10,
+          11,
+          17,
+          18,
+          19,
+          20
+        ],
+        "count": 6,
+        "retail_price_mean": 32.43070284525553,
+        "wholesale_price_mean": 21.779561042785645,
+        "baseline_load_mean": 4414.30908203125,
+        "user_load_mean": 3710.2521158854165,
+        "response_reduction_mean": 704.0569661458334,
+        "grid_mean": 2514.079007803354,
+        "baseline_grid_mean": 3691.0425415039062,
+        "demand_grid_effect_mean": -704.0569661458334,
+        "storage_grid_effect_mean": -472.9065675547186,
+        "total_grid_effect_mean": -1176.963533700552,
+        "charge_energy": 0.0,
+        "discharge_energy": 2837.4394053283118
+      }
+    }
+  },
+  "curves": {
+    "baseline_load": {
+      "peak": 4838.85009765625,
+      "valley": 2067.45849609375,
+      "peak_valley": 2771.3916015625,
+      "mean": 3616.3328145345054,
+      "energy": 86791.98754882812,
+      "std": 822.6413889982916,
+      "par": 1.338054417505018,
+      "rms_ramp": 307.11431728780656
+    },
+    "user_load": {
+      "peak": 4301.6650390625,
+      "valley": 2445.74169921875,
+      "peak_valley": 1855.92333984375,
+      "mean": 3137.267059326172,
+      "energy": 75294.40942382812,
+      "std": 499.4918738817685,
+      "par": 1.371150417773621,
+      "rms_ramp": 234.8057955398932
+    },
+    "net_without_storage": {
+      "peak": 3578.3984985351562,
+      "valley": 1722.4751586914062,
+      "peak_valley": 1855.92333984375,
+      "mean": 2414.000518798828,
+      "energy": 57936.012451171875,
+      "std": 499.4918738817685,
+      "par": 1.482352000618341,
+      "rms_ramp": 234.8057955398932
+    },
+    "grid": {
+      "peak": 2702.3787640277715,
+      "valley": 1836.9430688995703,
+      "peak_valley": 865.4356951282011,
+      "mean": 2430.622036506538,
+      "energy": 58334.928876156904,
+      "std": 236.94211639472678,
+      "par": 1.1118054240600161,
+      "rms_ramp": 261.1136318563152
+    },
+    "reference_grid": {
+      "peak": 3663.1118774414062,
+      "valley": 1736.3106079101562,
+      "peak_valley": 1926.80126953125,
+      "mean": 2856.0836385091147,
+      "energy": 68546.00732421875,
+      "std": 590.3263196174524,
+      "par": 1.2825646378316717,
+      "rms_ramp": 421.99596582194073
+    }
+  },
+  "profit": 1148953.162961202,
+  "reference_profit": 1103034.888671875,
+  "profit_change_percent": 4.162903164796128,
+  "load_changes_percent": {
+    "peak": -11.101502376648153,
+    "valley": 18.29701557925962,
+    "peak_valley": -33.03280060467141,
+    "std": -39.2819422215084,
+    "rms_ramp": -23.544497171765112,
+    "par": 2.473442024152872,
+    "energy": -13.247280595494605
+  },
+  "training": {
+    "first_20_profit_mean": 1009646.1430373011,
+    "last_20_profit_mean": 1146670.2365903384,
+    "last_20_profit_std": 1266.1106796278605,
+    "last_20_final_soc_mean": 487.3787395971682
+  },
+  "provenance": {
+    "test_1ep.json": "29b2ad1572c9c85812b632c7db8e51f8320245800d9a5c3acbbbfeaab0c20d92",
+    "training.csv": "432203a5a4856c74ecd274354f5b3d851078b30ff7f03c3f806ae8fe48f8e912",
+    "effective_environment.json": "9b8f8466f7d26b334b05254b27af70a38bd4a95b23b63b90a1a29b913d60c3c8",
+    "effective_profile.json": "7d1b1f03b541c0f0a1265bd691693f22904636ab736d59e46deaa432b4337278"
+  },
+  "method": "Offline arithmetic from the one saved final test; tools.analyze_price_response.analyze_evaluation; no policy inference or additional evaluation."
+}

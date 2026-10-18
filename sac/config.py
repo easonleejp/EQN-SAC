@@ -21,6 +21,7 @@ class Config:
     gamma: float = 1.0
     target_tau: float = 0.005
     batch_size: int = 128
+    updates_per_step: int = 1
     replay_size: int = 50000
     warmup_steps: int = 1000
     reward_scale: float = 0.001
@@ -51,13 +52,13 @@ class Config:
                 raise ValueError(f.name + " must be finite")
             if f.type is str and not isinstance(value, str):
                 raise ValueError(f.name + " must be a string")
-        for name in ("threads", "episodes", "hidden_dim", "batch_size", "replay_size", "evaluation_every", "evaluation_cases", "checkpoint_every", "log_every"):
+        for name in ("threads", "episodes", "hidden_dim", "batch_size", "updates_per_step", "replay_size", "evaluation_cases", "checkpoint_every", "log_every"):
             if getattr(self, name) <= 0:
                 raise ValueError(name + " must be positive")
         for name in ("actor_lr", "critic_lr", "alpha_lr", "initial_alpha", "reward_scale"):
             if getattr(self, name) <= 0:
                 raise ValueError(name + " must be positive")
-        if self.device not in ("cpu", "cuda") or self.observation not in ("full19", "causal11", "market14", "market18"):
+        if self.device not in ("cpu", "cuda") or self.observation not in ("full19", "causal11", "market14", "market18", "nominal11"):
             raise ValueError("Unsupported device or observation")
         if not 0 < self.gamma <= 1 or not 0 < self.target_tau <= 1:
             raise ValueError("Invalid gamma or target_tau")
@@ -65,7 +66,9 @@ class Config:
             raise ValueError("Seed is outside the supported RNG range")
         if self.warmup_steps < 0 or self.replay_size < self.batch_size or self.seed < 0:
             raise ValueError("Invalid exploration, replay or seed")
-        if self.scenario_mode not in ("three_source", "load_scale", "wind_scale", "price_scale"):
+        if self.evaluation_every < 0:
+            raise ValueError("evaluation_every must be nonnegative; zero disables internal evaluation")
+        if self.scenario_mode not in ("three_source", "load_scale", "wind_scale", "price_scale", "deterministic_day"):
             raise ValueError("Unsupported scenario")
         if self.response_rng not in ("per_case", "paired_fixed"):
             raise ValueError("Unsupported response RNG")
@@ -77,6 +80,12 @@ class Config:
             raise ValueError("Invalid daily scale")
         from .parameters import validate_overrides
         validate_overrides(self)
+        if self.scenario_mode == "deterministic_day":
+            # Require explicit zeroes: an omitted field must not silently retain
+            # stochastic response defaults in an otherwise fixed-day experiment.
+            for name in ("curvature_std", "demand_noise_std", "participation_noise_std"):
+                if self.response_parameters.get(name) != 0:
+                    raise ValueError("deterministic_day requires explicit " + name + "=0")
         return self
 
 

@@ -17,13 +17,13 @@ import torch
 
 from eqnsac.config import ROOT
 from eqnsac.scenarios import LEVELS
-from eqnsac.single_source import sample_case
 from .agent import Agent
 from .config import load_config, Config
 from .replay import Replay
+from .scenarios import DETERMINISTIC_DAY_DEFINITION, sample_case
 from .task import Task, daily_summary
 
-VERSION = "sac-2-profit-only"
+VERSION = "sac-3-fixed-day"
 
 
 def write_json(path, value):
@@ -42,19 +42,24 @@ def source_manifest():
 
 def evaluate(agent, cfg, count, seed=910000000, hourly=True):
     task = Task(cfg)
-    combinations = list(itertools.product(LEVELS, repeat=3))
+    fixed_day = cfg.scenario_mode == "deterministic_day"
+    combinations = None if fixed_day else list(itertools.product(LEVELS, repeat=3))
     cases = []
     for i in range(count):
-        case = sample_case(task.env, cfg, seed + i, combinations[i % len(combinations)])
-        response_seed = 42 if cfg.response_rng == "paired_fixed" else seed + i + 700000
+        scenario_seed = cfg.reference_seed if fixed_day else seed + i
+        case = (sample_case(task.env, cfg, scenario_seed) if fixed_day else
+                sample_case(task.env, cfg, scenario_seed, combinations[i % len(combinations)]))
+        response_seed = 42 if cfg.response_rng == "paired_fixed" else scenario_seed + 700000
         obs = task.reset(case, response_seed)
         rows = []
         for _ in range(24):
             obs, _, _, info = task.step(agent.act(obs, deterministic=True))
             rows.append(info)
         summary = daily_summary(rows, task.reference_rows, task.env)
-        summary.update(case=i, scenario_seed=seed + i, response_seed=response_seed)
+        summary.update(case=i, scenario_seed=scenario_seed, response_seed=response_seed)
         summary["levels"] = {source: case[source + "_level"] for source in ("load", "wind", "price")}
+        if fixed_day:
+            summary["scenario_definition"] = case["definition"]
         if hourly:
             summary.update(hourly=rows, reference_hourly=task.reference_rows)
         cases.append(summary)
@@ -64,11 +69,16 @@ def evaluate(agent, cfg, count, seed=910000000, hourly=True):
     for curve in ("grid", "reference_grid", "user_load", "baseline_load", "net_without_storage"):
         for name in ("peak", "valley", "peak_valley", "energy", "std", "rms_ramp"):
             metrics[curve + "_" + name] = float(np.mean([c["curves"][curve][name] for c in cases]))
-    return dict(n=count, seed=seed, deterministic=True, metrics=metrics, cases=cases,
-                metadata=dict(environment=task.env.spec,
-                              profile={k: v.tolist() for k, v in task.env.profile.items()},
-                              generator=asdict(task.env.generator.cfg), config=asdict(cfg),
-                              reward="original profit multiplied by reward_scale"))
+    payload = dict(n=count, seed=cfg.reference_seed if fixed_day else seed,
+                   deterministic=True, metrics=metrics, cases=cases,
+                   metadata=dict(environment=task.env.spec,
+                                 profile={k: v.tolist() for k, v in task.env.profile.items()},
+                                 generator=asdict(task.env.generator.cfg), config=asdict(cfg),
+                                 reward="original profit multiplied by reward_scale"))
+    if fixed_day:
+        payload["requested_seed"] = seed
+        payload["metadata"]["scenario_definition"] = DETERMINISTIC_DAY_DEFINITION
+    return payload
 
 
 def train(cfg, output):
@@ -80,7 +90,8 @@ def train(cfg, output):
     task = Task(cfg)
     agent = Agent(cfg, task.observation_dim)
     replay = Replay(cfg.replay_size, task.observation_dim, cfg.seed + 30001)
-    scenario_rng = np.random.default_rng(cfg.seed + 40001)
+    fixed_day = cfg.scenario_mode == "deterministic_day"
+    scenario_rng = None if fixed_day else np.random.default_rng(cfg.seed + 40001)
     explore_rng = np.random.default_rng(cfg.seed + 50001)
     out.mkdir(parents=True)
     hashes = source_manifest()
@@ -93,12 +104,15 @@ def train(cfg, output):
                       device=cfg.device, threads=cfg.threads,
                       action_coordinates="raw normalized tanh controls; storage mapped by task only",
                       reward="original profit multiplied by reward_scale")
+    if fixed_day:
+        provenance["scenario_definition"] = DETERMINISTIC_DAY_DEFINITION
     write_json(out / "config.json", asdict(cfg))
     write_json(out / "manifest.json", provenance)
     write_json(out / "effective_environment.json", task.env.spec)
     write_json(out / "effective_profile.json", {k: v.tolist() for k, v in task.env.profile.items()})
     write_json(out / "effective_generator.json", asdict(task.env.generator.cfg))
-    write_json(out / "evaluation_00000.json", evaluate(agent, cfg, cfg.evaluation_cases))
+    if cfg.evaluation_every:
+        write_json(out / "evaluation_00000.json", evaluate(agent, cfg, cfg.evaluation_cases))
     steps = updates = 0
     started = time.perf_counter()
     columns = ["episode", "profit", "reference_profit", "storage_net", "learning_return", "grid_peak", "grid_peak_valley", "grid_std", "final_soc", "price_upper_fraction", "updates", "critic_loss", "actor_loss", "alpha", "entropy", "q1_mean", "target_mean", "seconds"]
@@ -106,9 +120,13 @@ def train(cfg, output):
         writer = csv.DictWriter(stream, fieldnames=columns)
         writer.writeheader()
         for episode in range(1, cfg.episodes + 1):
-            scenario_seed = int(scenario_rng.integers(1, 2**31 - 1))
-            levels = scenario_rng.choice(LEVELS, 3, p=cfg.level_probabilities)
-            case = sample_case(task.env, cfg, scenario_seed, levels)
+            if fixed_day:
+                scenario_seed = cfg.reference_seed
+                case = sample_case(task.env, cfg, scenario_seed)
+            else:
+                scenario_seed = int(scenario_rng.integers(1, 2**31 - 1))
+                levels = scenario_rng.choice(LEVELS, 3, p=cfg.level_probabilities)
+                case = sample_case(task.env, cfg, scenario_seed, levels)
             obs = task.reset(case, 42 if cfg.response_rng == "paired_fixed" else scenario_seed + 700000)
             rows = []
             metrics = {}
@@ -121,8 +139,9 @@ def train(cfg, output):
                     rows.append(info)
                     steps += 1
                     if steps >= cfg.warmup_steps and len(replay) >= cfg.batch_size:
-                        metrics = agent.update(replay)
-                        updates += 1
+                        for _ in range(cfg.updates_per_step):
+                            metrics = agent.update(replay)
+                            updates += 1
             except Exception as exc:
                 write_json(out / "failure.json", dict(episode=episode, steps=steps, scenario_seed=scenario_seed, error=repr(exc)))
                 raise
@@ -138,7 +157,7 @@ def train(cfg, output):
             stream.flush()
             if episode % cfg.log_every == 0 or episode == cfg.episodes:
                 print(f"episode={episode} profit={summary['profit']:.2f} peak={row['grid_peak']:.2f} updates={updates} seconds={row['seconds']:.1f}", flush=True)
-            if episode % cfg.evaluation_every == 0 or episode == cfg.episodes:
+            if cfg.evaluation_every and (episode % cfg.evaluation_every == 0 or episode == cfg.episodes):
                 write_json(out / f"evaluation_{episode:05d}.json", evaluate(agent, cfg, cfg.evaluation_cases))
             if episode % cfg.checkpoint_every == 0 or episode == cfg.episodes:
                 payload = dict(version=VERSION, config=asdict(cfg), model=agent.state_dict(),

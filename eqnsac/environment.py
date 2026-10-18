@@ -100,7 +100,11 @@ class Environment:
         )
         if np.any(self.user.price_max <= self.user.price_min):
             raise ValueError("Invalid price limits")
-        self.demand = SimpleNamespace(**self.spec["demand"])
+        # Expose the original participation-noise amplitude as a response
+        # parameter. The default preserves the historical equation and RNG order.
+        self.demand = SimpleNamespace(**{
+            "participation_noise_std": 0.025, **self.spec["demand"]
+        })
         self.mix = storage_reward_mix
         self.t = 24
 
@@ -251,7 +255,7 @@ class Environment:
                 0.42 * price_factor
                 + 0.22 * temperature_factor
                 + 0.36 * satisfaction_factor
-                + self.rng.normal(0, 0.025, 3),
+                + self.rng.normal(0, demand.participation_noise_std, 3),
                 0, 1,
             )
             # 削减量不超过该类负荷，保证响应后的购电需求非负。

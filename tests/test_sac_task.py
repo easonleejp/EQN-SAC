@@ -29,7 +29,7 @@ class TaskTests(unittest.TestCase):
         self.assertAlmostEqual(balance, 0, places=7)
 
     def test_reward_is_original_profit_and_observation_does_not_change_physics(self):
-        tasks = [Task(replace(Config(), observation=mode)) for mode in ('full19', 'causal11', 'market14', 'market18')]
+        tasks = [Task(replace(Config(), observation=mode)) for mode in ('full19', 'causal11', 'market14', 'market18', 'nominal11')]
         for task in tasks:
             task.reset(self.case, 7)
         actions = np.random.default_rng(88).uniform(-1, 1, (24, 2))
@@ -42,7 +42,7 @@ class TaskTests(unittest.TestCase):
                 self.assertEqual(done, results[0][2])
 
     def test_causal_observation_does_not_read_future_realizations(self):
-        for observation, dim in [('full19', 19), ('causal11', 11), ('market14', 14), ('market18', 18)]:
+        for observation, dim in [('full19', 19), ('causal11', 11), ('market14', 14), ('market18', 18), ('nominal11', 11)]:
             task = Task(replace(Config(), observation=observation))
             task.reset(self.case, 42)
             for hour in range(24):

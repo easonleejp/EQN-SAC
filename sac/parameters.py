@@ -12,7 +12,8 @@ from eqnsac.environment import Environment
 from eqnsac.scenarios import GeneratorConfig
 
 
-RESPONSE_KEYS = {"curvature_mean", "curvature_std", "demand_noise_std", "min_curvature"}
+RESPONSE_KEYS = {"curvature_mean", "curvature_std", "demand_noise_std", "min_curvature",
+                 "participation_noise_std"}
 STORAGE_KEYS = {"soc_min", "soc_max", "soc_init", "p_ch_max", "p_dis_max", "eta_ch", "eta_dis", "c_es"}
 
 
@@ -34,7 +35,7 @@ def validate_overrides(cfg):
     for key in ("curvature_mean", "min_curvature"):
         if key in demand and demand[key] <= 0:
             raise ValueError(key + " must be positive")
-    for key in ("curvature_std", "demand_noise_std"):
+    for key in ("curvature_std", "demand_noise_std", "participation_noise_std"):
         if key in demand and demand[key] < 0:
             raise ValueError(key + " must be nonnegative")
 

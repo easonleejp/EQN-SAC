@@ -14,7 +14,8 @@ class Task:
         self.cfg = cfg
         self.env = make_environment(cfg)
         self.reference = make_environment(cfg)
-        self.observation_dim = {"full19": 19, "causal11": 11, "market14": 14, "market18": 18}[cfg.observation]
+        self.observation_dim = {"full19": 19, "causal11": 11, "market14": 14,
+                                "market18": 18, "nominal11": 11}[cfg.observation]
         # Public nominal profiles, not the future realization of a sampled day.
         self.load_scale = float(self.env.norm["max_load"])
         self.price_center = float(np.mean(self.env.profile["grid_price"]))
@@ -38,6 +39,25 @@ class Task:
         return float(2 * (price - low) / (high - low) - 1)
 
     def observe(self, state):
+        if self.cfg.observation == "nominal11":
+            if self.env.t >= 24:
+                return np.zeros(self.observation_dim, dtype=np.float32)
+            env, hour = self.env, self.env.t
+            low, high = env.user.price_min[0], env.user.price_max[0]
+            phase = 2 * np.pi * hour / 24
+            # Public nominal remaining prices describe economic opportunities;
+            # they are observations, not prescribed actions or price thresholds.
+            remaining_quotes = env.profile["grid_price"][min(hour + 1, 23):]
+            return np.asarray([
+                (env.price[hour] - self.price_center) / self.price_spread,
+                env.load[hour] / self.load_scale,
+                env.wind[hour] / max(float(env.generator.wind_capacity), 1.0),
+                state[5], (24 - hour) / 24, np.sin(phase), np.cos(phase),
+                2 * (env.profile["retail_price"][hour] - low) / (high - low) - 1,
+                2 * (env.spec["hourly_demand_reference"][hour] - low) / (high - low) - 1,
+                (remaining_quotes.max() - self.price_center) / self.price_spread,
+                (remaining_quotes.min() - self.price_center) / self.price_spread,
+            ], dtype=np.float32)
         if self.cfg.observation in ("market14", "market18"):
             if self.env.t >= 24:
                 return np.zeros(self.observation_dim, dtype=np.float32)

@@ -4,7 +4,9 @@
 
 前一轮 `centered/balanced/peak_balanced` 属于已撤回的目标修改试验，不能作为当前推荐。记录与冻结代码保存在 `experiments/sac_500ep_20261018/`，其收益和削峰结论仅属于原试验。
 
-本轮已完成16组参数/训练试验及独立场景复核。候选改善了部分储能价差，但TOU层次与购电峰值未稳定改善，因此保留基线，不宣称已全面达标。完整记录见[本轮实验](experiments/sac_parameter_revision_20261018/README.md)。
+当前已完成**固定同一天训练500 ep，最终模型测试1 ep**。负荷、批发电价、风电和需求响应均无环境随机扰动；训练过程仍保留 SAC 探索。只调整允许的参数、训练超参和状态，没有新增奖励项或调度规则。单次测试中，主要充电集中在3–7时、主要放电集中在18–20时；响应后用户负荷峰谷差下降33.03%，但局部价格和购电曲线仍有不足。见[当前结果与六联图](experiments/sac_fixed_day_500_20261018/README.md)及[固定日配置说明](docs/sac/fixed-day-500.md)。
+
+之前的16组随机场景参数试验属于历史探索，超出了本次500+1的验证范围，不能与当前单日结果混用。记录保留在[历史参数试验](experiments/sac_parameter_revision_20261018/README.md)。
 
 当前入口为 `train_sac.py`、`sac/`、`configs/sac/`。本轮参数核对、20% 新能源渗透率和储能规模依据见 [参数审查](docs/sac/parameter-review-20261018.md)，运行方法见 [SAC 指南](docs/sac/README.md)。
 
