@@ -1,0 +1,227 @@
+{
+  "training_episodes": 500,
+  "training_steps": 12000,
+  "gradient_updates": 92168,
+  "internal_evaluations": 0,
+  "final_policy_tests": 1,
+  "test_steps": 24,
+  "same_day_test": true,
+  "files": [
+    {
+      "source": "runs/sac_midday_price_500/complete.json",
+      "destination": "run/complete.json",
+      "sha256": "e20b17058e1d0a047b73f097d4afc6b054877f4a94e2e23fd3ade4f766d87a6a",
+      "bytes": 98
+    },
+    {
+      "source": "runs/sac_midday_price_500/config.json",
+      "destination": "run/config.json",
+      "sha256": "43047a254b657f6c87ed1ed2352d5c01a26bdc14cde042e96bc2c83820518fa2",
+      "bytes": 2184
+    },
+    {
+      "source": "runs/sac_midday_price_500/effective_environment.json",
+      "destination": "run/effective_environment.json",
+      "sha256": "b65db20d09efcaa10a93a40beed1d1a745f2e83273a9f8476e0349fb17485391",
+      "bytes": 3241
+    },
+    {
+      "source": "runs/sac_midday_price_500/effective_generator.json",
+      "destination": "run/effective_generator.json",
+      "sha256": "e3c1c52c70cbbf5f22f6d9c9c022844b94f1f38f294fefd9f87f9ac2214c245c",
+      "bytes": 559
+    },
+    {
+      "source": "runs/sac_midday_price_500/effective_profile.json",
+      "destination": "run/effective_profile.json",
+      "sha256": "7d1b1f03b541c0f0a1265bd691693f22904636ab736d59e46deaa432b4337278",
+      "bytes": 4010
+    },
+    {
+      "source": "runs/sac_midday_price_500/hourly_utility_coefficients.csv",
+      "destination": "run/hourly_utility_coefficients.csv",
+      "sha256": "952db9c49b6868f7035874d92c6c4d5c3181f7a5312a398b2711fa069ef0d6f2",
+      "bytes": 2629
+    },
+    {
+      "source": "runs/sac_midday_price_500/manifest.json",
+      "destination": "run/manifest.json",
+      "sha256": "8fb4252df8ab6f3a084060d18e074aaf64c961480d84144a37ff32a12f88610a",
+      "bytes": 2289
+    },
+    {
+      "source": "runs/sac_midday_price_500/offline_comparison.json",
+      "destination": "run/offline_comparison.json",
+      "sha256": "66d95d692ffb1a33e14b5aa72d85df50329ec51739adb2ce88a34174b1d5751b",
+      "bytes": 17577
+    },
+    {
+      "source": "runs/sac_midday_price_500/provenance_test.json",
+      "destination": "run/provenance_test.json",
+      "sha256": "05b8bc6231af00ed5cba26f08a92c8fe76848bd2829f8a6da8da1eadbb5d5db7",
+      "bytes": 960
+    },
+    {
+      "source": "runs/sac_midday_price_500/source/data/environment.json",
+      "destination": "run/source/data/environment.json",
+      "sha256": "e93e1278e70567df4172131b2075824cfb64416988eacfb1606c26327fd86022",
+      "bytes": 1624
+    },
+    {
+      "source": "runs/sac_midday_price_500/source/data/profile.json",
+      "destination": "run/source/data/profile.json",
+      "sha256": "ba6149855dfe04a4a49f5564ef6cd8c46bce3975298f6d741f37a1181597602c",
+      "bytes": 4285
+    },
+    {
+      "source": "runs/sac_midday_price_500/source/data/provenance.json",
+      "destination": "run/source/data/provenance.json",
+      "sha256": "07f1519c333c5650c6bc1adee7ce0a188308ff1d402d714c24788f70fd18d2dd",
+      "bytes": 10783
+    },
+    {
+      "source": "runs/sac_midday_price_500/source/eqnsac/config.py",
+      "destination": "run/source/eqnsac/config.py",
+      "sha256": "1d35b2712cf0869c2ed22f5b088dc1e7a1d14354c8534b4dbfb6d6c25b28bfe7",
+      "bytes": 7077
+    },
+    {
+      "source": "runs/sac_midday_price_500/source/eqnsac/environment.py",
+      "destination": "run/source/eqnsac/environment.py",
+      "sha256": "6617fae8cb909a5e8e697e61b61eef4abcca63dc44d713a5229a4c3e87fdb6b4",
+      "bytes": 16605
+    },
+    {
+      "source": "runs/sac_midday_price_500/source/eqnsac/scenarios.py",
+      "destination": "run/source/eqnsac/scenarios.py",
+      "sha256": "06b02c16f253d7efd296d30a57ccc7d3957a2917e5762493cfe331a306ddbe80",
+      "bytes": 9426
+    },
+    {
+      "source": "runs/sac_midday_price_500/source/eqnsac/single_source.py",
+      "destination": "run/source/eqnsac/single_source.py",
+      "sha256": "80433ddee016cde0282cdf945aac5efc60620a564302c7ac413a686021e022c4",
+      "bytes": 2939
+    },
+    {
+      "source": "runs/sac_midday_price_500/source/sac/__init__.py",
+      "destination": "run/source/sac/__init__.py",
+      "sha256": "9ddcf3842e81bc1b15dc760d13eefe10f635fa484a3b640d4abec7712873e1cf",
+      "bytes": 79
+    },
+    {
+      "source": "runs/sac_midday_price_500/source/sac/agent.py",
+      "destination": "run/source/sac/agent.py",
+      "sha256": "8f2924f6dcee55335094da38bc06fc6051be8c082c56b6952950412b816d7ee1",
+      "bytes": 7402
+    },
+    {
+      "source": "runs/sac_midday_price_500/source/sac/config.py",
+      "destination": "run/source/sac/config.py",
+      "sha256": "f51e5d9aea8c5f212a4d2ca8d05a426056090ec7a108c7564e0da26d2b262c8b",
+      "bytes": 5027
+    },
+    {
+      "source": "runs/sac_midday_price_500/source/sac/networks.py",
+      "destination": "run/source/sac/networks.py",
+      "sha256": "b375e1ba98cdc6299fe603dc1db9b00858d4100658466a835422a282dc449854",
+      "bytes": 1925
+    },
+    {
+      "source": "runs/sac_midday_price_500/source/sac/parameters.py",
+      "destination": "run/source/sac/parameters.py",
+      "sha256": "dcd29631215e0ff60b5ccc2c578b8aa8167458725b431f65b0ee4b8bb1fc02d0",
+      "bytes": 5613
+    },
+    {
+      "source": "runs/sac_midday_price_500/source/sac/replay.py",
+      "destination": "run/source/sac/replay.py",
+      "sha256": "c0bdab55d7d3aa85b46f343d6a659f350dffab36c8363f473f9bef6adcaba4eb",
+      "bytes": 4592
+    },
+    {
+      "source": "runs/sac_midday_price_500/source/sac/runner.py",
+      "destination": "run/source/sac/runner.py",
+      "sha256": "30a2f42235951ac10403be9f1e3421cf46492d523279ed52c902b42d831e432e",
+      "bytes": 11146
+    },
+    {
+      "source": "runs/sac_midday_price_500/source/sac/scenarios.py",
+      "destination": "run/source/sac/scenarios.py",
+      "sha256": "ae5caba6754ba029d147424cc9acb2f045f38e7e01c7a341858730bc9c642e47",
+      "bytes": 2010
+    },
+    {
+      "source": "runs/sac_midday_price_500/source/sac/task.py",
+      "destination": "run/source/sac/task.py",
+      "sha256": "665340e42cf27dd4420f516478d25b095f129f8a9a15872344884ae3bf3c0d61",
+      "bytes": 9712
+    },
+    {
+      "source": "runs/sac_midday_price_500/source/train_sac.py",
+      "destination": "run/source/train_sac.py",
+      "sha256": "137813df3f307f45e3b33495b60ed4787c35a69e4a29233d306261999bda0fb1",
+      "bytes": 125
+    },
+    {
+      "source": "runs/sac_midday_price_500/test_1ep.json",
+      "destination": "run/test_1ep.json",
+      "sha256": "df3049341484dcbcf51ea6f5ed84bae124da58f0fedcebbda435efe791fd9318",
+      "bytes": 59346
+    },
+    {
+      "source": "runs/sac_midday_price_500/training.csv",
+      "destination": "run/training.csv",
+      "sha256": "e4e61add13d574b77acf64ca255aceed1485a7369194d3de68d71dc462cf4957",
+      "bytes": 149484
+    },
+    {
+      "source": "checks/sac_midday_price/validation.log",
+      "destination": "checks/validation.log",
+      "sha256": "53b3d84e3e14439ad92cc7d5542aad244133240d914399cde936168312e9d488",
+      "bytes": 605
+    },
+    {
+      "source": "checks/sac_midday_price/training.log",
+      "destination": "checks/training.log",
+      "sha256": "a5dfd34acac92988f1870877e804d600f3e92e661029dd9de582580c6685e8d0",
+      "bytes": 703
+    },
+    {
+      "source": "checks/sac_midday_price/evaluation.log",
+      "destination": "checks/evaluation.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "source": "checks/sac_midday_price/parameter_proposal.json",
+      "destination": "checks/parameter_proposal.json",
+      "sha256": "607f2468aee4537ff1bbc168d8a276e58144a7ffe35bd9fcd2e07bccc74eca16",
+      "bytes": 68667
+    },
+    {
+      "source": "checks/sac_midday_price/selection_before_training.json",
+      "destination": "checks/selection_before_training.json",
+      "sha256": "3a7dc74ce27622eda95657cef7cbdc25108760f4886659b19bcabd82dc40914b",
+      "bytes": 1314
+    },
+    {
+      "source": "checks/sac_midday_price/proposal_config_verification.json",
+      "destination": "checks/proposal_config_verification.json",
+      "sha256": "5689fb3a69298634358aa94aeda3d82b0416b3972ad731e7b941fdf0b63907d2",
+      "bytes": 494
+    },
+    {
+      "source": "checks/sac_midday_price/static_parameter_proposal.py",
+      "destination": "checks/static_parameter_proposal.py",
+      "sha256": "53d7e544f80740f9fb3283b0fa3ce63e1f8849506eec1ff7b77acd48cba8cb4c",
+      "bytes": 10814
+    }
+  ],
+  "checkpoint": {
+    "local_path": "runs/sac_midday_price_500/checkpoint_00500.pt",
+    "bytes": 890997,
+    "sha256": "15ae7cc0228485ebea9e4601a68a9edb2e462f10dc2d51026bdddb7759055ece",
+    "included_in_git": false
+  }
+}

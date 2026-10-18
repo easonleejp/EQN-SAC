@@ -5,6 +5,8 @@
 最大购电跳变与 RMS 使用日内相邻 23 个差分，不包含跨日或首尾回环。
 --hourly-utility 显式允许仅改变 U(L)=a*L²+b*L 的逐小时系数；核验
 curvature=-a、reference=b+2*a*baseline_load，其余配置和外生输入必须相同。
+与 --midday-price-focus 合用时，价格面板突出预先固定 h10–14 的均价；
+原 h11–15 响应窗口不变，h22→23 价变仍保留在结果与逐时数据中。
 
 Example:
     .venv/bin/python tools/plot_sac_fixed_day_comparison.py \
@@ -41,6 +43,7 @@ ROOT = Path(__file__).resolve().parents[1]
 BEFORE, AFTER, GRAY, GOLD = "#376A9D", "#CD6028", "#959CA5", "#A88A4D"
 NOISE_KEYS = ("curvature_std", "demand_noise_std", "participation_noise_std")
 MIDDAY_HOURS = tuple(range(11, 16))  # Predeclared h11–15, i.e. 11:00–16:00.
+MIDDAY_PRICE_HOURS = tuple(range(10, 15))  # Predeclared h10–14, i.e. 10:00–15:00.
 
 
 def read_run(path):
@@ -183,6 +186,7 @@ def diagnostics(run):
     return {
         "price_h22": float(values["price"][22]), "price_h23": float(values["price"][23]),
         "price_change_h22_to_h23": float(values["price"][23] - values["price"][22]),
+        "midday_price_mean": float(values["price"][list(MIDDAY_PRICE_HOURS)].mean()),
         "grid_max_absolute_hourly_change": float(np.abs(delta).max()),
         "grid_max_change_hours": [index, index + 1],
         "grid_max_change_signed": float(delta[index]),
@@ -197,7 +201,7 @@ def diagnostics(run):
     }
 
 
-def draw(output, before, after, metrics, hourly_utility=False):
+def draw(output, before, after, metrics, hourly_utility=False, midday_price_focus=False):
     fig, axes = plt.subplots(3, 2, figsize=(17, 14.6))
     fig.subplots_adjust(left=.075, right=.975, top=.825, bottom=.14, hspace=.57, wspace=.22)
     fig.suptitle("同一固定日｜两次 SAC 训练与实际测试对比", x=.075, ha="left", y=.972,
@@ -234,14 +238,19 @@ def draw(output, before, after, metrics, hourly_utility=False):
 
     ax = axes[0, 1]
     dm = metrics["before"]["price_change_h22_to_h23"], metrics["after"]["price_change_h22_to_h23"]
-    setup(ax, "b  零售价、原 TOU 与批发价", "澳分 / kWh",
-          f"h22 → h23 零售价变化：前 {dm[0]:+.3f}  |  本次 {dm[1]:+.3f} 澳分/kWh")
-    ax.axvspan(22, 24, color=GOLD, alpha=.07)
+    if midday_price_focus:
+        old, new = metrics["before"]["midday_price_mean"], metrics["after"]["midday_price_mean"]
+        subtitle = f"h10–14 零售均价：{old:.3f} → {new:.3f}（{new - old:+.3f} 澳分/kWh）"
+        ax.axvspan(10, 15, color=GOLD, alpha=.10)
+    else:
+        subtitle = f"h22 → h23 零售价变化：前 {dm[0]:+.3f}  |  本次 {dm[1]:+.3f} 澳分/kWh"
+        ax.axvspan(22, 24, color=GOLD, alpha=.07)
+        ax.axvline(23, color=GOLD, alpha=.45, lw=.8, ls=":")
+    setup(ax, "b  零售价、原 TOU 与批发价", "澳分 / kWh", subtitle)
     step(ax, before["profile"]["retail_price"], GOLD, "原 TOU", ":", 1.4)
     step(ax, a["grid_price"], GRAY, "批发价", "-", 1.3)
     step(ax, a["price"], BEFORE, ls="--", width=1.8)
     step(ax, b["price"], AFTER, width=2.2)
-    ax.axvline(23, color=GOLD, alpha=.45, lw=.8, ls=":")
     ax.legend(frameon=False, loc="center left", bbox_to_anchor=(.01, .44), ncol=2, fontsize=9)
 
     ax = axes[1, 0]
@@ -327,6 +336,7 @@ def write_hourly(path, before, after, hourly_utility=False):
                 columns[label + "_utility_" + key] = record[key]
     columns["response_change_pp"] = columns["after_response_pct"] - columns["before_response_pct"]
     columns["midday_window"] = np.isin(np.arange(24), MIDDAY_HOURS).astype(int)
+    columns["midday_price_window"] = np.isin(np.arange(24), MIDDAY_PRICE_HOURS).astype(int)
     with path.open("w", encoding="utf-8", newline="") as stream:
         writer = csv.DictWriter(stream, fieldnames=list(columns))
         writer.writeheader()
@@ -344,7 +354,11 @@ def main():
     parser.add_argument("--font", default="PingFang SC")
     parser.add_argument("--hourly-utility", action="store_true",
                         help="Only hourly a/b calibration may differ; verify its derived curvature/reference")
+    parser.add_argument("--midday-price-focus", action="store_true",
+                        help="With --hourly-utility, highlight the predeclared h10–14 retail-price mean")
     args = parser.parse_args()
+    if args.midday_price_focus and not args.hourly_utility:
+        parser.error("--midday-price-focus requires --hourly-utility")
     require(args.before.resolve() != args.after.resolve(), "前后不能指向同一运行目录。")
     before, after = read_run(args.before.resolve()), read_run(args.after.resolve())
     changes = compare_inputs(before, after, args.hourly_utility)
@@ -357,7 +371,7 @@ def main():
     font_path = set_style(args.font)
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=True)
-    artifacts = draw(output, before, after, metrics, args.hourly_utility)
+    artifacts = draw(output, before, after, metrics, args.hourly_utility, args.midday_price_focus)
     hourly = output / "hourly_comparison.csv"
     write_hourly(hourly, before, after, args.hourly_utility)
     artifacts.append(hourly)
@@ -383,6 +397,10 @@ def main():
         "midday_window": {"hours": list(MIDDAY_HOURS), "clock_interval": "11:00–16:00",
                           "selected_before_new_test": True,
                           "aggregation": "100*sum(baseline_load-user_load)/sum(baseline_load), not unweighted mean of hourly ratios"},
+        "midday_price_window": {"hours": list(MIDDAY_PRICE_HOURS), "clock_interval": "10:00–15:00",
+                                "selected_before_new_test": True, "highlighted_in_price_panel": args.midday_price_focus,
+                                "aggregation": "Arithmetic mean of the five saved hourly retail prices; no smoothing or load weighting",
+                                "unit": "Australian cents/kWh under the study unit assumption"},
         "inputs": {"before": before["inputs"], "after": after["inputs"]},
         "checkpoint_verification": {"before": before["checkpoint_record"], "after": after["checkpoint_record"]},
         "script": fingerprint(__file__), "helper_script": fingerprint(Path(__file__).with_name("plot_sac_fixed_day.py")),

@@ -1,0 +1,60 @@
+{
+  "created_utc": "2026-10-18T07:24:08.254159+00:00",
+  "before": "runs/sac_hourly_utility_500",
+  "new_run": "runs/sac_midday_price_500",
+  "only_configuration_change": "hourly_utility",
+  "configuration_sha256": "480637a0a587372874e459a4d2cbe08c1e6550ef11e917f0e59548e740a5e3aa",
+  "source_commit": "3d13e5c16afc7fa826ce1ad788860fbcad2b6c69",
+  "source_identical_to_previous_frozen_run": true,
+  "training_episodes": 500,
+  "internal_evaluation": 0,
+  "final_policy_tests": 1,
+  "midday_price_hours": [
+    10,
+    11,
+    12,
+    13,
+    14
+  ],
+  "midday_response_hours": [
+    11,
+    12,
+    13,
+    14,
+    15
+  ],
+  "construction": {
+    "weight": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.25,
+      0.75,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.75,
+      0.25,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "kappa": "(1-w)*old_kappa+w*0.000825",
+    "reference": "(1-w)*old_reference+w*30.5",
+    "a": "-kappa",
+    "b": "reference+2*kappa*nominal_baseline_load",
+    "zero_weight": "a and b kept byte-for-byte as JSON numerical values"
+  },
+  "note": "Selected from static response analysis before any new policy training or test; no action labels, constraints or reward changes."
+}

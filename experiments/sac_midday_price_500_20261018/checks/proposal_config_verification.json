@@ -1,0 +1,7 @@
+{
+  "verified_utc": "2026-10-18T07:25:26.465331+00:00",
+  "proposal_sha256": "607f2468aee4537ff1bbc168d8a276e58144a7ffe35bd9fcd2e07bccc74eca16",
+  "config_sha256": "480637a0a587372874e459a4d2cbe08c1e6550ef11e917f0e59548e740a5e3aa",
+  "max_coefficient_difference": 0.0,
+  "note": "Proposal report serialization completed after training started; the selected construction and exact run configuration were already fixed in selection_before_training.json. This check reads no new policy output."
+}
