@@ -1,0 +1,444 @@
+{
+  "purpose": "两次固定日实验的只读对比，每次500回合训练、一个已保存24小时测试回合",
+  "policy_loaded_or_evaluated": false,
+  "training_episodes_each": 500,
+  "test_episodes_each": 1,
+  "test_hours_each": 24,
+  "test_smoothing": "none",
+  "training_smoothing": "20-episode trailing arithmetic mean, begins at episode 20",
+  "paired_inputs": "Complete nominal profile and realized baseline load, wholesale price, wind are identical.",
+  "environment_noise": {
+    "curvature_std": 0,
+    "demand_noise_std": 0,
+    "participation_noise_std": 0
+  },
+  "grid_jump_definition": "Absolute/signed differences of the 23 adjacent hourly grid-purchase pairs; no midnight wrap. First maximum selected on ties.",
+  "grid_rms_definition": "sqrt(mean(diff(grid_purchase)**2)); 23 within-day differences",
+  "unit_assumption": {
+    "price": "Australian cents/kWh",
+    "power": "kW",
+    "energy": "kWh",
+    "training_plot_profit": "AUD = raw / 100",
+    "source_units_verified": false
+  },
+  "configuration_changes": {
+    "actor_lr": {
+      "before": 5e-05,
+      "after": 2e-05
+    },
+    "target_entropy": {
+      "before": -4.0,
+      "after": -2.0
+    },
+    "warmup_steps": {
+      "before": 480,
+      "after": 1200
+    }
+  },
+  "metrics": {
+    "before": {
+      "price_h22": 30.614463806152344,
+      "price_h23": 30.48966407775879,
+      "price_change_h22_to_h23": -0.12479972839355469,
+      "midday_price_mean": 32.082388687133786,
+      "grid_max_absolute_hourly_change": 711.0751845328573,
+      "grid_max_change_hours": [
+        3,
+        4
+      ],
+      "grid_max_change_signed": 711.0751845328573,
+      "grid_rms_hourly_change": 329.6913028815229,
+      "grid_daily_peak": 3573.1839157802024,
+      "grid_daily_std": 464.2972002272446,
+      "daily_profit_raw": 1165994.3595260081,
+      "midday_reduction_pct": 14.743186084186581,
+      "training_updates": 92168
+    },
+    "after": {
+      "price_h22": 30.6661434173584,
+      "price_h23": 30.634140014648438,
+      "price_change_h22_to_h23": -0.03200340270996094,
+      "midday_price_mean": 31.891996002197267,
+      "grid_max_absolute_hourly_change": 710.7601392672209,
+      "grid_max_change_hours": [
+        3,
+        4
+      ],
+      "grid_max_change_signed": 710.7601392672209,
+      "grid_rms_hourly_change": 343.68544262395193,
+      "grid_daily_peak": 3553.358844186214,
+      "grid_daily_std": 488.2449602284246,
+      "daily_profit_raw": 1165894.8774030004,
+      "midday_reduction_pct": 13.187530007691457,
+      "training_updates": 86408
+    },
+    "delta_after_minus_before": {
+      "price_h22": 0.05167961120605469,
+      "price_h23": 0.14447593688964844,
+      "price_change_h22_to_h23": 0.09279632568359375,
+      "midday_price_mean": -0.19039268493651917,
+      "grid_max_absolute_hourly_change": -0.31504526563639956,
+      "grid_max_change_signed": -0.31504526563639956,
+      "grid_rms_hourly_change": 13.994139742429013,
+      "grid_daily_peak": -19.82507159398847,
+      "grid_daily_std": 23.947760001179972,
+      "daily_profit_raw": -99.48212300776504,
+      "midday_reduction_pp": -1.555656076495124,
+      "training_updates": -5760
+    }
+  },
+  "comparison_mode": "historical_strict_reference",
+  "hourly_utility": null,
+  "response_definition": "100*(baseline_load-user_load)/baseline_load; positive=reduction, negative=increase; changes reported in percentage points",
+  "midday_window": {
+    "hours": [
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
+    "clock_interval": "11:00–16:00",
+    "selected_before_new_test": true,
+    "aggregation": "100*sum(baseline_load-user_load)/sum(baseline_load), not unweighted mean of hourly ratios"
+  },
+  "midday_price_window": {
+    "hours": [
+      10,
+      11,
+      12,
+      13,
+      14
+    ],
+    "clock_interval": "10:00–15:00",
+    "selected_before_new_test": true,
+    "highlighted_in_price_panel": false,
+    "aggregation": "Arithmetic mean of the five saved hourly retail prices; no smoothing or load weighting",
+    "unit": "Australian cents/kWh under the study unit assumption"
+  },
+  "inputs": {
+    "before": [
+      {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_500/config.json",
+        "bytes": 2182,
+        "sha256": "b62a308bdbe4e13a395ee3e8e377345ec9baafcec02a8fcde04627552deee6eb"
+      },
+      {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_500/complete.json",
+        "bytes": 97,
+        "sha256": "5bd3d9efbdce83a9d1706cb85591e213d7ea25b6ffb4fdde6824b8ed98e99306"
+      },
+      {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_500/manifest.json",
+        "bytes": 2289,
+        "sha256": "e1d98f1e72421e2c96e0d38617ecb302f0297378383a265b5d15c74e72fd6c45"
+      },
+      {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_500/training.csv",
+        "bytes": 149609,
+        "sha256": "516ff53bd66981c0902d2b92af0ba7e1548e832e1b996facae8b852cbb505d00"
+      },
+      {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_500/test_1ep.json",
+        "bytes": 59353,
+        "sha256": "bec83772d05e6697ece43a4c56f67f2fd03fbeff08d799510e3b6a5b8d3e8b17"
+      },
+      {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_500/effective_environment.json",
+        "bytes": 3241,
+        "sha256": "b65db20d09efcaa10a93a40beed1d1a745f2e83273a9f8476e0349fb17485391"
+      },
+      {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_500/effective_profile.json",
+        "bytes": 4010,
+        "sha256": "7d1b1f03b541c0f0a1265bd691693f22904636ab736d59e46deaa432b4337278"
+      },
+      {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_500/source/sac/__init__.py",
+        "bytes": 79,
+        "sha256": "9ddcf3842e81bc1b15dc760d13eefe10f635fa484a3b640d4abec7712873e1cf"
+      },
+      {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_500/source/sac/agent.py",
+        "bytes": 7402,
+        "sha256": "8f2924f6dcee55335094da38bc06fc6051be8c082c56b6952950412b816d7ee1"
+      },
+      {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_500/source/sac/config.py",
+        "bytes": 5039,
+        "sha256": "202218c39f772109c4e63e2c003a82ae4c414c3dbc9a0aa3bdd4e097f4de9009"
+      },
+      {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_500/source/sac/networks.py",
+        "bytes": 1925,
+        "sha256": "b375e1ba98cdc6299fe603dc1db9b00858d4100658466a835422a282dc449854"
+      },
+      {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_500/source/sac/parameters.py",
+        "bytes": 5613,
+        "sha256": "dcd29631215e0ff60b5ccc2c578b8aa8167458725b431f65b0ee4b8bb1fc02d0"
+      },
+      {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_500/source/sac/replay.py",
+        "bytes": 4592,
+        "sha256": "c0bdab55d7d3aa85b46f343d6a659f350dffab36c8363f473f9bef6adcaba4eb"
+      },
+      {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_500/source/sac/runner.py",
+        "bytes": 11146,
+        "sha256": "30a2f42235951ac10403be9f1e3421cf46492d523279ed52c902b42d831e432e"
+      },
+      {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_500/source/sac/scenarios.py",
+        "bytes": 2010,
+        "sha256": "ae5caba6754ba029d147424cc9acb2f045f38e7e01c7a341858730bc9c642e47"
+      },
+      {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_500/source/sac/task.py",
+        "bytes": 11027,
+        "sha256": "d8e35988c7bfa6ce8a66f656b0deb8f3ab372ab9356701977b6a8db42d84aedd"
+      },
+      {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_500/source/train_sac.py",
+        "bytes": 125,
+        "sha256": "137813df3f307f45e3b33495b60ed4787c35a69e4a29233d306261999bda0fb1"
+      },
+      {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_500/source/eqnsac/config.py",
+        "bytes": 7077,
+        "sha256": "1d35b2712cf0869c2ed22f5b088dc1e7a1d14354c8534b4dbfb6d6c25b28bfe7"
+      },
+      {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_500/source/eqnsac/environment.py",
+        "bytes": 16605,
+        "sha256": "6617fae8cb909a5e8e697e61b61eef4abcca63dc44d713a5229a4c3e87fdb6b4"
+      },
+      {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_500/source/eqnsac/scenarios.py",
+        "bytes": 9426,
+        "sha256": "06b02c16f253d7efd296d30a57ccc7d3957a2917e5762493cfe331a306ddbe80"
+      },
+      {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_500/source/eqnsac/single_source.py",
+        "bytes": 2939,
+        "sha256": "80433ddee016cde0282cdf945aac5efc60620a564302c7ac413a686021e022c4"
+      },
+      {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_500/source/data/environment.json",
+        "bytes": 1624,
+        "sha256": "e93e1278e70567df4172131b2075824cfb64416988eacfb1606c26327fd86022"
+      },
+      {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_500/source/data/profile.json",
+        "bytes": 4285,
+        "sha256": "ba6149855dfe04a4a49f5564ef6cd8c46bce3975298f6d741f37a1181597602c"
+      },
+      {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_500/source/data/provenance.json",
+        "bytes": 10783,
+        "sha256": "07f1519c333c5650c6bc1adee7ce0a188308ff1d402d714c24788f70fd18d2dd"
+      },
+      {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_500/checkpoint_00500.pt",
+        "bytes": 829045,
+        "sha256": "5064eb85a1c3eb7426b0da59fd9e071c60441adb06b75eeea99a83fdd4917b2f"
+      },
+      {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_500/effective_generator.json",
+        "bytes": 559,
+        "sha256": "e3c1c52c70cbbf5f22f6d9c9c022844b94f1f38f294fefd9f87f9ac2214c245c"
+      },
+      {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_500/provenance_test.json",
+        "bytes": 842,
+        "sha256": "eb637def3e90c4c0263a77a418ccde2446a2171177065b138cfeefe1b9703722"
+      }
+    ],
+    "after": [
+      {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_tuned_500/config.json",
+        "bytes": 2183,
+        "sha256": "2761cee30aaa564144080eef0da097d11d0d5c19accf9b6127c54cded0d966db"
+      },
+      {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_tuned_500/complete.json",
+        "bytes": 98,
+        "sha256": "704cdfd7986d182dac615be531b4975075d1a822140bf3b6c234f57c8f8f79c7"
+      },
+      {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_tuned_500/manifest.json",
+        "bytes": 2289,
+        "sha256": "e1d98f1e72421e2c96e0d38617ecb302f0297378383a265b5d15c74e72fd6c45"
+      },
+      {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_tuned_500/training.csv",
+        "bytes": 146643,
+        "sha256": "d9b54780c4dc3735ea46eab0960fde3a8c8e282ee2b109597ceb4bd465d6e330"
+      },
+      {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_tuned_500/test_1ep.json",
+        "bytes": 59370,
+        "sha256": "766c1323909fa300bf56eb58a43a0a3c95eb36e8dbe86c8e43cb5f478c275977"
+      },
+      {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_tuned_500/effective_environment.json",
+        "bytes": 3241,
+        "sha256": "b65db20d09efcaa10a93a40beed1d1a745f2e83273a9f8476e0349fb17485391"
+      },
+      {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_tuned_500/effective_profile.json",
+        "bytes": 4010,
+        "sha256": "7d1b1f03b541c0f0a1265bd691693f22904636ab736d59e46deaa432b4337278"
+      },
+      {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_tuned_500/source/sac/__init__.py",
+        "bytes": 79,
+        "sha256": "9ddcf3842e81bc1b15dc760d13eefe10f635fa484a3b640d4abec7712873e1cf"
+      },
+      {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_tuned_500/source/sac/agent.py",
+        "bytes": 7402,
+        "sha256": "8f2924f6dcee55335094da38bc06fc6051be8c082c56b6952950412b816d7ee1"
+      },
+      {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_tuned_500/source/sac/config.py",
+        "bytes": 5039,
+        "sha256": "202218c39f772109c4e63e2c003a82ae4c414c3dbc9a0aa3bdd4e097f4de9009"
+      },
+      {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_tuned_500/source/sac/networks.py",
+        "bytes": 1925,
+        "sha256": "b375e1ba98cdc6299fe603dc1db9b00858d4100658466a835422a282dc449854"
+      },
+      {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_tuned_500/source/sac/parameters.py",
+        "bytes": 5613,
+        "sha256": "dcd29631215e0ff60b5ccc2c578b8aa8167458725b431f65b0ee4b8bb1fc02d0"
+      },
+      {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_tuned_500/source/sac/replay.py",
+        "bytes": 4592,
+        "sha256": "c0bdab55d7d3aa85b46f343d6a659f350dffab36c8363f473f9bef6adcaba4eb"
+      },
+      {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_tuned_500/source/sac/runner.py",
+        "bytes": 11146,
+        "sha256": "30a2f42235951ac10403be9f1e3421cf46492d523279ed52c902b42d831e432e"
+      },
+      {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_tuned_500/source/sac/scenarios.py",
+        "bytes": 2010,
+        "sha256": "ae5caba6754ba029d147424cc9acb2f045f38e7e01c7a341858730bc9c642e47"
+      },
+      {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_tuned_500/source/sac/task.py",
+        "bytes": 11027,
+        "sha256": "d8e35988c7bfa6ce8a66f656b0deb8f3ab372ab9356701977b6a8db42d84aedd"
+      },
+      {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_tuned_500/source/train_sac.py",
+        "bytes": 125,
+        "sha256": "137813df3f307f45e3b33495b60ed4787c35a69e4a29233d306261999bda0fb1"
+      },
+      {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_tuned_500/source/eqnsac/config.py",
+        "bytes": 7077,
+        "sha256": "1d35b2712cf0869c2ed22f5b088dc1e7a1d14354c8534b4dbfb6d6c25b28bfe7"
+      },
+      {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_tuned_500/source/eqnsac/environment.py",
+        "bytes": 16605,
+        "sha256": "6617fae8cb909a5e8e697e61b61eef4abcca63dc44d713a5229a4c3e87fdb6b4"
+      },
+      {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_tuned_500/source/eqnsac/scenarios.py",
+        "bytes": 9426,
+        "sha256": "06b02c16f253d7efd296d30a57ccc7d3957a2917e5762493cfe331a306ddbe80"
+      },
+      {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_tuned_500/source/eqnsac/single_source.py",
+        "bytes": 2939,
+        "sha256": "80433ddee016cde0282cdf945aac5efc60620a564302c7ac413a686021e022c4"
+      },
+      {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_tuned_500/source/data/environment.json",
+        "bytes": 1624,
+        "sha256": "e93e1278e70567df4172131b2075824cfb64416988eacfb1606c26327fd86022"
+      },
+      {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_tuned_500/source/data/profile.json",
+        "bytes": 4285,
+        "sha256": "ba6149855dfe04a4a49f5564ef6cd8c46bce3975298f6d741f37a1181597602c"
+      },
+      {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_tuned_500/source/data/provenance.json",
+        "bytes": 10783,
+        "sha256": "07f1519c333c5650c6bc1adee7ce0a188308ff1d402d714c24788f70fd18d2dd"
+      },
+      {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_tuned_500/checkpoint_00500.pt",
+        "bytes": 829045,
+        "sha256": "36ce1c3d8fa32b6c15bfcea9ece49c6b460da233221790b2722f1ca835778313"
+      },
+      {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_tuned_500/effective_generator.json",
+        "bytes": 559,
+        "sha256": "e3c1c52c70cbbf5f22f6d9c9c022844b94f1f38f294fefd9f87f9ac2214c245c"
+      },
+      {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_tuned_500/provenance_test.json",
+        "bytes": 860,
+        "sha256": "f08a5243fc35f4d5530b8aa98e663e874249b2b8c249583f01d6ede843c61e1e"
+      }
+    ]
+  },
+  "checkpoint_verification": {
+    "before": {
+      "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_500/checkpoint_00500.pt",
+      "sha256_reread": true,
+      "sha256": "5064eb85a1c3eb7426b0da59fd9e071c60441adb06b75eeea99a83fdd4917b2f",
+      "note": "Checkpoint bytes hashed for provenance only; model not loaded."
+    },
+    "after": {
+      "path": "/Users/liliheng/Desktop/EQN-SAC/runs/sac_current6_tuned_500/checkpoint_00500.pt",
+      "sha256_reread": true,
+      "sha256": "36ce1c3d8fa32b6c15bfcea9ece49c6b460da233221790b2722f1ca835778313",
+      "note": "Checkpoint bytes hashed for provenance only; model not loaded."
+    }
+  },
+  "script": {
+    "path": "/Users/liliheng/Desktop/EQN-SAC/tools/plot_sac_fixed_day_comparison.py",
+    "bytes": 26959,
+    "sha256": "c1a4d0bb4899b06e176cedd16198e0eac50a03ce8e099da8c356b7c6ab077159"
+  },
+  "helper_script": {
+    "path": "/Users/liliheng/Desktop/EQN-SAC/tools/plot_sac_fixed_day.py",
+    "bytes": 14054,
+    "sha256": "9833b44d4840be0c2efe03980f6397a6110098802ad41aa725d8c998898bf4e0"
+  },
+  "outputs": [
+    {
+      "path": "/Users/liliheng/Desktop/EQN-SAC/experiments/sac_current6_tuned_500_20261018/figures/fixed_day_comparison.png",
+      "bytes": 692386,
+      "sha256": "0920cbf7932a252673b9f54c58870e1026fb812c4038ef5ff5557ee0e6287a42"
+    },
+    {
+      "path": "/Users/liliheng/Desktop/EQN-SAC/experiments/sac_current6_tuned_500_20261018/figures/fixed_day_comparison.pdf",
+      "bytes": 91101,
+      "sha256": "5e7378af93713149b97fd3d65e5bc3fc48e3b40aed9962f81d750821d864dde9"
+    },
+    {
+      "path": "/Users/liliheng/Desktop/EQN-SAC/experiments/sac_current6_tuned_500_20261018/figures/hourly_comparison.csv",
+      "bytes": 15585,
+      "sha256": "e1e9c54f127f4dc41baa3a778cee81a7d856dc55f64719128b632a984a8d3c19"
+    }
+  ],
+  "software": {
+    "python": "3.12.14",
+    "numpy": "2.5.4",
+    "matplotlib": "3.11.2",
+    "font": "PingFang SC",
+    "font_path": "/System/Library/AssetsV2/com_apple_MobileAsset_Font8/86ba2c91f017a3749571a82f2c6d890ac7ffb2fb.asset/AssetData/PingFang.ttc"
+  },
+  "limitations": "Same fixed-day tests are not unseen data; this comparison cannot isolate individual parameter effects. Existing test files record one saved episode each, not an execution-call audit."
+}

@@ -2,9 +2,9 @@
 
 用户已限定本轮只调整响应方程参数、训练超参、状态空间、新能源与储能参数。活动代码只使用 `profit * reward_scale` 作为奖励；乘法缩放是训练数值尺度。没有利润中心化、削峰/平滑奖励、价格跟随规则或额外调度约束。前一轮目标修改试验已退出推荐，原记录仍在 `experiments/sac_500ep_20261018/`。
 
-最新完成仅当前信息的6维状态实验：固定同一天训练500回合，只测试最终模型1回合，无训练内部评价。相对午间降价候选，配置仅 `observation: dispatch17 → current6`，归一化改为固定数值尺度，其他参数和奖励不变。最大购电跳变908.16→711.08 kW，但整体RMS278.56→329.69 kW、峰值3365.46→3573.18 kW；中午价格及削减回升，储能提前耗尽。结果见[最新实验记录](../../experiments/sac_current6_500_20261018/README.md)，状态定义见[当前6维说明](current-observation.md)。
+最新完成6维状态下的训练超参调整：固定同一天训练500回合，最终模型只测试1回合，无内部评价。仅将预热480→1200步、Actor学习率5e-5→2e-5、目标熵−4→−2。中午均价32.082→31.892，削减率14.74%→13.19%；但储能仍有96.72%的放电集中于8–15时，购电RMS329.69→343.69 kW，未解决提前耗尽。见[最新实验记录](../../experiments/sac_current6_tuned_500_20261018/README.md)和[训练设置](current6-training.md)。
 
-本轮对照保留在[午间降价说明](midday-price.md)和[午间降价实验记录](../../experiments/sac_midday_price_500_20261018/README.md)。该轮只调整a、b，中午均价下降，但购电跳变退步。
+本轮对照为[6维观测实验](../../experiments/sac_current6_500_20261018/README.md)，状态和归一化均保持[当前6维定义](current-observation.md)。更早的[午间降价说明](midday-price.md)与[实验记录](../../experiments/sac_midday_price_500_20261018/README.md)保留。
 
 上一轮[逐时效用说明](hourly-utility.md)与[实验记录](../../experiments/sac_hourly_utility_500_20261018/README.md)继续保留。更早的17维状态、储能参数与训练超参的[固定日改进记录](fixed-day-refinement.md)及[固定日记录](fixed-day-500.md)也保留。文献与参数核对见[参数审查](parameter-review-20261018.md)。
 
@@ -17,8 +17,9 @@
 | `sac/task.py` | 观测与原有 SOC 可行动作映射，原利润奖励 |
 | `sac/parameters.py` | 允许范围内的参数覆盖和校验 |
 | `sac/scenarios.py` | 固定名义日输入；其余模式沿用原随机场景采样 |
-| `configs/sac/current6_500.json` | 最新6维当前观测，固定日500+1；不输入未来价格及响应模型参数 |
-| `configs/sac/midday_price_500.json` | 本轮17维对照：午间降价候选，固定日500+1 |
+| `configs/sac/current6_tuned_500.json` | 最新三项训练超参调整，固定日500+1；储能择时尚未改善 |
+| `configs/sac/current6_500.json` | 本轮6维对照，固定日500+1；不输入未来价格及响应模型参数 |
+| `configs/sac/midday_price_500.json` | 更早17维对照：午间降价候选，固定日500+1 |
 | `configs/sac/hourly_utility_500.json` | 更早对照：前一逐时效用配置，17维状态和18%峰值功率，固定日500+1 |
 | `configs/sac/fixed_day_refined_500.json` | 更早对照：原响应参数、17维状态，18%峰值功率，固定日500+1 |
 | `configs/sac/fixed_day_500.json` | 前一次对照：11维状态，20%峰值功率，固定日500+1 |
@@ -41,14 +42,14 @@
 ```sh
 python -m pip install -r requirements-analysis.txt
 python -m unittest discover -s tests -v
-python train_sac.py train --config configs/sac/current6_500.json --output runs/sac_current6_new
-python runs/sac_current6_new/source/train_sac.py evaluate --checkpoint runs/sac_current6_new/checkpoint_00500.pt --output runs/sac_current6_new/test_1ep.json --cases 1 --seed 20260914
-python tools/plot_sac_fixed_day.py --run-dir runs/sac_current6_new --output checks/sac_current6_new/figures
+python train_sac.py train --config configs/sac/current6_tuned_500.json --output runs/sac_current6_tuned_new
+python runs/sac_current6_tuned_new/source/train_sac.py evaluate --checkpoint runs/sac_current6_tuned_new/checkpoint_00500.pt --output runs/sac_current6_tuned_new/test_1ep.json --cases 1 --seed 20260914
+python tools/plot_sac_fixed_day.py --run-dir runs/sac_current6_tuned_new --output checks/sac_current6_tuned_new/figures
 ```
 
-每次使用新的输出目录。当前配置 `evaluation_every=0` 不执行训练前、中途或结束时的内部策略评价；随后单独执行一次 `evaluate --cases 1`。训练500回合共12000环境步，本轮、前一逐时效用及refined配置均为每步8次梯度更新、共92168次更新；最初11维固定日配置为4次/46084次。负荷、批发价和恒定风电逐日相同，三项环境响应噪声均为0；SAC训练探索及回放抽样仍具有随机性。若复现本轮17维对照，请将训练配置换为保留的 `midday_price_500.json`，并使用另一个新目录。
+每次使用新的输出目录。当前配置 `evaluation_every=0` 不执行训练前、中途或结束时的内部策略评价；随后单独执行一次 `evaluate --cases 1`。500回合共12000环境步，本轮预热1200步，仍每步8次更新，实际86408次；上轮6维预热480步，实际92168次。没有补齐更新预算。负荷、批发价和恒定风电逐日相同，三项环境响应噪声均为0；SAC训练探索与回放仍有随机性。复现对照时换用 `current6_500.json` 和新输出目录。
 
-上述命令提供从头复现入口。本轮实际运行96项单元测试并全部通过，包含未来数据/响应参数防泄露、固定归一化、终止观测、同动作物理与利润奖励一致性；另核验500+1预算、冻结源码、配对输入和轨迹能量平衡。
+本轮未重跑96项单元测试：17项核心源码与基础数据哈希和上轮通过96项测试的版本完全相同。本轮完成配置严格差异检查、500+1预算、冻结源码、配对数据、奖励恒等式及轨迹能量平衡核验。
 
 训练保存配置、依赖版本、完整源码哈希、训练 CSV、检查点以及 `effective_environment/profile/generator.json`。评价包含相同实际输入快照；分析必须使用该次运行的实际参数，不能套用默认数据。
 
@@ -56,9 +57,9 @@ python tools/plot_sac_fixed_day.py --run-dir runs/sac_current6_new --output chec
 
 ## 结果图
 
-[最新6维观测前后六联图](../../experiments/sac_current6_500_20261018/README.md)附有PNG、PDF、逐小时CSV与来源记录；[前一逐时效用六联图](../../experiments/sac_hourly_utility_500_20261018/README.md)和[更早固定日六联图](../../experiments/sac_fixed_day_refined_500_20261018/README.md)仍保留。`tools/plot_sac_fixed_day_comparison.py`比较两个保存的单次测试，无需权重或重新执行策略。单组图仍用`tools/plot_sac_fixed_day.py`。只有训练利润叠加20回合尾随均值，测试动作和负荷均不平滑、不跨案例平均。
+[最新训练超参前后六联图](../../experiments/sac_current6_tuned_500_20261018/README.md)附有PNG、PDF、逐小时CSV与来源记录；[前一逐时效用六联图](../../experiments/sac_hourly_utility_500_20261018/README.md)和[更早固定日六联图](../../experiments/sac_fixed_day_refined_500_20261018/README.md)仍保留。`tools/plot_sac_fixed_day_comparison.py`比较两个保存的单次测试，无需权重或重新执行策略。单组图仍用`tools/plot_sac_fixed_day.py`。只有训练利润叠加20回合尾随均值，测试动作和负荷均不平滑、不跨案例平均。
 
-本轮h11–15负荷加权削减率11.6343%→14.7432%，h10–14均价31.6668→32.0824。响应后用户负荷RMS319.77→277.74 kW有所改善，但储能提前放空导致购电RMS和晚峰上升；日利润下降0.242%。最大单次跳变下降不能代表整体更平滑。响应环境相同，但状态内容、归一化及输入维度影响初始化，单seed结果不能隔离每个删项的贡献。
+本轮h11–15削减率14.7432%→13.1875%，h10–14均价32.0824→31.8920。购电峰值3573.18→3553.36 kW，但购电RMS329.69→343.69 kW，储能边际利润758.62→580.89；晚峰放电虽略增，规模仍很小。三项超参同时改变，且预热改变了更新总数，不能单独归因于目标熵−2。环境利润奖励没有修改，但熵目标会改变SAC的探索和软价值学习。
 
 ## 指标解释
 

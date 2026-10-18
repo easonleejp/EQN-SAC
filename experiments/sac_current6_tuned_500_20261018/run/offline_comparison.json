@@ -1,0 +1,1093 @@
+{
+  "method": "Arithmetic on two saved single-day trajectories; no policy/model/environment execution.",
+  "policy_loaded_or_evaluated": false,
+  "configuration_changes": {
+    "warmup_steps": {
+      "before": 480,
+      "after": 1200
+    },
+    "actor_lr": {
+      "before": 5e-05,
+      "after": 2e-05
+    },
+    "target_entropy": {
+      "before": -4.0,
+      "after": -2.0
+    }
+  },
+  "checks": {
+    "only_three_selected_hyperparameters_differ": true,
+    "effective_inputs_equal": true,
+    "realized_exogenous_inputs_equal": true,
+    "each_500_training_episodes": true,
+    "each_test_n_1_hours_24": true,
+    "noise_zero": true,
+    "profit_reward_identity": true,
+    "energy_balance": true,
+    "frozen_source_sha256": true
+  },
+  "definitions": {
+    "midday_price_hours": [
+      10,
+      11,
+      12,
+      13,
+      14
+    ],
+    "midday_response_hours": [
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
+    "low_load_hours": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "high_load_hours": [
+      10,
+      11,
+      17,
+      18,
+      19,
+      20
+    ],
+    "hour_selection": "Six smallest/largest original baseline loads; ties by ascending hour; actions never define labels.",
+    "curve_rms_ramp": "sqrt(mean(diff(x)**2)), 23 within-day adjacent changes; no midnight wrap.",
+    "curve_rms_level": "sqrt(mean(x**2)), distinct from ramp RMS; std uses population ddof=0.",
+    "response_percent": "100*(1-sum(user_load)/sum(baseline_load)); positive means reduction.",
+    "change_sign": "user/grid change metrics use actual-minus-baseline; positive means increase.",
+    "baseline_grid": "max(original baseline_load-wind, 0), without response or storage.",
+    "zero_storage": "max(recorded user_load-wind, 0), accounting counterfactual at the same recorded price.",
+    "storage_prices": "Wholesale price weighted by actual charge/discharge power, not raw actions; null for no energy.",
+    "discharge_h8_15_percent": "100*sum(actual discharge in h8..15)/sum(actual discharge over h0..23); null if no discharge.",
+    "discharge_h17_20_energy": "sum(actual discharge in h17..20)*dt; current dt is explicitly checked to be one hour.",
+    "available_soc": "h15_end uses soc[15] (16:00); h18_start uses initial_soc[18] (18:00). Available energy=max(SOC-soc_min,0).",
+    "potential_discharge_energy": "available_above_min*eta_dis; does not account for power limits, time windows, or load absorption, and is not realized dispatch.",
+    "last_50_training_metrics": "Mean/median/min/max/last over 50 episode-end records for episodes 451..500. Each record is that episode's last optimizer update, not its update average. Entropy is joint differential entropy in raw control coordinates and can be negative.",
+    "update_count": "(12000-max(warmup_steps,batch_size,1)+1)*updates_per_step; 92168 before and 86408 after.",
+    "tou_groups": "Hours grouped by the three original profile retail_price levels, sorted valley/flat/peak.",
+    "deltas": "after-before, same units; differences of percent metrics are percentage points, not relative percentages.",
+    "units": "Recorded values unchanged. Study convention: price cents/kWh; power kW; energy kWh; profit cents.",
+    "scope": "One paired fixed day and seed; not an independent generalization or convergence guarantee."
+  },
+  "script": {
+    "path": "checks/sac_current6_tuned_500/offline_analysis.py",
+    "bytes": 22399,
+    "sha256": "7ab10709a50de95d6adaf370e9a46d12fc2d4188a736c46807362e07471400e6"
+  },
+  "results": {
+    "before": {
+      "sources": [
+        {
+          "path": "runs/sac_current6_500/config.json",
+          "bytes": 2182,
+          "sha256": "b62a308bdbe4e13a395ee3e8e377345ec9baafcec02a8fcde04627552deee6eb"
+        },
+        {
+          "path": "runs/sac_current6_500/complete.json",
+          "bytes": 97,
+          "sha256": "5bd3d9efbdce83a9d1706cb85591e213d7ea25b6ffb4fdde6824b8ed98e99306"
+        },
+        {
+          "path": "runs/sac_current6_500/manifest.json",
+          "bytes": 2289,
+          "sha256": "e1d98f1e72421e2c96e0d38617ecb302f0297378383a265b5d15c74e72fd6c45"
+        },
+        {
+          "path": "runs/sac_current6_500/test_1ep.json",
+          "bytes": 59353,
+          "sha256": "bec83772d05e6697ece43a4c56f67f2fd03fbeff08d799510e3b6a5b8d3e8b17"
+        },
+        {
+          "path": "runs/sac_current6_500/effective_environment.json",
+          "bytes": 3241,
+          "sha256": "b65db20d09efcaa10a93a40beed1d1a745f2e83273a9f8476e0349fb17485391"
+        },
+        {
+          "path": "runs/sac_current6_500/effective_profile.json",
+          "bytes": 4010,
+          "sha256": "7d1b1f03b541c0f0a1265bd691693f22904636ab736d59e46deaa432b4337278"
+        },
+        {
+          "path": "runs/sac_current6_500/effective_generator.json",
+          "bytes": 559,
+          "sha256": "e3c1c52c70cbbf5f22f6d9c9c022844b94f1f38f294fefd9f87f9ac2214c245c"
+        },
+        {
+          "path": "runs/sac_current6_500/training.csv",
+          "bytes": 149609,
+          "sha256": "516ff53bd66981c0902d2b92af0ba7e1548e832e1b996facae8b852cbb505d00"
+        },
+        {
+          "path": "runs/sac_current6_500/source/sac/__init__.py",
+          "bytes": 79,
+          "sha256": "9ddcf3842e81bc1b15dc760d13eefe10f635fa484a3b640d4abec7712873e1cf"
+        },
+        {
+          "path": "runs/sac_current6_500/source/sac/agent.py",
+          "bytes": 7402,
+          "sha256": "8f2924f6dcee55335094da38bc06fc6051be8c082c56b6952950412b816d7ee1"
+        },
+        {
+          "path": "runs/sac_current6_500/source/sac/config.py",
+          "bytes": 5039,
+          "sha256": "202218c39f772109c4e63e2c003a82ae4c414c3dbc9a0aa3bdd4e097f4de9009"
+        },
+        {
+          "path": "runs/sac_current6_500/source/sac/networks.py",
+          "bytes": 1925,
+          "sha256": "b375e1ba98cdc6299fe603dc1db9b00858d4100658466a835422a282dc449854"
+        },
+        {
+          "path": "runs/sac_current6_500/source/sac/parameters.py",
+          "bytes": 5613,
+          "sha256": "dcd29631215e0ff60b5ccc2c578b8aa8167458725b431f65b0ee4b8bb1fc02d0"
+        },
+        {
+          "path": "runs/sac_current6_500/source/sac/replay.py",
+          "bytes": 4592,
+          "sha256": "c0bdab55d7d3aa85b46f343d6a659f350dffab36c8363f473f9bef6adcaba4eb"
+        },
+        {
+          "path": "runs/sac_current6_500/source/sac/runner.py",
+          "bytes": 11146,
+          "sha256": "30a2f42235951ac10403be9f1e3421cf46492d523279ed52c902b42d831e432e"
+        },
+        {
+          "path": "runs/sac_current6_500/source/sac/scenarios.py",
+          "bytes": 2010,
+          "sha256": "ae5caba6754ba029d147424cc9acb2f045f38e7e01c7a341858730bc9c642e47"
+        },
+        {
+          "path": "runs/sac_current6_500/source/sac/task.py",
+          "bytes": 11027,
+          "sha256": "d8e35988c7bfa6ce8a66f656b0deb8f3ab372ab9356701977b6a8db42d84aedd"
+        },
+        {
+          "path": "runs/sac_current6_500/source/train_sac.py",
+          "bytes": 125,
+          "sha256": "137813df3f307f45e3b33495b60ed4787c35a69e4a29233d306261999bda0fb1"
+        },
+        {
+          "path": "runs/sac_current6_500/source/eqnsac/config.py",
+          "bytes": 7077,
+          "sha256": "1d35b2712cf0869c2ed22f5b088dc1e7a1d14354c8534b4dbfb6d6c25b28bfe7"
+        },
+        {
+          "path": "runs/sac_current6_500/source/eqnsac/environment.py",
+          "bytes": 16605,
+          "sha256": "6617fae8cb909a5e8e697e61b61eef4abcca63dc44d713a5229a4c3e87fdb6b4"
+        },
+        {
+          "path": "runs/sac_current6_500/source/eqnsac/scenarios.py",
+          "bytes": 9426,
+          "sha256": "06b02c16f253d7efd296d30a57ccc7d3957a2917e5762493cfe331a306ddbe80"
+        },
+        {
+          "path": "runs/sac_current6_500/source/eqnsac/single_source.py",
+          "bytes": 2939,
+          "sha256": "80433ddee016cde0282cdf945aac5efc60620a564302c7ac413a686021e022c4"
+        },
+        {
+          "path": "runs/sac_current6_500/source/data/environment.json",
+          "bytes": 1624,
+          "sha256": "e93e1278e70567df4172131b2075824cfb64416988eacfb1606c26327fd86022"
+        },
+        {
+          "path": "runs/sac_current6_500/source/data/profile.json",
+          "bytes": 4285,
+          "sha256": "ba6149855dfe04a4a49f5564ef6cd8c46bce3975298f6d741f37a1181597602c"
+        },
+        {
+          "path": "runs/sac_current6_500/source/data/provenance.json",
+          "bytes": 10783,
+          "sha256": "07f1519c333c5650c6bc1adee7ce0a188308ff1d402d714c24788f70fd18d2dd"
+        }
+      ],
+      "observation": "current6",
+      "training": {
+        "episodes": 500,
+        "steps": 12000,
+        "updates": 92168,
+        "wall_seconds": 186.9559492089902,
+        "last_50_logged_updates": {
+          "episodes": [
+            451,
+            500
+          ],
+          "records": 50,
+          "alpha": {
+            "mean": 0.04108895726501942,
+            "median": 0.04115210101008415,
+            "minimum": 0.04016375541687012,
+            "maximum": 0.041844628751277924,
+            "last": 0.04026725888252258
+          },
+          "entropy": {
+            "mean": -4.014229655265808,
+            "median": -4.016419172286987,
+            "minimum": -4.272001266479492,
+            "maximum": -3.8041181564331055,
+            "last": -4.037308216094971
+          }
+        }
+      },
+      "profit": 1165994.3595260081,
+      "storage_marginal_profit": 758.6212447581314,
+      "prices": {
+        "wholesale_pearson": 0.9118827389346557,
+        "tou_pearson": 0.8154623597082549,
+        "tou_groups": {
+          "valley": {
+            "tou_price": 26.5,
+            "hours": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              23
+            ],
+            "price_mean": 28.89538828531901
+          },
+          "flat": {
+            "tou_price": 28.5,
+            "hours": [
+              8,
+              9,
+              10,
+              11,
+              12,
+              21,
+              22
+            ],
+            "price_mean": 31.51204572405134
+          },
+          "peak": {
+            "tou_price": 32.5,
+            "hours": [
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20
+            ],
+            "price_mean": 32.44041156768799
+          }
+        },
+        "tou_mean_ordered": true,
+        "midday_mean": 32.082388687133786,
+        "hour_22": 30.614463806152344,
+        "hour_23": 30.48966407775879,
+        "change_22_to_23": -0.12479972839355469
+      },
+      "curves": {
+        "baseline_load": {
+          "peak": 4838.85009765625,
+          "valley": 2067.45849609375,
+          "range": 2771.3916015625,
+          "mean": 3616.3328145345054,
+          "energy": 86791.98754882812,
+          "std": 822.6413889982916,
+          "rms_level": 3708.71970906027,
+          "rms_ramp": 307.11431728780656,
+          "max_abs_jump": 862.8095703125,
+          "max_jump_signed": 862.8095703125,
+          "max_jump_hours": [
+            6,
+            7
+          ]
+        },
+        "user_load": {
+          "peak": 4299.5546875,
+          "valley": 2100.43994140625,
+          "range": 2199.11474609375,
+          "mean": 3203.7678833007812,
+          "energy": 76890.42919921875,
+          "std": 597.6790208200831,
+          "rms_level": 3259.0410954754807,
+          "rms_ramp": 277.739074219254,
+          "max_abs_jump": 682.76318359375,
+          "max_jump_signed": -682.76318359375,
+          "max_jump_hours": [
+            19,
+            20
+          ]
+        },
+        "grid_purchase": {
+          "peak": 3573.1839157802024,
+          "valley": 1723.5058523778657,
+          "range": 1849.6780634023366,
+          "mean": 2496.1013674181145,
+          "energy": 59906.43281803475,
+          "std": 464.2972002272446,
+          "rms_level": 2538.915895922006,
+          "rms_ramp": 329.6913028815229,
+          "max_abs_jump": 711.0751845328573,
+          "max_jump_signed": 711.0751845328573,
+          "max_jump_hours": [
+            3,
+            4
+          ]
+        },
+        "baseline_grid": {
+          "peak": 4115.583557128906,
+          "valley": 1344.1919555664062,
+          "range": 2771.3916015625,
+          "mean": 2893.0662740071616,
+          "energy": 69433.59057617188,
+          "std": 822.6413889982916,
+          "rms_level": 3007.751871529751,
+          "rms_ramp": 307.11431728780656,
+          "max_abs_jump": 862.8095703125,
+          "max_jump_signed": 862.8095703125,
+          "max_jump_hours": [
+            6,
+            7
+          ]
+        },
+        "same_price_zero_storage_grid": {
+          "peak": 3576.2881469726562,
+          "valley": 1377.1734008789062,
+          "range": 2199.11474609375,
+          "mean": 2480.5013427734375,
+          "energy": 59532.0322265625,
+          "std": 597.6790208200831,
+          "rms_level": 2551.4911568393254,
+          "rms_ramp": 277.739074219254,
+          "max_abs_jump": 682.76318359375,
+          "max_jump_signed": -682.76318359375,
+          "max_jump_hours": [
+            19,
+            20
+          ]
+        }
+      },
+      "storage": {
+        "charge_energy": 3814.834910352999,
+        "discharge_energy": 3440.4343188807406,
+        "throughput": 7255.269229233741,
+        "initial_soc": 483.885009765625,
+        "final_soc": 486.4683652528269,
+        "soc_change": 2.5833554872019135,
+        "charge_weighted_wholesale": 18.15088830050214,
+        "discharge_weighted_wholesale": 21.401058026555244,
+        "discharge_minus_charge_weighted_wholesale": 3.2501697260531053,
+        "discharge_h8_15_energy": 3405.561637500624,
+        "discharge_h8_15_percent": 98.98638723638062,
+        "discharge_h17_20_energy": 4.512302103648147,
+        "discharge_h17_20_percent": 0.13115501374012895,
+        "h15_end": {
+          "soc": 510.7418573150855,
+          "available_above_min": 26.856847549460497,
+          "potential_discharge_energy": 25.51400517198747
+        },
+        "h18_start": {
+          "soc": 490.7992827232696,
+          "available_above_min": 6.9142729576445845,
+          "potential_discharge_energy": 6.568559309762355
+        }
+      },
+      "midday_response": {
+        "hours": [
+          11,
+          12,
+          13,
+          14,
+          15
+        ],
+        "baseline_energy": 20688.66552734375,
+        "user_energy": 17638.4970703125,
+        "user_change_mean": -610.03369140625,
+        "user_change_energy": -3050.16845703125,
+        "user_change_percent": -14.743186084186577,
+        "reduction_percent": 14.743186084186577,
+        "baseline_grid_energy": 17072.33282470703,
+        "grid_energy": 10991.520597236437,
+        "grid_change_mean": -1216.1624454941189,
+        "grid_change_energy": -6080.812227470594,
+        "grid_change_percent": -35.61793393970425,
+        "grid_response_component_mean": -610.03369140625,
+        "grid_storage_component_mean": -606.1287540878687
+      },
+      "low_load_6h": {
+        "hours": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "baseline_energy": 14140.885986328125,
+        "user_energy": 14250.451416015625,
+        "user_change_mean": 18.260904947916668,
+        "user_change_energy": 109.5654296875,
+        "user_change_percent": 0.7748130477357007,
+        "reduction_percent": -0.7748130477357007,
+        "baseline_grid_energy": 9801.286743164062,
+        "grid_energy": 13226.399843550276,
+        "grid_change_mean": 570.8521833977024,
+        "grid_change_energy": 3425.1131003862147,
+        "grid_change_percent": 34.94554531602772,
+        "grid_response_component_mean": 18.260904947916668,
+        "grid_storage_component_mean": 552.5912784497858
+      },
+      "high_load_6h": {
+        "hours": [
+          10,
+          11,
+          17,
+          18,
+          19,
+          20
+        ],
+        "baseline_energy": 26485.8544921875,
+        "user_energy": 23080.896484375,
+        "user_change_mean": -567.4930013020834,
+        "user_change_energy": -3404.9580078125,
+        "user_change_percent": -12.855760454384646,
+        "reduction_percent": 12.855760454384646,
+        "baseline_grid_energy": 22146.255249023438,
+        "grid_energy": 18158.07635990957,
+        "grid_change_mean": -664.6964815189776,
+        "grid_change_energy": -3988.178889113866,
+        "grid_change_percent": -18.00836685150069,
+        "grid_response_component_mean": -567.4930013020834,
+        "grid_storage_component_mean": -97.2034802168943
+      },
+      "hourly_reduction_percent": [
+        14.447391490962481,
+        6.014650737920347,
+        4.78545065360203,
+        3.352803412858252,
+        -12.415476051301845,
+        -12.508771692094879,
+        2.120683594858497,
+        13.803450664703066,
+        8.629506290741373,
+        7.663683276404387,
+        11.020217239468288,
+        12.30248203639216,
+        12.413707494434034,
+        15.928805554618265,
+        16.45791509246276,
+        16.696194650947927,
+        16.946417628523548,
+        12.338120428457277,
+        11.145115043292286,
+        10.935324159360038,
+        19.685994726395695,
+        18.776846413979666,
+        14.734578343840866,
+        14.99029391546186
+      ]
+    },
+    "after": {
+      "sources": [
+        {
+          "path": "runs/sac_current6_tuned_500/config.json",
+          "bytes": 2183,
+          "sha256": "2761cee30aaa564144080eef0da097d11d0d5c19accf9b6127c54cded0d966db"
+        },
+        {
+          "path": "runs/sac_current6_tuned_500/complete.json",
+          "bytes": 98,
+          "sha256": "704cdfd7986d182dac615be531b4975075d1a822140bf3b6c234f57c8f8f79c7"
+        },
+        {
+          "path": "runs/sac_current6_tuned_500/manifest.json",
+          "bytes": 2289,
+          "sha256": "e1d98f1e72421e2c96e0d38617ecb302f0297378383a265b5d15c74e72fd6c45"
+        },
+        {
+          "path": "runs/sac_current6_tuned_500/test_1ep.json",
+          "bytes": 59370,
+          "sha256": "766c1323909fa300bf56eb58a43a0a3c95eb36e8dbe86c8e43cb5f478c275977"
+        },
+        {
+          "path": "runs/sac_current6_tuned_500/effective_environment.json",
+          "bytes": 3241,
+          "sha256": "b65db20d09efcaa10a93a40beed1d1a745f2e83273a9f8476e0349fb17485391"
+        },
+        {
+          "path": "runs/sac_current6_tuned_500/effective_profile.json",
+          "bytes": 4010,
+          "sha256": "7d1b1f03b541c0f0a1265bd691693f22904636ab736d59e46deaa432b4337278"
+        },
+        {
+          "path": "runs/sac_current6_tuned_500/effective_generator.json",
+          "bytes": 559,
+          "sha256": "e3c1c52c70cbbf5f22f6d9c9c022844b94f1f38f294fefd9f87f9ac2214c245c"
+        },
+        {
+          "path": "runs/sac_current6_tuned_500/training.csv",
+          "bytes": 146643,
+          "sha256": "d9b54780c4dc3735ea46eab0960fde3a8c8e282ee2b109597ceb4bd465d6e330"
+        },
+        {
+          "path": "runs/sac_current6_tuned_500/source/sac/__init__.py",
+          "bytes": 79,
+          "sha256": "9ddcf3842e81bc1b15dc760d13eefe10f635fa484a3b640d4abec7712873e1cf"
+        },
+        {
+          "path": "runs/sac_current6_tuned_500/source/sac/agent.py",
+          "bytes": 7402,
+          "sha256": "8f2924f6dcee55335094da38bc06fc6051be8c082c56b6952950412b816d7ee1"
+        },
+        {
+          "path": "runs/sac_current6_tuned_500/source/sac/config.py",
+          "bytes": 5039,
+          "sha256": "202218c39f772109c4e63e2c003a82ae4c414c3dbc9a0aa3bdd4e097f4de9009"
+        },
+        {
+          "path": "runs/sac_current6_tuned_500/source/sac/networks.py",
+          "bytes": 1925,
+          "sha256": "b375e1ba98cdc6299fe603dc1db9b00858d4100658466a835422a282dc449854"
+        },
+        {
+          "path": "runs/sac_current6_tuned_500/source/sac/parameters.py",
+          "bytes": 5613,
+          "sha256": "dcd29631215e0ff60b5ccc2c578b8aa8167458725b431f65b0ee4b8bb1fc02d0"
+        },
+        {
+          "path": "runs/sac_current6_tuned_500/source/sac/replay.py",
+          "bytes": 4592,
+          "sha256": "c0bdab55d7d3aa85b46f343d6a659f350dffab36c8363f473f9bef6adcaba4eb"
+        },
+        {
+          "path": "runs/sac_current6_tuned_500/source/sac/runner.py",
+          "bytes": 11146,
+          "sha256": "30a2f42235951ac10403be9f1e3421cf46492d523279ed52c902b42d831e432e"
+        },
+        {
+          "path": "runs/sac_current6_tuned_500/source/sac/scenarios.py",
+          "bytes": 2010,
+          "sha256": "ae5caba6754ba029d147424cc9acb2f045f38e7e01c7a341858730bc9c642e47"
+        },
+        {
+          "path": "runs/sac_current6_tuned_500/source/sac/task.py",
+          "bytes": 11027,
+          "sha256": "d8e35988c7bfa6ce8a66f656b0deb8f3ab372ab9356701977b6a8db42d84aedd"
+        },
+        {
+          "path": "runs/sac_current6_tuned_500/source/train_sac.py",
+          "bytes": 125,
+          "sha256": "137813df3f307f45e3b33495b60ed4787c35a69e4a29233d306261999bda0fb1"
+        },
+        {
+          "path": "runs/sac_current6_tuned_500/source/eqnsac/config.py",
+          "bytes": 7077,
+          "sha256": "1d35b2712cf0869c2ed22f5b088dc1e7a1d14354c8534b4dbfb6d6c25b28bfe7"
+        },
+        {
+          "path": "runs/sac_current6_tuned_500/source/eqnsac/environment.py",
+          "bytes": 16605,
+          "sha256": "6617fae8cb909a5e8e697e61b61eef4abcca63dc44d713a5229a4c3e87fdb6b4"
+        },
+        {
+          "path": "runs/sac_current6_tuned_500/source/eqnsac/scenarios.py",
+          "bytes": 9426,
+          "sha256": "06b02c16f253d7efd296d30a57ccc7d3957a2917e5762493cfe331a306ddbe80"
+        },
+        {
+          "path": "runs/sac_current6_tuned_500/source/eqnsac/single_source.py",
+          "bytes": 2939,
+          "sha256": "80433ddee016cde0282cdf945aac5efc60620a564302c7ac413a686021e022c4"
+        },
+        {
+          "path": "runs/sac_current6_tuned_500/source/data/environment.json",
+          "bytes": 1624,
+          "sha256": "e93e1278e70567df4172131b2075824cfb64416988eacfb1606c26327fd86022"
+        },
+        {
+          "path": "runs/sac_current6_tuned_500/source/data/profile.json",
+          "bytes": 4285,
+          "sha256": "ba6149855dfe04a4a49f5564ef6cd8c46bce3975298f6d741f37a1181597602c"
+        },
+        {
+          "path": "runs/sac_current6_tuned_500/source/data/provenance.json",
+          "bytes": 10783,
+          "sha256": "07f1519c333c5650c6bc1adee7ce0a188308ff1d402d714c24788f70fd18d2dd"
+        }
+      ],
+      "observation": "current6",
+      "training": {
+        "episodes": 500,
+        "steps": 12000,
+        "updates": 86408,
+        "wall_seconds": 175.87810399998853,
+        "last_50_logged_updates": {
+          "episodes": [
+            451,
+            500
+          ],
+          "records": 50,
+          "alpha": {
+            "mean": 0.14688709527254104,
+            "median": 0.14691969007253647,
+            "minimum": 0.14391057193279266,
+            "maximum": 0.14902745187282562,
+            "last": 0.14507465064525604
+          },
+          "entropy": {
+            "mean": -1.9666074991226197,
+            "median": -1.964697003364563,
+            "minimum": -2.150538444519043,
+            "maximum": -1.6901435852050781,
+            "last": -1.8316707611083984
+          }
+        }
+      },
+      "profit": 1165894.8774030004,
+      "storage_marginal_profit": 580.8949811253498,
+      "prices": {
+        "wholesale_pearson": 0.9240566297892641,
+        "tou_pearson": 0.8089221726878296,
+        "tou_groups": {
+          "valley": {
+            "tou_price": 26.5,
+            "hours": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              23
+            ],
+            "price_mean": 28.834361394246418
+          },
+          "flat": {
+            "tou_price": 28.5,
+            "hours": [
+              8,
+              9,
+              10,
+              11,
+              12,
+              21,
+              22
+            ],
+            "price_mean": 31.264739717755997
+          },
+          "peak": {
+            "tou_price": 32.5,
+            "hours": [
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20
+            ],
+            "price_mean": 32.25241041183472
+          }
+        },
+        "tou_mean_ordered": true,
+        "midday_mean": 31.891996002197267,
+        "hour_22": 30.6661434173584,
+        "hour_23": 30.634140014648438,
+        "change_22_to_23": -0.03200340270996094
+      },
+      "curves": {
+        "baseline_load": {
+          "peak": 4838.85009765625,
+          "valley": 2067.45849609375,
+          "range": 2771.3916015625,
+          "mean": 3616.3328145345054,
+          "energy": 86791.98754882812,
+          "std": 822.6413889982916,
+          "rms_level": 3708.71970906027,
+          "rms_ramp": 307.11431728780656,
+          "max_abs_jump": 862.8095703125,
+          "max_jump_signed": 862.8095703125,
+          "max_jump_hours": [
+            6,
+            7
+          ]
+        },
+        "user_load": {
+          "peak": 4305.47265625,
+          "valley": 2228.3330078125,
+          "range": 2077.1396484375,
+          "mean": 3255.0394388834634,
+          "energy": 78120.94653320312,
+          "std": 623.1640884291165,
+          "rms_level": 3314.1537728045246,
+          "rms_ramp": 316.0156608087685,
+          "max_abs_jump": 865.805908203125,
+          "max_jump_signed": 865.805908203125,
+          "max_jump_hours": [
+            6,
+            7
+          ]
+        },
+        "grid_purchase": {
+          "peak": 3553.358844186214,
+          "valley": 1609.9958507500214,
+          "range": 1943.3629934361925,
+          "mean": 2541.7063182815073,
+          "energy": 61000.951638756174,
+          "std": 488.2449602284246,
+          "rms_level": 2588.175834362996,
+          "rms_ramp": 343.68544262395193,
+          "max_abs_jump": 710.7601392672209,
+          "max_jump_signed": 710.7601392672209,
+          "max_jump_hours": [
+            3,
+            4
+          ]
+        },
+        "baseline_grid": {
+          "peak": 4115.583557128906,
+          "valley": 1344.1919555664062,
+          "range": 2771.3916015625,
+          "mean": 2893.0662740071616,
+          "energy": 69433.59057617188,
+          "std": 822.6413889982916,
+          "rms_level": 3007.751871529751,
+          "rms_ramp": 307.11431728780656,
+          "max_abs_jump": 862.8095703125,
+          "max_jump_signed": 862.8095703125,
+          "max_jump_hours": [
+            6,
+            7
+          ]
+        },
+        "same_price_zero_storage_grid": {
+          "peak": 3582.2061157226562,
+          "valley": 1505.0664672851562,
+          "range": 2077.1396484375,
+          "mean": 2531.7728983561196,
+          "energy": 60762.549560546875,
+          "std": 623.1640884291165,
+          "rms_level": 2607.3372413169413,
+          "rms_ramp": 316.0156608087685,
+          "max_abs_jump": 865.805908203125,
+          "max_jump_signed": 865.805908203125,
+          "max_jump_hours": [
+            6,
+            7
+          ]
+        }
+      },
+      "storage": {
+        "charge_energy": 2397.5345736042977,
+        "discharge_energy": 2159.1324953950016,
+        "throughput": 4556.667068999299,
+        "initial_soc": 483.885009765625,
+        "final_soc": 488.7718069054958,
+        "soc_change": 4.886797139870794,
+        "charge_weighted_wholesale": 17.803581346140064,
+        "discharge_weighted_wholesale": 21.09363498263689,
+        "discharge_minus_charge_weighted_wholesale": 3.2900536364968254,
+        "discharge_h8_15_energy": 2088.3007401456725,
+        "discharge_h8_15_percent": 96.7194345228744,
+        "discharge_h17_20_energy": 39.94751627542635,
+        "discharge_h17_20_percent": 1.850165117732535,
+        "h15_end": {
+          "soc": 550.1101096054904,
+          "available_above_min": 66.22509983986538,
+          "potential_discharge_energy": 62.913844847872106
+        },
+        "h18_start": {
+          "soc": 532.7750876668446,
+          "available_above_min": 48.89007790121957,
+          "potential_discharge_energy": 46.44557400615859
+        }
+      },
+      "midday_response": {
+        "hours": [
+          11,
+          12,
+          13,
+          14,
+          15
+        ],
+        "baseline_energy": 20688.66552734375,
+        "user_energy": 17960.341552734375,
+        "user_change_mean": -545.664794921875,
+        "user_change_energy": -2728.323974609375,
+        "user_change_percent": -13.18753000769146,
+        "reduction_percent": 13.18753000769146,
+        "baseline_grid_energy": 17072.33282470703,
+        "grid_energy": 12898.161851422306,
+        "grid_change_mean": -834.8341946569451,
+        "grid_change_energy": -4174.170973284726,
+        "grid_change_percent": -24.44991563920237,
+        "grid_response_component_mean": -545.664794921875,
+        "grid_storage_component_mean": -289.16939973507016
+      },
+      "low_load_6h": {
+        "hours": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "baseline_energy": 14140.885986328125,
+        "user_energy": 14138.744873046875,
+        "user_change_mean": -0.3568522135416667,
+        "user_change_energy": -2.14111328125,
+        "user_change_percent": -0.015141295130449706,
+        "reduction_percent": 0.015141295130449706,
+        "baseline_grid_energy": 9801.286743164062,
+        "grid_energy": 12014.633753848424,
+        "grid_change_mean": 368.8911684473935,
+        "grid_change_energy": 2213.347010684361,
+        "grid_change_percent": 22.582208527141255,
+        "grid_response_component_mean": -0.3568522135416667,
+        "grid_storage_component_mean": 369.2480206609352
+      },
+      "high_load_6h": {
+        "hours": [
+          10,
+          11,
+          17,
+          18,
+          19,
+          20
+        ],
+        "baseline_energy": 26485.8544921875,
+        "user_energy": 23281.9560546875,
+        "user_change_mean": -533.9830729166666,
+        "user_change_energy": -3203.8984375,
+        "user_change_percent": -12.096639881658533,
+        "reduction_percent": 12.096639881658533,
+        "baseline_grid_energy": 22146.255249023438,
+        "grid_energy": 18337.562721713046,
+        "grid_change_mean": -634.7820878850653,
+        "grid_change_energy": -3808.6925273103916,
+        "grid_change_percent": -17.19790765745075,
+        "grid_response_component_mean": -533.9830729166666,
+        "grid_storage_component_mean": -100.7990149683986
+      },
+      "hourly_reduction_percent": [
+        9.241070614769919,
+        6.486128801478596,
+        7.713634120025537,
+        -7.209141815691633,
+        -14.653242500569764,
+        -11.376556016237082,
+        12.938596553982162,
+        9.589047838802811,
+        2.672799562282502,
+        3.162156390298876,
+        7.545507168958288,
+        12.587676443971285,
+        13.212357765171323,
+        12.974466349486546,
+        13.665160761557726,
+        13.514759648039753,
+        15.44496810309306,
+        11.525977685499033,
+        11.022813904993612,
+        10.757838479012937,
+        19.259714541689377,
+        16.474244040240983,
+        15.14562695879944,
+        16.184662355018155
+      ]
+    }
+  },
+  "delta_after_minus_before": {
+    "prices": {
+      "midday_mean": -0.19039268493651917,
+      "wholesale_pearson": 0.012173890854608405,
+      "hour_22": 0.05167961120605469,
+      "tou_pearson": -0.006540187020425248,
+      "tou_groups": {
+        "flat": {
+          "tou_price": 0.0,
+          "price_mean": -0.24730600629534294
+        },
+        "peak": {
+          "tou_price": 0.0,
+          "price_mean": -0.18800115585327148
+        },
+        "valley": {
+          "tou_price": 0.0,
+          "price_mean": -0.061026891072593514
+        }
+      },
+      "change_22_to_23": 0.09279632568359375,
+      "hour_23": 0.14447593688964844
+    },
+    "high_load_6h": {
+      "grid_change_percent": 0.8104591940499404,
+      "grid_storage_component_mean": -3.595534751504289,
+      "grid_change_mean": 29.91439363391237,
+      "grid_change_energy": 179.4863618034742,
+      "user_energy": 201.0595703125,
+      "baseline_energy": 0.0,
+      "user_change_mean": 33.50992838541674,
+      "user_change_percent": 0.759120572726113,
+      "baseline_grid_energy": 0.0,
+      "user_change_energy": 201.0595703125,
+      "grid_energy": 179.48636180347603,
+      "grid_response_component_mean": 33.50992838541674,
+      "reduction_percent": -0.759120572726113
+    },
+    "training": {
+      "last_50_logged_updates": {
+        "entropy": {
+          "median": 2.0517221689224243,
+          "mean": 2.0476221561431887,
+          "maximum": 2.1139745712280273,
+          "last": 2.2056374549865723,
+          "minimum": 2.121462821960449
+        },
+        "records": 0,
+        "alpha": {
+          "median": 0.10576758906245232,
+          "mean": 0.10579813800752162,
+          "maximum": 0.1071828231215477,
+          "last": 0.10480739176273346,
+          "minimum": 0.10374681651592255
+        }
+      },
+      "wall_seconds": -11.07784520900168,
+      "episodes": 0,
+      "updates": -5760,
+      "steps": 0
+    },
+    "storage_marginal_profit": -177.72626363278164,
+    "low_load_6h": {
+      "grid_change_percent": -12.363336788886464,
+      "grid_storage_component_mean": -183.34325778885062,
+      "grid_change_mean": -201.96101495030894,
+      "grid_change_energy": -1211.7660897018536,
+      "user_energy": -111.70654296875,
+      "baseline_energy": 0.0,
+      "user_change_mean": -18.617757161458336,
+      "user_change_percent": -0.7899543428661504,
+      "baseline_grid_energy": 0.0,
+      "user_change_energy": -111.70654296875,
+      "grid_energy": -1211.7660897018523,
+      "grid_response_component_mean": -18.617757161458336,
+      "reduction_percent": 0.7899543428661504
+    },
+    "profit": -99.48212300776504,
+    "midday_response": {
+      "grid_change_percent": 11.168018300501881,
+      "grid_storage_component_mean": 316.9593543527986,
+      "grid_change_mean": 381.32825083717375,
+      "grid_change_energy": 1906.641254185868,
+      "user_energy": 321.844482421875,
+      "baseline_energy": 0.0,
+      "user_change_mean": 64.368896484375,
+      "user_change_percent": 1.5556560764951168,
+      "baseline_grid_energy": 0.0,
+      "user_change_energy": 321.844482421875,
+      "grid_energy": 1906.64125418587,
+      "grid_response_component_mean": 64.368896484375,
+      "reduction_percent": -1.5556560764951168
+    },
+    "curves": {
+      "grid_purchase": {
+        "peak": -19.82507159398847,
+        "std": 23.947760001179972,
+        "mean": 45.60495086339279,
+        "max_abs_jump": -0.31504526563639956,
+        "range": 93.68493003385584,
+        "rms_ramp": 13.994139742429013,
+        "energy": 1094.5188207214233,
+        "rms_level": 49.25993844099003,
+        "max_jump_signed": -0.31504526563639956,
+        "valley": -113.5100016278443
+      },
+      "baseline_grid": {
+        "peak": 0.0,
+        "std": 0.0,
+        "mean": 0.0,
+        "max_abs_jump": 0.0,
+        "range": 0.0,
+        "rms_ramp": 0.0,
+        "energy": 0.0,
+        "rms_level": 0.0,
+        "max_jump_signed": 0.0,
+        "valley": 0.0
+      },
+      "user_load": {
+        "peak": 5.91796875,
+        "std": 25.485067609033422,
+        "mean": 51.27155558268214,
+        "max_abs_jump": 183.042724609375,
+        "range": -121.97509765625,
+        "rms_ramp": 38.276586589514466,
+        "energy": 1230.517333984375,
+        "rms_level": 55.11267732904389,
+        "max_jump_signed": 1548.569091796875,
+        "valley": 127.89306640625
+      },
+      "same_price_zero_storage_grid": {
+        "peak": 5.91796875,
+        "std": 25.485067609033422,
+        "mean": 51.27155558268214,
+        "max_abs_jump": 183.042724609375,
+        "range": -121.97509765625,
+        "rms_ramp": 38.276586589514466,
+        "energy": 1230.517333984375,
+        "rms_level": 55.84608447761593,
+        "max_jump_signed": 1548.569091796875,
+        "valley": 127.89306640625
+      },
+      "baseline_load": {
+        "peak": 0.0,
+        "std": 0.0,
+        "mean": 0.0,
+        "max_abs_jump": 0.0,
+        "range": 0.0,
+        "rms_ramp": 0.0,
+        "energy": 0.0,
+        "rms_level": 0.0,
+        "max_jump_signed": 0.0,
+        "valley": 0.0
+      }
+    },
+    "storage": {
+      "discharge_weighted_wholesale": -0.3074230439183552,
+      "h15_end": {
+        "available_above_min": 39.36825229040488,
+        "soc": 39.36825229040488,
+        "potential_discharge_energy": 37.399839675884635
+      },
+      "discharge_minus_charge_weighted_wholesale": 0.03988391044372008,
+      "initial_soc": 0.0,
+      "charge_weighted_wholesale": -0.34730695436207526,
+      "discharge_h8_15_energy": -1317.2608973549513,
+      "final_soc": 2.30344165266888,
+      "charge_energy": -1417.3003367487013,
+      "throughput": -2698.6021602344417,
+      "discharge_h17_20_energy": 35.435214171778206,
+      "discharge_h17_20_percent": 1.719010103992406,
+      "discharge_h8_15_percent": -2.266952713506228,
+      "discharge_energy": -1281.301823485739,
+      "h18_start": {
+        "available_above_min": 41.975804943574985,
+        "soc": 41.975804943574985,
+        "potential_discharge_energy": 39.87701469639623
+      },
+      "soc_change": 2.30344165266888
+    }
+  }
+}

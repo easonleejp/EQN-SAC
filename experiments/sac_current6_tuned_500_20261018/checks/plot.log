@@ -1,0 +1,66 @@
+findfont: Failed to find font weight bold for PingFang SC, now using 600.
+findfont: Failed to find font weight bold for PingFang SC, now using 600.
+Some CFF FDArray/FontDict keys were ignored upon compile: PaintType
+Some CFF FDArray/FontDict keys were ignored upon compile: PaintType
+Some CFF FDArray/FontDict keys were ignored upon compile: PaintType
+Some CFF FDArray/FontDict keys were ignored upon compile: PaintType
+{
+  "outputs": [
+    "/Users/liliheng/Desktop/EQN-SAC/experiments/sac_current6_tuned_500_20261018/figures/fixed_day_comparison.png",
+    "/Users/liliheng/Desktop/EQN-SAC/experiments/sac_current6_tuned_500_20261018/figures/fixed_day_comparison.pdf",
+    "/Users/liliheng/Desktop/EQN-SAC/experiments/sac_current6_tuned_500_20261018/figures/hourly_comparison.csv"
+  ],
+  "manifest": "/Users/liliheng/Desktop/EQN-SAC/experiments/sac_current6_tuned_500_20261018/figures/comparison_manifest.json",
+  "metrics": {
+    "before": {
+      "price_h22": 30.614463806152344,
+      "price_h23": 30.48966407775879,
+      "price_change_h22_to_h23": -0.12479972839355469,
+      "midday_price_mean": 32.082388687133786,
+      "grid_max_absolute_hourly_change": 711.0751845328573,
+      "grid_max_change_hours": [
+        3,
+        4
+      ],
+      "grid_max_change_signed": 711.0751845328573,
+      "grid_rms_hourly_change": 329.6913028815229,
+      "grid_daily_peak": 3573.1839157802024,
+      "grid_daily_std": 464.2972002272446,
+      "daily_profit_raw": 1165994.3595260081,
+      "midday_reduction_pct": 14.743186084186581,
+      "training_updates": 92168
+    },
+    "after": {
+      "price_h22": 30.6661434173584,
+      "price_h23": 30.634140014648438,
+      "price_change_h22_to_h23": -0.03200340270996094,
+      "midday_price_mean": 31.891996002197267,
+      "grid_max_absolute_hourly_change": 710.7601392672209,
+      "grid_max_change_hours": [
+        3,
+        4
+      ],
+      "grid_max_change_signed": 710.7601392672209,
+      "grid_rms_hourly_change": 343.68544262395193,
+      "grid_daily_peak": 3553.358844186214,
+      "grid_daily_std": 488.2449602284246,
+      "daily_profit_raw": 1165894.8774030004,
+      "midday_reduction_pct": 13.187530007691457,
+      "training_updates": 86408
+    },
+    "delta_after_minus_before": {
+      "price_h22": 0.05167961120605469,
+      "price_h23": 0.14447593688964844,
+      "price_change_h22_to_h23": 0.09279632568359375,
+      "midday_price_mean": -0.19039268493651917,
+      "grid_max_absolute_hourly_change": -0.31504526563639956,
+      "grid_max_change_signed": -0.31504526563639956,
+      "grid_rms_hourly_change": 13.994139742429013,
+      "grid_daily_peak": -19.82507159398847,
+      "grid_daily_std": 23.947760001179972,
+      "daily_profit_raw": -99.48212300776504,
+      "midday_reduction_pp": -1.555656076495124,
+      "training_updates": -5760
+    }
+  }
+}

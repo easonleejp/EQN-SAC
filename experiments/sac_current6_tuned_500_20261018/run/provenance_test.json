@@ -1,0 +1,26 @@
+{
+  "command": [
+    ".venv/bin/python",
+    "runs/sac_current6_tuned_500/source/train_sac.py",
+    "evaluate",
+    "--checkpoint",
+    "runs/sac_current6_tuned_500/checkpoint_00500.pt",
+    "--output",
+    "runs/sac_current6_tuned_500/test_1ep.json",
+    "--cases",
+    "1",
+    "--seed",
+    "20260914"
+  ],
+  "cwd": "/Users/liliheng/Desktop/EQN-SAC",
+  "checkpoint_sha256": "36ce1c3d8fa32b6c15bfcea9ece49c6b460da233221790b2722f1ca835778313",
+  "training_manifest_sha256": "e1d98f1e72421e2c96e0d38617ecb302f0297378383a265b5d15c74e72fd6c45",
+  "started_utc": "2026-10-18T08:08:18.065878+00:00",
+  "status": "complete",
+  "requested_policy_test_episodes": 1,
+  "returncode": 0,
+  "finished_utc": "2026-10-18T08:08:19.342893+00:00",
+  "test_sha256": "766c1323909fa300bf56eb58a43a0a3c95eb36e8dbe86c8e43cb5f478c275977",
+  "test_episodes": 1,
+  "test_hours": 24
+}
