@@ -1,0 +1,59 @@
+{
+  "tests": {
+    "passed": true,
+    "count": 44,
+    "seconds": 2.098,
+    "log": "checks/relocation_tests.log"
+  },
+  "cli_help": {
+    "passed": true,
+    "log": "checks/relocation_cli_help.log"
+  },
+  "audit": {
+    "passed": true,
+    "episodes": 3,
+    "updates": 49,
+    "resume_exact": true,
+    "evaluation_finite": true,
+    "log": "checks/relocation_audit.log",
+    "result": "checks/relocation_audit/核查验证结果.json"
+  },
+  "pip_check": "No broken requirements found.",
+  "workflow": {
+    "path": ".github/workflows/tests.yml",
+    "parsed": true,
+    "runner": "ubuntu-latest",
+    "python": "3.12",
+    "permissions": {
+      "contents": "read"
+    },
+    "triggers": [
+      "push",
+      "pull_request"
+    ],
+    "online_execution_performed": false,
+    "cpu_torch_wheel_confirmed": "https://download-r2.pytorch.org/whl/cpu/torch-2.7.1%2Bcpu-cp312-cp312-manylinux_2_28_x86_64.whl#sha256=8f8b3cfc53010a4b4a3c7ecb88c212e9decc4f5eeb6af75c3c803937d2d60947",
+    "official_tags_verified": {
+      "actions/checkout@v7": {
+        "commit": "3d3c42e5aac5ba805825da76410c181273ba90b1",
+        "repository": "https://github.com/actions/checkout.git",
+        "method": "git ls-remote --tags"
+      },
+      "actions/setup-python@v7": {
+        "commit": "5fda3b95a4ea91299a34e894583c3862153e4b97",
+        "repository": "https://github.com/actions/setup-python.git",
+        "method": "git ls-remote --tags"
+      }
+    }
+  },
+  "notes": [
+    "No algorithm changes or new test cases.",
+    "CPU PyTorch 2.7.1 matches the locally validated torch release; requirements.txt is also installed.",
+    "GitHub-hosted execution remains to be observed after push."
+  ],
+  "primary_references": [
+    "https://github.com/actions/setup-python",
+    "https://github.com/actions/checkout",
+    "https://download.pytorch.org/whl/cpu/torch/"
+  ]
+}

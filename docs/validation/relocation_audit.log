@@ -1,0 +1,135 @@
+episode=1 profit=830539.04 storage=-255315.26 updates=1
+episode=2 profit=873263.22 storage=-265497.69 updates=25
+episode=3 profit=948798.65 storage=-42294.17 updates=49
+episode=1 profit=830539.04 storage=-255315.26 updates=1
+episode=2 profit=873263.22 storage=-265497.69 updates=25
+episode=3 profit=948798.65 storage=-42294.17 updates=49
+{
+  "environment_stats": [
+    {
+      "level": "low",
+      "source": "load",
+      "n_days": 300,
+      "ratio_mean": 0.9992517294178931,
+      "ratio_p01": 0.8303417064972213,
+      "ratio_p99": 1.201323292684591,
+      "ratio_sd": 0.06898581094974375,
+      "mean_abs_hourly_ramp": 253.63223644817606,
+      "daily_total_cv": 0.03315670915291014
+    },
+    {
+      "level": "low",
+      "source": "price",
+      "n_days": 300,
+      "ratio_mean": 1.0003984576937468,
+      "ratio_p01": 0.9443908369943719,
+      "ratio_p99": 1.0582871395107252,
+      "ratio_sd": 0.02467476612388888,
+      "mean_abs_hourly_ramp": 0.6834795397748276,
+      "daily_total_cv": 0.012847871738296853
+    },
+    {
+      "level": "low",
+      "source": "wind",
+      "n_days": 300,
+      "ratio_mean": 1.01925521487834,
+      "ratio_p01": 0.0274315833690756,
+      "ratio_p99": 2.544184241126466,
+      "ratio_sd": 0.6436367245197365,
+      "mean_abs_hourly_ramp": 155.58751416001974,
+      "daily_total_cv": 0.4604525460653041
+    },
+    {
+      "level": "medium",
+      "source": "load",
+      "n_days": 300,
+      "ratio_mean": 0.9989748345377566,
+      "ratio_p01": 0.7544792843579279,
+      "ratio_p99": 1.2917926547650622,
+      "ratio_sd": 0.1165524293623986,
+      "mean_abs_hourly_ramp": 291.07590903098196,
+      "daily_total_cv": 0.07726126818312103
+    },
+    {
+      "level": "medium",
+      "source": "price",
+      "n_days": 300,
+      "ratio_mean": 1.0010438136961788,
+      "ratio_p01": 0.5800743665218439,
+      "ratio_p99": 1.5368528247577267,
+      "ratio_sd": 0.14968905476394917,
+      "mean_abs_hourly_ramp": 2.2946054739612145,
+      "daily_total_cv": 0.037956266822946075
+    },
+    {
+      "level": "medium",
+      "source": "wind",
+      "n_days": 300,
+      "ratio_mean": 1.027008711644263,
+      "ratio_p01": 0.0,
+      "ratio_p99": 2.544184241126466,
+      "ratio_sd": 0.9128656440238796,
+      "mean_abs_hourly_ramp": 207.6422645260063,
+      "daily_total_cv": 0.6295857078583749
+    },
+    {
+      "level": "high",
+      "source": "load",
+      "n_days": 300,
+      "ratio_mean": 0.9985517444532059,
+      "ratio_p01": 0.6293559524173368,
+      "ratio_p99": 1.5184536660131909,
+      "ratio_sd": 0.19366937683386493,
+      "mean_abs_hourly_ramp": 364.29046054163865,
+      "daily_total_cv": 0.13741101831788993
+    },
+    {
+      "level": "high",
+      "source": "price",
+      "n_days": 300,
+      "ratio_mean": 1.0013869021433053,
+      "ratio_p01": 0.543927442062585,
+      "ratio_p99": 1.8174771753681747,
+      "ratio_sd": 0.23628249517861874,
+      "mean_abs_hourly_ramp": 2.8313256692954916,
+      "daily_total_cv": 0.0787912108499335
+    },
+    {
+      "level": "high",
+      "source": "wind",
+      "n_days": 300,
+      "ratio_mean": 1.0263443158406402,
+      "ratio_p01": 0.0,
+      "ratio_p99": 2.544184241126466,
+      "ratio_sd": 1.0486726300998426,
+      "mean_abs_hourly_ramp": 231.57208157149063,
+      "daily_total_cv": 0.6915059607566734
+    }
+  ],
+  "fixed_policy": {
+    "low": {
+      "mean": 1068892.65234375,
+      "sd": 148173.19939951604
+    },
+    "medium": {
+      "mean": 1063921.9247670493,
+      "sd": 224249.9624497482
+    },
+    "high": {
+      "mean": 1065975.2707519531,
+      "sd": 297294.70783255633
+    }
+  },
+  "minimum_soc_mean_action_power_kw": 1808.166409,
+  "high_any_training": 0.4879999999999999,
+  "high_any_equal_test": 0.7037037037037037,
+  "usable_capacity_hours": 2.3999999999446957,
+  "smoke": {
+    "episodes": 3,
+    "updates": 49,
+    "resume_exact": true,
+    "elapsed": 1.452965167001821,
+    "dimensions": "hidden32 / quantiles16 / CPU; functional test only",
+    "evaluation_finite": true
+  }
+}

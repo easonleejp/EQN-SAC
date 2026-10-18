@@ -1,0 +1,12 @@
+{
+  "Experiment": "E:\\文档\\SAC(EQN)\\experiments\\20261011_original_price_scale_5000ep",
+  "ProcessId": 24552,
+  "Episodes": 5000,
+  "Scenario": "price_scale",
+  "Bound": 0.03,
+  "TrainingSeed": 42,
+  "ReferenceSeed": 20260914,
+  "Device": "cuda",
+  "TestsPassed": 14,
+  "SmokeResume": "passed"
+}

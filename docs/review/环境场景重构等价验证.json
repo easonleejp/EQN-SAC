@@ -1,0 +1,33 @@
+{
+  "exact_match": true,
+  "cases": 156,
+  "trajectories": 312,
+  "hourly_transitions_per_version": 7488,
+  "three_source_level_combinations": 27,
+  "single_source_modes": [
+    "load_scale",
+    "wind_scale",
+    "price_scale"
+  ],
+  "response_seed_modes_checked": [
+    "fixed_42",
+    "case_seed_plus_700000"
+  ],
+  "compared": [
+    "feature_order",
+    "actor_feature_indices",
+    "generator_calibration",
+    "scenario_arrays_and_metadata",
+    "hourly_observations_and_forecasts",
+    "states",
+    "rewards",
+    "done",
+    "accounting_info",
+    "feasible_bounds",
+    "response_rng_state"
+  ],
+  "elapsed_seconds": 1.7047893749986542,
+  "before": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/重构前代码",
+  "after": "/Users/liliheng/Desktop/EQN-SAC/EQN-SAC_项目交接_20261018/03_代码/当前精简代码",
+  "note": "Exact equality on this runtime only; no training performed."
+}

@@ -1,0 +1,16 @@
+{
+  "Experiment": "E:\\文档\\SAC(EQN)\\experiments\\20261010_original_load_scale_5000ep",
+  "ProcessId": 1964,
+  "Episodes": 5000,
+  "Model": "original",
+  "Scenario": "load_scale",
+  "Bound": 0.05,
+  "ReferenceSeed": 20260914,
+  "TrainingSeed": 42,
+  "Device": "cuda",
+  "Code": "E:\\文档\\SAC(EQN)\\experiments\\20261010_original_load_scale_5000ep\\frozen_code",
+  "Output": "E:\\文档\\SAC(EQN)\\experiments\\20261010_original_load_scale_5000ep\\run",
+  "TestsPassed": 12,
+  "SmokeResume": "passed",
+  "OtherExperimentsStarted": false
+}

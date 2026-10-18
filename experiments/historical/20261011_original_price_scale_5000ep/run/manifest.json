@@ -1,0 +1,20 @@
+{
+  "version": "clean-1",
+  "device": "cuda",
+  "torch": "2.7.1+cu128",
+  "sha256": {
+    "eqnsac\\agent.py": "89cc69626529e8eb234abeb524b70463f213bea5f20c5a36fd048e26654ff68f",
+    "eqnsac\\config.py": "6078bc7fc5c4cbd4e18c27632ca5720d076d19933d045a9962de0884a36311c5",
+    "eqnsac\\environment.py": "58ec0438dc9f42df7a9f354a45915dbc7d828f4eae9e2cc5ce211972fd042a6b",
+    "eqnsac\\networks.py": "2597d8262c659ebc0f714e2da092c3d0bf042ed9eab3fd2da61b6e91c85b1505",
+    "eqnsac\\replay.py": "c8daa26092103beb63b3eec6e8a947b22d82ff6564ce56a5039e557ac6f35142",
+    "eqnsac\\runner.py": "61e835a51dd66109456d4c6136563ad11fd2f29ffa05a64205ab9f62fb84bbb0",
+    "eqnsac\\scenarios.py": "e77f002d9b8da4b2550d9f5c3f99129fa4cf6c9a73a5bb3c761e3ab304766cd1",
+    "eqnsac\\single_source.py": "b64887116268e422dbb271d7a2d7427612630bde24bbd5837f9a27cfd5c24ff0",
+    "eqnsac\\__init__.py": "8f026b134970847aed886bceeeec645204f948a856fb95336db55c6c42f921d0",
+    "data\\environment.json": "e93e1278e70567df4172131b2075824cfb64416988eacfb1606c26327fd86022",
+    "data\\profile.json": "ba6149855dfe04a4a49f5564ef6cd8c46bce3975298f6d741f37a1181597602c",
+    "data\\provenance.json": "07f1519c333c5650c6bc1adee7ce0a188308ff1d402d714c24788f70fd18d2dd"
+  },
+  "notes": "No deployment override, imitation or oracle training; not bitwise reproduction of historical training."
+}

@@ -1,0 +1,1128 @@
+{
+  "review_date": "2026-10-18",
+  "scope": "逐页阅读12页本地原论文，对照重构前精简代码快照及作者官方实现；本次仅审查，未修改活动或冻结源码。",
+  "source": {
+    "paper_path": "/Users/liliheng/Desktop/EQN-SAC/EQN-SAC_项目交接_20261018/04_参考论文/已有原文与辅助译文/Ensemble_Quantile_Networks_Uncertainty-Aware_Reinforcement_Learning_With_Applications_in_Autonomous_Driving.pdf",
+    "paper_sha256": "13cabe89d756f380b1c6ff13e6d6b4eced1a23adb04d0b89f9ed589598bc3bdd",
+    "title": "Ensemble Quantile Networks: Uncertainty-Aware Reinforcement Learning With Applications in Autonomous Driving",
+    "authors": [
+      "Carl-Johan Hoel",
+      "Krister Wolff",
+      "Leo Laine"
+    ],
+    "doi": "10.1109/TITS.2023.3251376",
+    "year": 2023,
+    "journal_pages": [
+      6030,
+      6041
+    ],
+    "pdf_pages_read": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "formula_pages_visually_checked": [
+      3,
+      4,
+      5,
+      6
+    ],
+    "extracted_text_directory": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/论文摘录",
+    "official_repository": "https://github.com/carljohanhoel/EnsembleQuantileNetworks",
+    "official_commit": "7dfbed562f3e0c7552fa98a821db502ea565618c",
+    "official_license_file": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/论文摘录/official_eqn/LICENSE.md",
+    "reviewed_snapshot": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/重构前代码",
+    "snapshot_hashes": {
+      "eqnsac/networks.py": "b30bdf5e117677e385316956a4b1a7032ba068038412e3afe63a5772533c0fc7",
+      "eqnsac/agent.py": "23b78faa7f0e9420920eabf1f3fe10b1891fb0fea6514e70d5debf8e0fa6ebcc",
+      "eqnsac/replay.py": "63b894a59720e58ce24d46313474ab409b1d7b0a74314296948e19d6030f9e49"
+    }
+  },
+  "main_conclusion": "项目保留了EQN的bootstrap+固定随机prior+IQN分位回归核心，但属于多智能体连续动作SAC迁移并加入自适应CVaR和Tail分歧惩罚，不是原EQN复现。Ua聚合公式与原文一致；旧ue命名应改为tail_disagreement并另加原文epistemic_std。",
+  "notation": {
+    "z_shape": "[ensemble_member, batch, quantile]",
+    "eqn_aleatoric_variance": "Var_tau(E_member[Z])",
+    "eqn_epistemic_variance": "Var_member(E_tau[Z])",
+    "project_aleatoric_std": "sqrt(Var_tau(E_member[Z]))",
+    "new_diagnostic_epistemic_std": "sqrt(Var_member(E_tau[Z]))",
+    "existing_tail_disagreement": "mean_{i<j} mean_{tau<=tail_fraction} |Z_i,tau-Z_j,tau|",
+    "current_policy_value": "mean_{tau<=cvar_level} mean_member Z - (tail_enabled ? tail_lambda*tail_disagreement : 0)"
+  },
+  "comparisons": [
+    {
+      "id": "aleatoric_definition",
+      "classification": "matches_original",
+      "title": "Ua的聚合顺序正确",
+      "paper_references": [
+        {
+          "pdf_page": 4,
+          "journal_page": 6033,
+          "section": "II-D1",
+          "equations": [
+            17
+          ]
+        }
+      ],
+      "project_references": [
+        {
+          "snapshot_file": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/重构前代码/eqnsac/networks.py",
+          "lines": [
+            126,
+            127
+          ]
+        }
+      ],
+      "original_eqn": "原文使用 Var_tau[E_k Z_{k,tau}(s,a)]；以sigma_a平方作阈值。作者实现使用其平方根np.std(mean_k z, axis=tau)。",
+      "project_before_readability_refactor": "alea=z.mean(0).std(-1,unbiased=False)，即sqrt(Var_tau[E_k Z])。",
+      "verdict": "聚合顺序与原文和作者实现一致。E_k Var_tau Z_k是另一统计量，不能称为原文定义并据此改代码。方差与标准差的单位不同，但作者本身使用标准差日志/阈值。",
+      "recommendation": "保留公式，命名aleatoric_std，说明是有限网格的总体标准差。",
+      "official_references": [
+        {
+          "url": "https://github.com/carljohanhoel/EnsembleQuantileNetworks/blob/7dfbed562f3e0c7552fa98a821db502ea565618c/src/iqn_ensemble.py#L247-L255",
+          "downloaded_file": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/论文摘录/official_eqn/src/iqn_ensemble.py",
+          "lines": [
+            247,
+            255
+          ]
+        },
+        {
+          "url": "https://github.com/carljohanhoel/EnsembleQuantileNetworks/blob/7dfbed562f3e0c7552fa98a821db502ea565618c/src/policy.py#L122-L144",
+          "downloaded_file": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/论文摘录/official_eqn/src/policy.py",
+          "lines": [
+            122,
+            144
+          ]
+        }
+      ]
+    },
+    {
+      "id": "epistemic_definition",
+      "classification": "misleading_diagnostic_name",
+      "title": "旧ue不是原EQN的epistemic",
+      "paper_references": [
+        {
+          "pdf_page": 4,
+          "journal_page": 6033,
+          "section": "II-C1/II-D1",
+          "equations": [
+            13,
+            17
+          ]
+        }
+      ],
+      "project_references": [
+        {
+          "snapshot_file": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/重构前代码/eqnsac/networks.py",
+          "lines": [
+            138,
+            147
+          ]
+        },
+        {
+          "snapshot_file": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/重构前代码/eqnsac/agent.py",
+          "lines": [
+            177,
+            185
+          ]
+        }
+      ],
+      "original_eqn": "原文使用Var_k[E_tau Z_{k,tau}(s,a)]；作者实现epistemic_std=np.std(mean_tau z,axis=k)。",
+      "project_before_readability_refactor": "旧epi/ue是各成员两两在低尾分位上的绝对差，先尾部平均再成员对平均。",
+      "verdict": "这是项目Tail方法的分位分歧代理，与原文成员期望的方差或标准差不等价。把它直接写为原EQN Ue是表述错误。",
+      "recommendation": "新增epistemic_std=std_k(mean_tau z)诊断；现有Tail惩罚改名tail_disagreement并保留其数值和梯度，避免在可读性重构中改变方法。",
+      "official_references": [
+        {
+          "url": "https://github.com/carljohanhoel/EnsembleQuantileNetworks/blob/7dfbed562f3e0c7552fa98a821db502ea565618c/src/iqn_ensemble.py#L251-L255",
+          "downloaded_file": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/论文摘录/official_eqn/src/iqn_ensemble.py",
+          "lines": [
+            251,
+            255
+          ]
+        },
+        {
+          "url": "https://github.com/carljohanhoel/EnsembleQuantileNetworks/blob/7dfbed562f3e0c7552fa98a821db502ea565618c/src/policy.py#L122-L144",
+          "downloaded_file": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/论文摘录/official_eqn/src/policy.py",
+          "lines": [
+            122,
+            144
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bootstrap",
+      "classification": "matches_original",
+      "title": "固定Bernoulli bootstrap成员归属",
+      "paper_references": [
+        {
+          "pdf_page": 4,
+          "journal_page": 6033,
+          "section": "II-C",
+          "equations": [
+            12
+          ]
+        },
+        {
+          "pdf_page": 5,
+          "journal_page": 6034,
+          "section": "Algorithm 3",
+          "algorithm": {
+            "number": 3,
+            "steps": [
+              12,
+              13,
+              14,
+              15,
+              16
+            ]
+          }
+        }
+      ],
+      "project_references": [
+        {
+          "snapshot_file": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/重构前代码/eqnsac/replay.py",
+          "lines": [
+            25,
+            56
+          ]
+        },
+        {
+          "snapshot_file": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/重构前代码/eqnsac/agent.py",
+          "lines": [
+            130,
+            154
+          ]
+        }
+      ],
+      "original_eqn": "每条新经验以p_add概率加入每个成员的缓存，之后从该成员缓存取batch；原文允许用共享存储加索引实现。",
+      "project_before_readability_refactor": "Replay.add对每条经验生成一次独立成员mask，p=.5；每成员有pool，覆盖时维护索引；Agent按member采样。",
+      "verdict": "与论文的bootstrap思想一致。这里不是每个梯度步临时重抽mask，也不要求物理上复制K份完整缓存。",
+      "recommendation": "保留；在注释说明pools是成员子集。2个目标共用对应member的batch是多目标迁移选择，2x5网络不是同一回报的10个样本。",
+      "official_references": [
+        {
+          "url": "https://github.com/carljohanhoel/EnsembleQuantileNetworks/blob/7dfbed562f3e0c7552fa98a821db502ea565618c/src/memory.py#L149-L163",
+          "downloaded_file": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/论文摘录/official_eqn/src/memory.py",
+          "lines": [
+            149,
+            163
+          ]
+        },
+        {
+          "url": "https://github.com/carljohanhoel/EnsembleQuantileNetworks/blob/7dfbed562f3e0c7552fa98a821db502ea565618c/src/iqn_ensemble.py#L291-L294",
+          "downloaded_file": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/论文摘录/official_eqn/src/iqn_ensemble.py",
+          "lines": [
+            291,
+            294
+          ]
+        }
+      ]
+    },
+    {
+      "id": "prior",
+      "classification": "matches_original_with_actor_gradient_extension",
+      "title": "固定prior权重不等于截断动作导数",
+      "paper_references": [
+        {
+          "pdf_page": 4,
+          "journal_page": 6033,
+          "section": "II-C/II-D",
+          "equations": [
+            11,
+            14
+          ]
+        }
+      ],
+      "project_references": [
+        {
+          "snapshot_file": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/重构前代码/eqnsac/networks.py",
+          "lines": [
+            71,
+            104
+          ]
+        }
+      ],
+      "original_eqn": "Z_{k,tau}=f_tau(theta_k)+beta*p_tau(thetahat_k)；两分支同构，thetahat固定。原EQN离散动作枚举不涉及Actor的动作梯度。",
+      "project_before_readability_refactor": "learned与prior同构，prior.requires_grad_(False)，前向仍保留对输入action的导数，输出learned+prior_scale*prior。",
+      "verdict": "符合固定参数prior定义；在连续Actor目标中保留prior动作导数是对该总Q目标做正确链式求导。不能根据“固定prior”推断应该torch.no_grad整个分支。",
+      "recommendation": "保留现有实现和有限差分回归。论文应说明这是SAC连续动作迁移推论，不是声称原文写过Actor梯度公式。",
+      "official_references": [
+        {
+          "url": "https://github.com/carljohanhoel/EnsembleQuantileNetworks/blob/7dfbed562f3e0c7552fa98a821db502ea565618c/src/network_architecture_distributional.py#L117-L178",
+          "downloaded_file": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/论文摘录/official_eqn/src/network_architecture_distributional.py",
+          "lines": [
+            117,
+            178
+          ]
+        }
+      ]
+    },
+    {
+      "id": "quantile_loss",
+      "classification": "matches_formula_with_hyperparameter_difference",
+      "title": "分位Huber归约符合式16但kappa不同",
+      "paper_references": [
+        {
+          "pdf_page": 3,
+          "journal_page": 6032,
+          "section": "II-B",
+          "equations": [
+            6,
+            7,
+            8
+          ]
+        },
+        {
+          "pdf_page": 4,
+          "journal_page": 6033,
+          "section": "II-D",
+          "equations": [
+            16
+          ]
+        },
+        {
+          "pdf_page": 6,
+          "journal_page": 6035,
+          "section": "III-E",
+          "table": "I"
+        }
+      ],
+      "project_references": [
+        {
+          "snapshot_file": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/重构前代码/eqnsac/networks.py",
+          "lines": [
+            107,
+            116
+          ]
+        },
+        {
+          "snapshot_file": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/重构前代码/eqnsac/agent.py",
+          "lines": [
+            135,
+            152
+          ]
+        }
+      ],
+      "original_eqn": "L=E_batch[(1/Nprime)*sum_i sum_j |tau_i-I(delta_ij<0)|*Huber_kappa(delta_ij)/kappa]；表I kappa=10。",
+      "project_before_readability_refactor": "delta=target[:,None,:]-prediction[:,:,None]；sum预测分位维，再mean(batch和target分位)，kappa硬编码1。",
+      "verdict": "求和/平均的尺度正确，不应再除N；kappa=1使公式中的/kappa自然为1，因此不是遗漏归一化。但它不是论文实验的kappa=10。",
+      "recommendation": "给kappa=1的现行超参作明确说明。若加配置，默认保持1，并将改成10视为新算法实验而非整理代码。",
+      "official_references": [
+        {
+          "url": "https://github.com/carljohanhoel/EnsembleQuantileNetworks/blob/7dfbed562f3e0c7552fa98a821db502ea565618c/src/iqn_ensemble.py#L86-L127",
+          "downloaded_file": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/论文摘录/official_eqn/src/iqn_ensemble.py",
+          "lines": [
+            86,
+            127
+          ]
+        },
+        {
+          "url": "https://github.com/carljohanhoel/EnsembleQuantileNetworks/blob/7dfbed562f3e0c7552fa98a821db502ea565618c/src/parameters.py#L58-L61",
+          "downloaded_file": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/论文摘录/official_eqn/src/parameters.py",
+          "lines": [
+            58,
+            61
+          ]
+        }
+      ]
+    },
+    {
+      "id": "critic_target",
+      "classification": "intentional_sac_adaptation",
+      "title": "成员对应target保留，Bellman目标改为soft policy evaluation",
+      "paper_references": [
+        {
+          "pdf_page": 3,
+          "journal_page": 6032,
+          "section": "II-B",
+          "equations": [
+            4,
+            5
+          ]
+        },
+        {
+          "pdf_page": 4,
+          "journal_page": 6033,
+          "section": "II-D",
+          "equations": [
+            15,
+            16
+          ]
+        },
+        {
+          "pdf_page": 6,
+          "journal_page": 6035,
+          "section": "III-E"
+        }
+      ],
+      "project_references": [
+        {
+          "snapshot_file": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/重构前代码/eqnsac/agent.py",
+          "lines": [
+            130,
+            150
+          ]
+        }
+      ],
+      "original_eqn": "每个成员用自身在线网络选下一离散动作（Double DQN），自身target网络评估其下一分位；原文目标无熵项。",
+      "project_before_readability_refactor": "两Actor联合采样下一动作，每个目标/成员用对应target critic；target=r_i*reward_scale+gamma*(1-d)*(Z_target_i,k-alpha_i*logpi_i)。",
+      "verdict": "这是SAC多智能体soft-return迁移，并非原EQN逐项复现。对应成员target未被错误地跨成员平均；不含SAC通常的双Q最小值也是当前集成版本的明确设计选择，不能由EQN论文要求强行补。",
+      "recommendation": "在方法说明写出当前soft Bellman目标，解释各目标只正则自身Actor的熵；不要标成原文式15未修改实现。",
+      "official_references": [
+        {
+          "url": "https://github.com/carljohanhoel/EnsembleQuantileNetworks/blob/7dfbed562f3e0c7552fa98a821db502ea565618c/src/iqn_ensemble.py#L318-L343",
+          "downloaded_file": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/论文摘录/official_eqn/src/iqn_ensemble.py",
+          "lines": [
+            318,
+            343
+          ]
+        }
+      ]
+    },
+    {
+      "id": "full_support_tau",
+      "classification": "matches_original_principle",
+      "title": "风险敏感控制不要求截断学习目标分位",
+      "paper_references": [
+        {
+          "pdf_page": 3,
+          "journal_page": 6032,
+          "section": "II-B",
+          "equations": [
+            4,
+            9
+          ]
+        },
+        {
+          "pdf_page": 5,
+          "journal_page": 6034,
+          "section": "Algorithm 3",
+          "algorithm": {
+            "number": 3,
+            "steps": [
+              9,
+              10,
+              16
+            ]
+          }
+        },
+        {
+          "pdf_page": 10,
+          "journal_page": 6039,
+          "section": "V Discussion"
+        }
+      ],
+      "project_references": [
+        {
+          "snapshot_file": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/重构前代码/eqnsac/agent.py",
+          "lines": [
+            135,
+            150
+          ]
+        }
+      ],
+      "original_eqn": "学习return分布的预测与target tau均采自U(0,1)，下一动作选择以U(0,alpha)计算风险价值。",
+      "project_before_readability_refactor": "tau和tau_next仍U(0,1)，下一动作来自当前正在接受风险目标训练的Actors。",
+      "verdict": "当前保留全分布分位是正确的，不应为了CVaR把tau_next也缩到低尾。",
+      "recommendation": "保留并加注释，防止未来“对齐CVaR”时误截断Bellman分布。",
+      "official_references": [
+        {
+          "url": "https://github.com/carljohanhoel/EnsembleQuantileNetworks/blob/7dfbed562f3e0c7552fa98a821db502ea565618c/src/iqn_ensemble.py#L318-L328",
+          "downloaded_file": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/论文摘录/official_eqn/src/iqn_ensemble.py",
+          "lines": [
+            318,
+            328
+          ]
+        },
+        {
+          "url": "https://github.com/carljohanhoel/EnsembleQuantileNetworks/blob/7dfbed562f3e0c7552fa98a821db502ea565618c/src/iqn_ensemble.py#L351-L356",
+          "downloaded_file": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/论文摘录/official_eqn/src/iqn_ensemble.py",
+          "lines": [
+            351,
+            356
+          ]
+        }
+      ]
+    },
+    {
+      "id": "exploration",
+      "classification": "intentional_sac_adaptation",
+      "title": "探索机制由episode级Thompson选择改为随机Actor",
+      "paper_references": [
+        {
+          "pdf_page": 4,
+          "journal_page": 6033,
+          "section": "II-C"
+        },
+        {
+          "pdf_page": 5,
+          "journal_page": 6034,
+          "section": "Algorithm 3",
+          "algorithm": {
+            "number": 3,
+            "steps": [
+              6,
+              7,
+              8,
+              9,
+              10
+            ]
+          }
+        }
+      ],
+      "project_references": [
+        {
+          "snapshot_file": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/重构前代码/eqnsac/agent.py",
+          "lines": [
+            104,
+            124
+          ]
+        },
+        {
+          "snapshot_file": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/重构前代码/eqnsac/agent.py",
+          "lines": [
+            163,
+            181
+          ]
+        }
+      ],
+      "original_eqn": "每episode随机选一个成员nu，整个episode按该成员风险价值贪心选离散动作，形成近似Thompson sampling。",
+      "project_before_readability_refactor": "不选episode active member；warmup后执行两个tanh Gaussian Actor，Actor优化全成员平均风险价值。",
+      "verdict": "不是原EQN的posterior sampling探索。对SAC迁移合理，但不能沿用“本算法利用EQN逐episode Thompson探索”的描述。",
+      "recommendation": "将original命名解释为本项目EQN-SAC风险中性基线，而非原论文Original EQN。",
+      "official_references": [
+        {
+          "url": "https://github.com/carljohanhoel/EnsembleQuantileNetworks/blob/7dfbed562f3e0c7552fa98a821db502ea565618c/src/iqn_ensemble.py#L135-L138",
+          "downloaded_file": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/论文摘录/official_eqn/src/iqn_ensemble.py",
+          "lines": [
+            135,
+            138
+          ]
+        },
+        {
+          "url": "https://github.com/carljohanhoel/EnsembleQuantileNetworks/blob/7dfbed562f3e0c7552fa98a821db502ea565618c/src/iqn_ensemble.py#L234-L255",
+          "downloaded_file": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/论文摘录/official_eqn/src/iqn_ensemble.py",
+          "lines": [
+            234,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "id": "test_action_selection",
+      "classification": "intentional_sac_adaptation",
+      "title": "部署由Actor给动作而非Critic枚举",
+      "paper_references": [
+        {
+          "pdf_page": 4,
+          "journal_page": 6033,
+          "section": "II-D1",
+          "equations": [
+            17
+          ]
+        }
+      ],
+      "project_references": [
+        {
+          "snapshot_file": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/重构前代码/eqnsac/agent.py",
+          "lines": [
+            104,
+            124
+          ]
+        }
+      ],
+      "original_eqn": "测试时对所有成员/分位均值做离散argmax，可对所选动作算不确定性并触发backup。",
+      "project_before_readability_refactor": "确定性评价时使用tanh(mu)及SOC可行域映射；没有在线枚举/优化Critic动作，也没有backup门控。",
+      "verdict": "为Actor-Critic常见部署方式，不能称其每步直接执行原EQN式17。当前批次训练风险日志也不是部署每个动作的风险报告。",
+      "recommendation": "在文档区分训练Actor目标与部署Actor前向；若需要决策风险诊断，可提供只读action-risk查询，但不改变部署动作。",
+      "official_references": [
+        {
+          "url": "https://github.com/carljohanhoel/EnsembleQuantileNetworks/blob/7dfbed562f3e0c7552fa98a821db502ea565618c/src/iqn_ensemble.py#L247-L255",
+          "downloaded_file": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/论文摘录/official_eqn/src/iqn_ensemble.py",
+          "lines": [
+            247,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "id": "adaptive_cvar",
+      "classification": "project_extension",
+      "title": "自适应CVaR是项目扩展，且采用停止梯度",
+      "paper_references": [
+        {
+          "pdf_page": 3,
+          "journal_page": 6032,
+          "section": "II-B1",
+          "equations": [
+            9
+          ]
+        },
+        {
+          "pdf_page": 5,
+          "journal_page": 6034,
+          "section": "Algorithm 3",
+          "algorithm": {
+            "number": 3,
+            "steps": [
+              9,
+              10
+            ]
+          }
+        },
+        {
+          "pdf_page": 10,
+          "journal_page": 6039,
+          "section": "V Discussion"
+        }
+      ],
+      "project_references": [
+        {
+          "snapshot_file": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/重构前代码/eqnsac/networks.py",
+          "lines": [
+            126,
+            137
+          ]
+        }
+      ],
+      "original_eqn": "论文CVaR alpha为训练超参数，取U(0,alpha)的平均；没有exp(-beta*Ua)自适应规则。",
+      "project_before_readability_refactor": "level=clamp(exp(-adaptive_beta*alea.detach()), min_level,1)；全区间中点网格硬mask低尾。",
+      "verdict": "这是项目方法，不是原EQN。detach与硬mask意味着没有对alpha(s,a)求完整链式导数，得到停止梯度的局部风险更新。若论文声称完整连续自适应风险梯度，则与实现不符。",
+      "recommendation": "准确写出停止梯度和离散分位选择。保持默认目标，不在可读性改动中改为连续积分或重新采样。"
+    },
+    {
+      "id": "tail_penalty",
+      "classification": "project_extension",
+      "title": "低尾成对分歧惩罚不是原EQN的不确定性门控",
+      "paper_references": [
+        {
+          "pdf_page": 4,
+          "journal_page": 6033,
+          "section": "II-D1",
+          "equations": [
+            17
+          ]
+        }
+      ],
+      "project_references": [
+        {
+          "snapshot_file": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/重构前代码/eqnsac/networks.py",
+          "lines": [
+            138,
+            147
+          ]
+        }
+      ],
+      "original_eqn": "原EQN比较aleatoric与epistemic方差阈值，过阈值选择预定义backup；没有lambda*tail pairwise distance Actor惩罚。",
+      "project_before_readability_refactor": "tail_only/full使policy_value=tail_mean-lambda*pairwise_tail_absolute_difference。",
+      "verdict": "项目创新候选，不能归为EQN原算法。若量化网络存在分位交叉，则该量不能无条件称作精确Wasserstein距离；它也不会等于成员均值的epistemic_std。",
+      "recommendation": "命名tail_disagreement；保留为独立指标和消融项。是否有收益需独立实验验证，不能由公式或命名证明。"
+    },
+    {
+      "id": "cvar_discretization",
+      "classification": "approximation_to_document",
+      "title": "32点硬mask只在低尾使用3点",
+      "paper_references": [
+        {
+          "pdf_page": 3,
+          "journal_page": 6032,
+          "section": "II-B1",
+          "equations": [
+            9
+          ]
+        },
+        {
+          "pdf_page": 5,
+          "journal_page": 6034,
+          "section": "Algorithm 3",
+          "algorithm": {
+            "number": 3,
+            "steps": [
+              9,
+              10
+            ]
+          }
+        }
+      ],
+      "project_references": [
+        {
+          "snapshot_file": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/重构前代码/eqnsac/agent.py",
+          "lines": [
+            156,
+            159
+          ]
+        },
+        {
+          "snapshot_file": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/重构前代码/eqnsac/networks.py",
+          "lines": [
+            135,
+            143
+          ]
+        }
+      ],
+      "original_eqn": "原算法在[0,alpha]采K_tau=32点求期望，整个32点计算预算用于该尾部。",
+      "project_before_readability_refactor": "先建[0,1]的32个中点，只取tau<=alpha；alpha=.1时只有3点，等效网格覆盖3/32。",
+      "verdict": "是离散近似，风险水平随alpha阶跃；不能称为对任意alpha的精确CVaR。已有注释承认硬分位选择，因此不认定无意bug。",
+      "recommendation": "说明误差与尾部有效样本数；可记录selected_quantile_count/effective_grid_mass。若要连续CVaR应单独立项改法和重新实验。"
+    },
+    {
+      "id": "risk_training_consistency",
+      "classification": "matches_original_principle",
+      "title": "当前风险训练没有把旧风险中性Q直接当新风险策略Q",
+      "paper_references": [
+        {
+          "pdf_page": 10,
+          "journal_page": 6039,
+          "section": "V Discussion"
+        },
+        {
+          "pdf_page": 11,
+          "journal_page": 6040,
+          "section": "V Discussion",
+          "table": "Fig.14"
+        }
+      ],
+      "project_references": [
+        {
+          "snapshot_file": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/重构前代码/eqnsac/agent.py",
+          "lines": [
+            141,
+            150
+          ]
+        },
+        {
+          "snapshot_file": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/重构前代码/eqnsac/agent.py",
+          "lines": [
+            177,
+            181
+          ]
+        }
+      ],
+      "original_eqn": "原文批评先训练风险中性Q，训练结束后仅换CVaR行动规则，因为Q的未来策略不对应新风险策略；改变CVaR训练参数须重新训练。",
+      "project_before_readability_refactor": "风险项在Actor训练内，target动作来自正在训练的当前Actor，Critic随之更新；各arm分别训练。",
+      "verdict": "方向上遵循风险策略与价值学习一致性的要求。它不证明全局CVaR最优，也不允许将已训练original权重仅改arm当作完整新模型。",
+      "recommendation": "保持各arm从头受控训练及恢复配置校验；明确改变arm/风险参数需要重新训练或明确声明fine-tune。",
+      "official_references": [
+        {
+          "url": "https://github.com/carljohanhoel/EnsembleQuantileNetworks/blob/7dfbed562f3e0c7552fa98a821db502ea565618c/src/iqn_ensemble.py#L318-L328",
+          "downloaded_file": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/论文摘录/official_eqn/src/iqn_ensemble.py",
+          "lines": [
+            318,
+            328
+          ]
+        }
+      ]
+    },
+    {
+      "id": "target_update",
+      "classification": "intentional_sac_adaptation",
+      "title": "target更新从hard copy改为Polyak",
+      "paper_references": [
+        {
+          "pdf_page": 6,
+          "journal_page": 6035,
+          "section": "III-E",
+          "table": "I"
+        }
+      ],
+      "project_references": [
+        {
+          "snapshot_file": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/重构前代码/eqnsac/agent.py",
+          "lines": [
+            193,
+            198
+          ]
+        }
+      ],
+      "original_eqn": "论文表I每20,000训练步硬更新target，官方逐成员copy权重。",
+      "project_before_readability_refactor": "每次update用target.lerp_(online, target_tau=.005)。",
+      "verdict": "SAC式软更新超参选择，不是源码逻辑错误；它改变训练动态，故不属原论文的逐位复现。",
+      "recommendation": "注释target_tau为在线权重插值系数，避免与分位tau混淆。",
+      "official_references": [
+        {
+          "url": "https://github.com/carljohanhoel/EnsembleQuantileNetworks/blob/7dfbed562f3e0c7552fa98a821db502ea565618c/src/iqn_ensemble.py#L192-L195",
+          "downloaded_file": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/论文摘录/official_eqn/src/iqn_ensemble.py",
+          "lines": [
+            192,
+            195
+          ]
+        },
+        {
+          "url": "https://github.com/carljohanhoel/EnsembleQuantileNetworks/blob/7dfbed562f3e0c7552fa98a821db502ea565618c/src/iqn_ensemble.py#L276-L277",
+          "downloaded_file": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/论文摘录/official_eqn/src/iqn_ensemble.py",
+          "lines": [
+            276,
+            277
+          ]
+        }
+      ]
+    },
+    {
+      "id": "soft_return_uncertainty",
+      "classification": "interpretation_boundary",
+      "title": "Ua在本项目是soft return离散度",
+      "paper_references": [
+        {
+          "pdf_page": 2,
+          "journal_page": 6031,
+          "section": "II-A/II-B",
+          "equations": [
+            1,
+            2
+          ]
+        },
+        {
+          "pdf_page": 4,
+          "journal_page": 6033,
+          "section": "II-D",
+          "equations": [
+            15
+          ]
+        }
+      ],
+      "project_references": [
+        {
+          "snapshot_file": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/重构前代码/eqnsac/agent.py",
+          "lines": [
+            141,
+            150
+          ]
+        }
+      ],
+      "original_eqn": "原EQN建模未加熵奖励的回报分布，论文环境的遮挡、车辆意图等构成aleatoric来源。",
+      "project_before_readability_refactor": "目标含未来Actor熵项和随机联合动作，回报还经过reward_scale并按各目标使用不同reward。",
+      "verdict": "虽然Ua聚合公式匹配，量的含义已变化；不能把Ua直接解释为真实现金利润标准差，或纯负荷/风电随机性。",
+      "recommendation": "称为各目标soft return的分布离散度；若要现金收益风险，另用实际rollout收益分布评价。"
+    },
+    {
+      "id": "network_architecture",
+      "classification": "intentional_domain_adaptation",
+      "title": "保留IQN融合结构，替换场景编码与动作输出",
+      "paper_references": [
+        {
+          "pdf_page": 6,
+          "journal_page": 6035,
+          "section": "III-D",
+          "table": "Fig.2"
+        }
+      ],
+      "project_references": [
+        {
+          "snapshot_file": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/重构前代码/eqnsac/networks.py",
+          "lines": [
+            63,
+            104
+          ]
+        }
+      ],
+      "original_eqn": "原文车辆CNN+maxpool、ego分支、cosine tau嵌入、Hadamard乘积、dueling输出每个离散动作的分位。",
+      "project_before_readability_refactor": "输入19维状态+2维连续动作，经MLP；cosine嵌入与state-action特征逐元素相乘；learned/prior各输出单个分位值。",
+      "verdict": "对能源连续动作的结构迁移；不需要车辆CNN，也不要求dueling离散动作头。保留implicit quantile与同构prior关键结构。",
+      "recommendation": "文档区分EQN核心机制与车辆任务特定编码器；不要把当前MLP误称为论文同一网络架构。",
+      "official_references": [
+        {
+          "url": "https://github.com/carljohanhoel/EnsembleQuantileNetworks/blob/7dfbed562f3e0c7552fa98a821db502ea565618c/src/network_architecture_distributional.py#L125-L176",
+          "downloaded_file": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/论文摘录/official_eqn/src/network_architecture_distributional.py",
+          "lines": [
+            125,
+            176
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cosine_index",
+      "classification": "author_source_resolution",
+      "title": "cosine从0开始与作者源码一致",
+      "paper_references": [
+        {
+          "pdf_page": 6,
+          "journal_page": 6035,
+          "section": "III-D"
+        }
+      ],
+      "project_references": [
+        {
+          "snapshot_file": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/重构前代码/eqnsac/networks.py",
+          "lines": [
+            67,
+            69
+          ]
+        },
+        {
+          "snapshot_file": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/重构前代码/eqnsac/networks.py",
+          "lines": [
+            91,
+            94
+          ]
+        }
+      ],
+      "original_eqn": "正文写phi=(phi_1,...,phi_64), phi_j=cos(pi*j*tau)，字面为1..64；作者源码实际range(0,nb_cos_embeddings)。",
+      "project_before_readability_refactor": "torch.arange(embedding)为0..63，默认embedding=64。",
+      "verdict": "与作者源码一致，不应仅按正文记号判为off-by-one bug。",
+      "recommendation": "保留0..63，注释其与作者实现一致；若更换基底须视为模型变化。",
+      "official_references": [
+        {
+          "url": "https://github.com/carljohanhoel/EnsembleQuantileNetworks/blob/7dfbed562f3e0c7552fa98a821db502ea565618c/src/network_architecture_distributional.py#L136-L142",
+          "downloaded_file": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/论文摘录/official_eqn/src/network_architecture_distributional.py",
+          "lines": [
+            136,
+            142
+          ]
+        }
+      ]
+    },
+    {
+      "id": "uncertainty_grid",
+      "classification": "documented_numerical_choice",
+      "title": "不确定性网格不是严格逐点复现",
+      "paper_references": [
+        {
+          "pdf_page": 3,
+          "journal_page": 6032,
+          "section": "II-B2",
+          "equations": [
+            10
+          ]
+        },
+        {
+          "pdf_page": 4,
+          "journal_page": 6033,
+          "section": "II-D1",
+          "equations": [
+            17
+          ]
+        }
+      ],
+      "project_references": [
+        {
+          "snapshot_file": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/重构前代码/eqnsac/agent.py",
+          "lines": [
+            156,
+            159
+          ]
+        }
+      ],
+      "original_eqn": "正文tau_sigma={i/K_tau,i=1..K_tau}；作者测试源码用linspace(0,max_tau,N)，包含0和max_tau。",
+      "project_before_readability_refactor": "使用(i+.5)/N中点网格，所有arm相同。",
+      "verdict": "聚合定义一致，但求积点不同；中点避开0/1端点是明确数值选择，不是错误。官方源码与正文也有细节差异。",
+      "recommendation": "记录中点积分规则，避免宣称原论文精确复现。",
+      "official_references": [
+        {
+          "url": "https://github.com/carljohanhoel/EnsembleQuantileNetworks/blob/7dfbed562f3e0c7552fa98a821db502ea565618c/src/iqn_ensemble.py#L209-L222",
+          "downloaded_file": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/论文摘录/official_eqn/src/iqn_ensemble.py",
+          "lines": [
+            209,
+            222
+          ]
+        }
+      ]
+    },
+    {
+      "id": "backup_removed",
+      "classification": "intentional_scope_change",
+      "title": "当前无原论文安全阈值和backup层",
+      "paper_references": [
+        {
+          "pdf_page": 3,
+          "journal_page": 6032,
+          "section": "II-B2",
+          "equations": [
+            10
+          ]
+        },
+        {
+          "pdf_page": 4,
+          "journal_page": 6033,
+          "section": "II-C1/II-D1",
+          "equations": [
+            13,
+            17
+          ]
+        },
+        {
+          "pdf_page": 6,
+          "journal_page": 6035,
+          "section": "III-C"
+        }
+      ],
+      "project_references": [
+        {
+          "snapshot_file": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/重构前代码/eqnsac/agent.py",
+          "lines": [
+            104,
+            124
+          ]
+        }
+      ],
+      "original_eqn": "原论文通过Ua/Ue阈值切换预定义backup，并讨论风险敏感CVaR训练与事后阈值策略是两种方式。",
+      "project_before_readability_refactor": "活动版本有意移除backup/P4等接管，仅保留SOC物理可行域；风险通过训练目标影响Actor。",
+      "verdict": "是研究范围变化；因此不能照搬论文关于阈值识别OOD并减少碰撞的结果或安全能力。SOC限制不等于EQN不确定性backup。",
+      "recommendation": "在项目定义中明确没有不确定性接管；用收益尾部、约束满足与OOD诊断重新验证当前方法。"
+    },
+    {
+      "id": "original_name",
+      "classification": "misleading_baseline_label",
+      "title": "original是项目消融基线而非原论文算法",
+      "paper_references": [
+        {
+          "pdf_page": 4,
+          "journal_page": 6033,
+          "section": "II-D"
+        },
+        {
+          "pdf_page": 5,
+          "journal_page": 6034,
+          "section": "Algorithm 3",
+          "algorithm": {
+            "number": 3,
+            "steps": [
+              1,
+              17
+            ]
+          }
+        }
+      ],
+      "project_references": [
+        {
+          "snapshot_file": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/重构前代码/eqnsac/networks.py",
+          "lines": [
+            128,
+            146
+          ]
+        },
+        {
+          "snapshot_file": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/重构前代码/eqnsac/agent.py",
+          "lines": [
+            126,
+            198
+          ]
+        }
+      ],
+      "original_eqn": "Original EQN是离散动作、episode级成员策略、无SAC Actor/熵目标的完整方法。",
+      "project_before_readability_refactor": "arm=original只是本项目SAC迁移框架里关闭adaptive和tail惩罚，其他Actor/双目标等仍存在。",
+      "verdict": "若以该arm与创新arm比较，只能归因于同一EQN-SAC迁移框架内的附加风险组件，不能声称复现论文Original EQN。",
+      "recommendation": "配置保留兼容键original，显示名称使用“EQN-SAC基础版（风险中性）”。"
+    }
+  ],
+  "counterexamples": {
+    "aleatoric_and_epistemic_distinction": {
+      "monotone_member_quantiles": [
+        [
+          -1,
+          1
+        ],
+        [
+          -2,
+          2
+        ]
+      ],
+      "eqn_aleatoric_variance": 2.25,
+      "mean_member_quantile_variance": 2.5,
+      "eqn_epistemic_variance": 0.0,
+      "project_tail_disagreement_at_fraction_0_5": 1.0,
+      "meaning": "两成员均值同为0，因此原EQN epistemic为0，尾部分歧仍为1；EaVar和VarEa也不等。"
+    },
+    "hard_mask_cvar": {
+      "quantile_function": "Z(tau)=tau",
+      "grid": "32 midpoints over [0,1]",
+      "cases": [
+        {
+          "alpha": 0.1,
+          "selected_count": 3,
+          "effective_cell_mass": 0.09375,
+          "estimate": 0.046875,
+          "exact": 0.05
+        },
+        {
+          "alpha": 0.108,
+          "selected_count": 3,
+          "effective_cell_mass": 0.09375,
+          "estimate": 0.046875,
+          "exact": 0.054
+        },
+        {
+          "alpha": 0.11,
+          "selected_count": 4,
+          "effective_cell_mass": 0.125,
+          "estimate": 0.0625,
+          "exact": 0.055
+        }
+      ]
+    }
+  },
+  "hyperparameters": {
+    "paper_table_I": {
+      "pdf_page": 6,
+      "journal_page": 6035,
+      "quantiles": 32,
+      "fixed_cvar_alpha": 1,
+      "ensemble_members": 10,
+      "prior_scale": 300,
+      "bootstrap_probability": 0.5,
+      "gamma": 0.95,
+      "learning_starts": 50000,
+      "replay_size": 500000,
+      "learning_rate": 0.0005,
+      "batch_size": 32,
+      "target_hard_copy_steps": 20000,
+      "huber_kappa": 10
+    },
+    "author_repository_parameters": {
+      "learning_rate": 5e-05,
+      "huber_kappa": 10,
+      "comment": "作者源码learning_rate比论文表I小10倍，不能把源码或表格默认值当成完全一致。"
+    },
+    "project_baseline": {
+      "quantiles": 32,
+      "ensemble_members_per_objective": 5,
+      "objectives": 2,
+      "prior_scale": 300,
+      "bootstrap_probability": 0.5,
+      "gamma": 1,
+      "warmup_steps": 200,
+      "replay_size": 200000,
+      "critic_learning_rate": 0.0003,
+      "price_learning_rate": 0.0003,
+      "storage_learning_rate": 0.001,
+      "batch_size": 128,
+      "target_polyak_coefficient": 0.005,
+      "huber_kappa": 1,
+      "reward_scale": 0.001
+    },
+    "interpretation": "这些超参差异不自动构成bug；gamma=1可适用于24小时真正终止任务。prior和阈值必须与reward量纲一起校准（原文PDF第11页/期刊6040页V节）。"
+  },
+  "readability_recommendations": {
+    "approved_design_review": "RiskStatistics具名字段policy_value/aleatoric_std/epistemic_std/tail_disagreement/cvar_level；兼容保留旧risk_value四元组wrapper；Agent和日志使用明确字段。此设计增加原文诊断而不改变Actor目标，合理。",
+    "low_risk_changes": [
+      "区分quantile_tau与Polyak target_tau，entropy_temperature与CVaR risk_level。",
+      "拆出critic update、actor objective、temperature update、target update，保持更新顺序与随机调用顺序。",
+      "将bootstrap成员索引、分位tensor维度和mean/sum约定写入docstring。",
+      "使日志字段名称表达真实统计量，禁止继续将tail_disagreement写成原文epistemic。",
+      "说明original配置的项目内消融含义及CVaR离散近似。"
+    ],
+    "method_changes_not_to_hide_inside_refactor": [
+      "用E_member Var_tau替换原文Ua。",
+      "用epistemic_std替换现有Tail惩罚。",
+      "截断Critic target quantile support到[0,alpha]。",
+      "改变停止梯度策略或改为连续CVaR积分。",
+      "将kappa从1改10或更换cosine基底。",
+      "恢复episode级Thompson采样或加backup门控。"
+    ]
+  },
+  "remaining_limits": [
+    "未重复运行论文SUMO/TensorFlow实验，也未声称复现其性能。",
+    "原文与作者源码存在网格、cosine记号、学习率等细节差异，已分别列明。",
+    "本对照不证明当前项目创新有效、概率校准正确或实际运行分布覆盖充分。"
+  ]
+}

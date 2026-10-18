@@ -1,0 +1,354 @@
+{
+  "review_date": "2026-10-18",
+  "scope": "Read-only comparison of the six-page NAPS voltage-control paper, historical project source and pre-readability-refactor current implementation. No source changes or training were made for this comparison.",
+  "primary_source": {
+    "title": "Uncertainty-Aware Deep Reinforcement Learning for Robust Autonomous Voltage Control",
+    "authors": [
+      "Seyi Josiah Fanifosi",
+      "Yanzhu Ye",
+      "Praveen Verma",
+      "Fengyu Wang",
+      "Di Shi"
+    ],
+    "venue": "2025 57th North American Power Symposium (NAPS)",
+    "doi": "10.1109/NAPS66256.2025.11272369",
+    "doi_url": "https://doi.org/10.1109/NAPS66256.2025.11272369",
+    "publisher_url": "https://ieeexplore.ieee.org/document/11272369",
+    "local_pdf": "/Users/liliheng/Desktop/EQN-SAC/EQN-SAC_项目交接_20261018/04_参考论文/已有原文与辅助译文/Uncertainty-Aware_Deep_Reinforcement_Learning_for_Robust_Autonomous_Voltage_Control.pdf",
+    "sha256": "77feea3e0d23c42f0b7f341b9417de07bde508f8558120ba5f47922216e6f5af",
+    "pages": 6,
+    "inspection": "All six PDF pages rendered at 140 dpi and visually inspected. The PDF is largely image-only; extracted text is insufficient for mathematical verification.",
+    "rendered_pages": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/论文摘录/voltage_pages",
+    "web_verification": "Publisher URL was attempted but returned a JavaScript/robot check; DOI tool access failed. No publicly identifiable author implementation was located by the limited primary-source search. All mathematical conclusions below rely on the supplied original PDF, not on secondary search results."
+  },
+  "code_sources": [
+    {
+      "path": "/Users/liliheng/Desktop/EQN-SAC/EQN-SAC_项目交接_20261018/03_代码/历史来源代码_仅追溯/pbdr_eqn_sac.py",
+      "sha256": "34d264e6d6628488af08b894787a269392a1ce8c19a6b9501966355331a46f3d",
+      "role": "Historical formula and architecture provenance"
+    },
+    {
+      "path": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/重构前代码/eqnsac/networks.py",
+      "sha256": "b30bdf5e117677e385316956a4b1a7032ba068038412e3afe63a5772533c0fc7",
+      "role": "Stable snapshot of current implementation before readability refactor"
+    },
+    {
+      "path": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/重构前代码/eqnsac/agent.py",
+      "sha256": "23b78faa7f0e9420920eabf1f3fe10b1891fb0fea6514e70d5debf8e0fa6ebcc",
+      "role": "Stable snapshot of current implementation before readability refactor"
+    }
+  ],
+  "conclusion_zh": "电压论文明确提出 EQN-DDPG，而非 EQN-SAC。本项目是把 EQN 的集成分位思想接入双角色、双奖励 SAC 的有意扩展，并延续项目历史中的标准差、自适应下尾和尾部分歧代理。没有依据把这些差异一概判为实现错误，也没有依据称为该电压论文或原始 SAC 的严格复现。应保留行为、拆分清晰函数、使用准确指标名与公式说明。",
+  "findings": [
+    {
+      "id": "V01",
+      "title_zh": "算法身份与结构",
+      "paper_pdf_pages_one_based": [
+        1,
+        2,
+        3
+      ],
+      "paper_equations_or_sections": [
+        "Abstract",
+        "II-B",
+        "Fig. 1",
+        "Algorithm 1"
+      ],
+      "paper_definition": "One deterministic actor mu(s), multiple independently initialized bootstrapped distributional critics Z_k, and actor/critic target networks. The paper explicitly calls the method EQN-DDPG.",
+      "project_definition": "Two stochastic tanh-Gaussian actors for price/storage and two objective-specific K-member IQN critic ensembles. Both critics observe the same joint action, but each has its own reward and temperature.",
+      "classification": "intentional_architecture_adaptation",
+      "historical_code": {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/EQN-SAC_项目交接_20261018/03_代码/历史来源代码_仅追溯/pbdr_eqn_sac.py",
+        "lines_at_review": "664-720",
+        "symbol": "pbdr_eqn_sac.py"
+      },
+      "recommendation_zh": "论文写成“受 EQN / EQN-DDPG 启发的双角色 EQN-SAC”，不要将电压论文写成EQN-SAC原文。两个目标Critic集合不是SAC的twin Q。",
+      "current_code_snapshot": [
+        {
+          "path": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/重构前代码/eqnsac/agent.py",
+          "lines_or_symbol": "43-108",
+          "symbol": "Agent.__init__, Agent.sample"
+        }
+      ]
+    },
+    {
+      "id": "V02",
+      "title_zh": "Epistemic 的原始方差与当前尾部分歧不是同一统计量",
+      "paper_pdf_pages_one_based": [
+        3
+      ],
+      "paper_equations_or_sections": [
+        "Eq. (9)",
+        "Eq. (10)"
+      ],
+      "paper_definition": "U_e(s,a) = Var_k[E_tau Z_k(s,a,tau)]. Equation (10) estimates each member mean by averaging its N quantiles; Eq. (9) then measures variance between member means.",
+      "project_definition": "risk_value returns epi = mean_{i<j} mean_{tau in lower-tail grid}|Z_i-Z_j|. Historical estimate_uncertainty additionally computed std_k(mean_tau Z_k), but current risk diagnostics only return the tail proxy.",
+      "classification": "intentional_risk_extension_with_labeling_risk",
+      "historical_code": {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/EQN-SAC_项目交接_20261018/03_代码/历史来源代码_仅追溯/pbdr_eqn_sac.py",
+        "lines_at_review": "142-189; 1567-1575",
+        "symbol": "pbdr_eqn_sac.py"
+      },
+      "recommendation_zh": "把当前ue明确标成tail_disagreement或尾部分位分歧代理。如要和原论文对比，另报 epistemic_variance=Var_k(mean_tau Z_k)，不要把proxy替换后仍称原定义。",
+      "current_code_snapshot": [
+        {
+          "path": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/重构前代码/eqnsac/networks.py",
+          "lines_or_symbol": "120-147",
+          "symbol": "risk_value"
+        }
+      ]
+    },
+    {
+      "id": "V03",
+      "title_zh": "电压论文的 aleatoric 方差与原EQN聚合顺序也不同",
+      "paper_pdf_pages_one_based": [
+        3
+      ],
+      "paper_equations_or_sections": [
+        "Eq. (11)"
+      ],
+      "paper_definition": "U_a(s,a) = (1/K) sum_k Var_tau[Z_k(s,a,tau)]. This is the average within-member quantile variance. It is not generally Var_tau[mean_k Z_k].",
+      "project_definition": "Current u_alea = std_tau[mean_k Z_k] with unbiased=False. Historical source explicitly documents this as the existing project definition. It is a standard deviation with Q units, not a variance with Q-squared units.",
+      "classification": "intentional_historical_definition_not_paper_identity",
+      "historical_code": {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/EQN-SAC_项目交接_20261018/03_代码/历史来源代码_仅追溯/pbdr_eqn_sac.py",
+        "lines_at_review": "1014-1017; 1572-1575",
+        "symbol": "pbdr_eqn_sac.py"
+      },
+      "recommendation_zh": "准确命名为ensemble_mean_quantile_std。若补原文指标，电压论文和原EQN各自公式要分开列。不要直接把std改var，因为会改变beta尺度与训练行为。",
+      "current_code_snapshot": [
+        {
+          "path": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/重构前代码/eqnsac/networks.py",
+          "lines_or_symbol": "120-133",
+          "symbol": "risk_value"
+        }
+      ]
+    },
+    {
+      "id": "V04",
+      "title_zh": "原论文的风险处理位于部署阶段",
+      "paper_pdf_pages_one_based": [
+        3,
+        4
+      ],
+      "paper_equations_or_sections": [
+        "II-C",
+        "Eq. (12)",
+        "Eq. (13)",
+        "Algorithm 2"
+      ],
+      "paper_definition": "After training, compare U_a and U_e to thresholds theta_a/theta_e. If either exceeds its threshold, solve min_a ||a-mu(s)||^2 subject to both uncertainty constraints; invoke a backup policy if optimization fails. Both low uncertainties lead to direct execution.",
+      "project_definition": "Current clean runner/environment executes the actor through physical feasible-action mapping and does not perform learned-uncertainty-triggered optimization or backup. Adaptive/tail penalties instead change the training actor objective.",
+      "classification": "intentional_scope_difference",
+      "recommendation_zh": "不应宣称已实现电压论文的测试时安全保障。SOC/功率可行域映射是物理约束，不等同于不确定性阈值优化。",
+      "current_code_snapshot": [
+        {
+          "path": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/重构前代码/eqnsac/agent.py",
+          "lines_or_symbol": "110-124",
+          "symbol": "Agent.act"
+        },
+        {
+          "path": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/重构前代码/eqnsac/runner.py",
+          "lines_or_symbol": "train; evaluation",
+          "symbol": "Execution uses agent.act followed by env.step"
+        }
+      ]
+    },
+    {
+      "id": "V05",
+      "title_zh": "CVaR与指数自适应风险水平来自项目历史扩展",
+      "paper_pdf_pages_one_based": [
+        2,
+        3,
+        4
+      ],
+      "paper_equations_or_sections": [
+        "II-B",
+        "II-C",
+        "Eq. (5)-(13)"
+      ],
+      "paper_definition": "The reviewed paper optimizes expected return and uses uncertainty thresholds. It defines no CVaR objective, no exp(-beta*U_a) risk-level map, and no tail-Wasserstein penalty.",
+      "project_definition": "eta=clip(exp(-beta*stop_gradient(std_tau(mean_k Z_k))), eta_min, 1); actor value is mean of selected shared midpoint quantiles tau<=eta, minus lambda times tail disagreement when enabled. The hard selection gives a discrete lower-tail approximation and no derivative through eta.",
+      "classification": "intentional_project_method_extension",
+      "historical_code": {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/EQN-SAC_项目交接_20261018/03_代码/历史来源代码_仅追溯/pbdr_eqn_sac.py",
+        "lines_at_review": "192-255; 994-1052",
+        "symbol": "pbdr_eqn_sac.py"
+      },
+      "recommendation_zh": "将自适应CVaR和尾惩罚写为本项目方法，不归给电压论文。说明有限分位网格、硬阈值与停止梯度；不能宣称完整连续CVaR风险水平梯度。",
+      "current_code_snapshot": [
+        {
+          "path": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/重构前代码/eqnsac/networks.py",
+          "lines_or_symbol": "120-147",
+          "symbol": "risk_value"
+        }
+      ]
+    },
+    {
+      "id": "V06",
+      "title_zh": "Bellman target、熵和温度",
+      "paper_pdf_pages_one_based": [
+        3
+      ],
+      "paper_equations_or_sections": [
+        "Eq. (6)",
+        "Eq. (7)",
+        "Eq. (8)",
+        "Algorithm 1"
+      ],
+      "paper_definition": "Distributional target r+gamma Z_target(s_next, mu_target/current-policy(s_next)); Eq. (7) suppresses target-network notation. Algorithm 1 initializes actor and critic target networks and softly updates them. Deterministic policy gradient in Eq. (8); no entropy bonus or learned entropy temperature is specified.",
+      "project_definition": "Each objective j uses y_j = reward_scale*r_j + gamma*(1-done)*(Z_target[j,k](s_next,a_next,tau_next)-alpha_j*log pi_j(a_next_j|s_next)); stochastic current actors generate a_next, no target actor. Actor loss E[alpha_j log pi_j - robust_value_j]; automatic alpha update is performed per role.",
+      "classification": "intentional_SAC_adaptation",
+      "historical_code": {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/EQN-SAC_项目交接_20261018/03_代码/历史来源代码_仅追溯/pbdr_eqn_sac.py",
+        "lines_at_review": "863-887; 929-936; 1149-1154; 1186-1209; 1215-1227",
+        "symbol": "pbdr_eqn_sac.py"
+      },
+      "recommendation_zh": "Critic分布是含本角色熵项的soft return分布，不是现金利润分布；风险统计不能直接解释成利润标准差/CVaR。文档分开 entropy_temperature 与 cvar_level 符号。",
+      "current_code_snapshot": [
+        {
+          "path": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/重构前代码/eqnsac/agent.py",
+          "lines_or_symbol": "126-198",
+          "symbol": "Agent.update"
+        }
+      ]
+    },
+    {
+      "id": "V07",
+      "title_zh": "没有clipped twin-Q minimum不是新遗漏",
+      "paper_pdf_pages_one_based": [
+        2,
+        3
+      ],
+      "paper_equations_or_sections": [
+        "II-B",
+        "Eq. (5)-(8)"
+      ],
+      "paper_definition": "The voltage paper uses multiple distributional critics and ensemble aggregation; it does not prescribe SAC-style clipped double-Q minima.",
+      "project_definition": "Each of two reward objectives has K independent member targets, updated member-to-member. There is no twin critic pair for the same objective and no minimum over critics in target or actor loss.",
+      "classification": "intentional_ensemble_replacement_with_methodological_tradeoff",
+      "historical_code": {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/EQN-SAC_项目交接_20261018/03_代码/历史来源代码_仅追溯/pbdr_eqn_sac.py",
+        "lines_at_review": "664-670; 882-887; 929-936",
+        "symbol": "pbdr_eqn_sac.py"
+      },
+      "recommendation_zh": "历史docstring明确替换了scalar Twin Critics，不能说“两套Critic=双Q”。若未来添加clipped-double-Q，应作为会改变方法的实验变体与偏差/稳定性对照，不能伪装成可读性优化。",
+      "current_code_snapshot": [
+        {
+          "path": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/重构前代码/eqnsac/agent.py",
+          "lines_or_symbol": "65-79; 130-155",
+          "symbol": "Agent.__init__, Agent.update"
+        }
+      ]
+    },
+    {
+      "id": "V08",
+      "title_zh": "Bootstrap、分位回归与软更新保持核心思想",
+      "paper_pdf_pages_one_based": [
+        3
+      ],
+      "paper_equations_or_sections": [
+        "Eq. (6)",
+        "Algorithm 1 steps 13-16",
+        "Text below Eq. (10)"
+      ],
+      "paper_definition": "Critics are independently initialized and trained on bootstrapped replay data; quantile Huber regression learns return distributions; targets are softly updated.",
+      "project_definition": "Fixed Bernoulli membership on replay insertion produces member-specific subsets; critic uses sampled tau/tau_next and pairwise Huber quantile loss; target parameters use lerp with target_tau. Current loss sums over predicted quantiles and averages target quantiles/batch, preserving historical scale.",
+      "classification": "consistent_core_idea_with_explicit_implementation_choices",
+      "historical_code": {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/EQN-SAC_项目交接_20261018/03_代码/历史来源代码_仅追溯/pbdr_eqn_sac.py",
+        "lines_at_review": "258-285; 451-501; 1254-1266",
+        "symbol": "pbdr_eqn_sac.py"
+      },
+      "recommendation_zh": "可称继承EQN核心结构；采样规则、损失归约尺度、K、prior和分位数是本项目实现细节，论文没有完整指定到可逐位复现。",
+      "current_code_snapshot": [
+        {
+          "path": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/重构前代码/eqnsac/networks.py",
+          "lines_or_symbol": "107-117",
+          "symbol": "quantile_loss"
+        },
+        {
+          "path": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/重构前代码/eqnsac/agent.py",
+          "lines_or_symbol": "193-198",
+          "symbol": "Agent.update target lerp"
+        }
+      ]
+    },
+    {
+      "id": "V09",
+      "title_zh": "随机prior不应从电压论文中推断为已指定",
+      "paper_pdf_pages_one_based": [
+        2,
+        3,
+        4
+      ],
+      "paper_equations_or_sections": [
+        "II-B",
+        "Algorithm 1",
+        "Table I"
+      ],
+      "paper_definition": "The six-page voltage paper does not specify an additive frozen randomized prior branch or its scale; the presented critic equations and hyperparameter table omit it.",
+      "project_definition": "Each current QuantileCritic is learned_branch + prior_scale*frozen_prior. Frozen prior weights remain in the action derivative. Historical forward wrapped the prior in torch.no_grad(), disconnecting that derivative.",
+      "classification": "prior_is_project_or_original_EQN_detail; historical_gradient_bug_already_fixed",
+      "historical_code": {
+        "path": "/Users/liliheng/Desktop/EQN-SAC/EQN-SAC_项目交接_20261018/03_代码/历史来源代码_仅追溯/pbdr_eqn_sac.py",
+        "lines_at_review": "288-340; 382-411",
+        "symbol": "pbdr_eqn_sac.py"
+      },
+      "recommendation_zh": "引用原始EQN而非电压论文解释prior。保持当前冻结权重但允许动作梯度的实现，不能为了“对齐历史”恢复旧no_grad。",
+      "current_code_snapshot": [
+        {
+          "path": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/重构前代码/eqnsac/networks.py",
+          "lines_or_symbol": "63-104",
+          "symbol": "QuantileCritic"
+        }
+      ]
+    }
+  ],
+  "equation_checks": {
+    "dimensions": "Current std and pairwise absolute-distance proxy have return units; paper U_a/U_e variances have squared return units. Thresholds, beta and lambda cannot be reused unchanged across these definitions.",
+    "constructed_counterexample": {
+      "quantiles_two_members": [
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          4
+        ]
+      ],
+      "quantile_weights": [
+        0.5,
+        0.5
+      ],
+      "voltage_aleatoric_mean_member_variance": 2.5,
+      "original_eqn_aleatoric_variance_ensemble_mean": 2.25,
+      "current_aleatoric_std_ensemble_mean": 1.5,
+      "paper_epistemic_variance_of_member_means": 0.25,
+      "lower_first_quantile_pairwise_disagreement": 0.0,
+      "interpretation_zh": "即使每个成员的分位序列单调，三种Ua统计也不同；尾分歧为零并不意味着成员均值方差为零。此为公式演示，不是训练结果。"
+    },
+    "finite_grid_cvar": "For N=32 shared midpoint quantiles and eta=0.1, hard selection keeps three points, corresponding to three equal grid cells (3/32=9.375%). This is a finite-grid approximation, not a differentiable exact integral through the risk level. No automatic formula change is recommended during readability refactoring.",
+    "soft_return_interpretation": "Because current targets incorporate future action entropy and both roles remain stochastic during learning, learned quantile dispersion does not isolate physical/exogenous aleatoric noise alone."
+  },
+  "paper_limitations_zh": [
+    "式(5)把Z_k当均值/分位估计使用，式(9)-(10)的tau与Z_k记号也略有混用；以文字、Eq.(10)与上下文联合解释，不能把不完整符号当可执行代码。",
+    "式(6)损失残差呈prediction-target，未完整展开rho定义；不能仅按印刷符号翻转当前有测试覆盖的标准quantile-Huber残差。",
+    "式(13)目标是二次的，但神经网络不确定性约束一般不是线性/凸二次约束；文中没有足够求解器、线性化与fallback细节来独立重建算法。",
+    "第5页正文称baseline测试成功率89%，Table II为97.5%，正文37个aleatoric加41个epistemic却称98个总计；这些报道内部不一致，不能据此精确复用性能提升数字。"
+  ],
+  "recommended_readability_changes_zh": [
+    "将采样联合动作、更新单个member critic、构造单角色actor目标、更新温度、软更新target拆成短函数，维持随机调用顺序和数值路径。",
+    "风险函数使用有意义名称：ensemble_mean_quantiles、aleatoric_std、cvar_level、lower_tail_value、tail_disagreement；补充shape说明[K,B,N]、[B,N]、[B]。",
+    "分开论文原始方差指标和训练用std/tail代理；新增诊断可以独立返回，不改现有actor loss。",
+    "将2×K明确写成两个目标各K成员，禁止使用twin-critic表述。",
+    "在算法说明中列出原EQN、电压EQN-DDPG、项目历史EQN-SAC、本次实现四层来源与差异，保留公式出处和适配理由。"
+  ],
+  "original_eqn_formula_crosscheck": {
+    "local_extracted_page": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/论文摘录/eqn_page_04.txt",
+    "equation": "(17)",
+    "expression": "Var_tau[E_k Z_k] < sigma_a^2 and Var_k[E_tau Z_k] < sigma_e^2",
+    "scope": "Cross-check only; full original EQN paper review is delegated to another reviewer."
+  }
+}

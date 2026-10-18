@@ -1,0 +1,13 @@
+{
+  "Experiment": "E:\\文档\\SAC(EQN)\\experiments\\20261011_original_wind_scale_5000ep",
+  "ProcessId": 40156,
+  "Episodes": 5000,
+  "Scenario": "wind_scale",
+  "Bound": 0.05,
+  "ReferenceSeed": 20260914,
+  "TrainingSeed": 42,
+  "Device": "cuda",
+  "TestsPassed": 13,
+  "SmokeResume": "passed",
+  "PriceExperimentStarted": false
+}

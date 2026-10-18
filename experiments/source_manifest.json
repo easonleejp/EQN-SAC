@@ -1,0 +1,1728 @@
+{
+  "schema_version": 1,
+  "copied_at_date": "2026-10-18",
+  "scope": "Byte-preserving copies of three historical experiments, excluding model checkpoints/caches, plus historical result and CPU re-evaluation CSV summaries.",
+  "copied_files": 279,
+  "copied_bytes": 19165275,
+  "groups": {
+    "20261010_original_load_scale_5000ep": {
+      "files": 88,
+      "bytes": 5419363
+    },
+    "20261011_original_price_scale_5000ep": {
+      "files": 90,
+      "bytes": 5774143
+    },
+    "20261011_original_wind_scale_5000ep": {
+      "files": 96,
+      "bytes": 7854778
+    },
+    "summary": {
+      "files": 5,
+      "bytes": 116991
+    }
+  },
+  "files": [
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/figures_20261012/固定验证曲线.png",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/figures_20261012/固定验证曲线.png",
+      "bytes": 170583,
+      "sha256": "27f6955d2dd6f9b5e6a61edcbfa91fab216a2d0dc6cf6a0d8b8b18408069d7b4"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/figures_20261012/训练指标.csv",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/figures_20261012/训练指标.csv",
+      "bytes": 1564664,
+      "sha256": "5b9a90f786c966b267f7cdc9fa6d6553e03b91a89627440b1f81c429814b8cd5"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/figures_20261012/训练曲线.png",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/figures_20261012/训练曲线.png",
+      "bytes": 214681,
+      "sha256": "8193f0738222fc42d75c17fc9a3ab513b49ad5da6c91d338c0569e2463278fb6"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/figures_20261012/验证指标.csv",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/figures_20261012/验证指标.csv",
+      "bytes": 3208,
+      "sha256": "ff6b29cff79bd382292d0b42a407edf242e536c95db9decec6cd7433f8e4f25b"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/frozen_code/.gitignore",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/frozen_code/.gitignore",
+      "bytes": 46,
+      "sha256": "f8741a2ff3c75946c74a258dece00f9ac5079d98d5facc17ad605b2aec6e38d4"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/frozen_code/README.md",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/frozen_code/README.md",
+      "bytes": 4843,
+      "sha256": "c197313a1af604aadd918d003d297ef7be45cff9b3ce57c08200cca6ff266068"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/frozen_code/configs/baseline.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/frozen_code/configs/baseline.json",
+      "bytes": 918,
+      "sha256": "cedccc0f87af6e6f824ef0ccd71df8a12de10fa2c1ca50a7aac57c39f83d6c14"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/frozen_code/configs/original_load_scale_5000.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/frozen_code/configs/original_load_scale_5000.json",
+      "bytes": 1013,
+      "sha256": "18ab6f44650fecf41d7d6910ca9df9b3dc1d8607d7768cfb70d1c3f3118ee849"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/frozen_code/configs/storage_candidate.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/frozen_code/configs/storage_candidate.json",
+      "bytes": 915,
+      "sha256": "f38b0f11e5fd4b6f09dbb96f7ad4eae3c5178810b9f2bfcd382c012a164b71d4"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/frozen_code/data/environment.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/frozen_code/data/environment.json",
+      "bytes": 1624,
+      "sha256": "e93e1278e70567df4172131b2075824cfb64416988eacfb1606c26327fd86022"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/frozen_code/data/profile.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/frozen_code/data/profile.json",
+      "bytes": 4285,
+      "sha256": "ba6149855dfe04a4a49f5564ef6cd8c46bce3975298f6d741f37a1181597602c"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/frozen_code/data/provenance.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/frozen_code/data/provenance.json",
+      "bytes": 10783,
+      "sha256": "07f1519c333c5650c6bc1adee7ce0a188308ff1d402d714c24788f70fd18d2dd"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/frozen_code/eqnsac/__init__.py",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/frozen_code/eqnsac/__init__.py",
+      "bytes": 65,
+      "sha256": "8f026b134970847aed886bceeeec645204f948a856fb95336db55c6c42f921d0"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/frozen_code/eqnsac/agent.py",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/frozen_code/eqnsac/agent.py",
+      "bytes": 7815,
+      "sha256": "89cc69626529e8eb234abeb524b70463f213bea5f20c5a36fd048e26654ff68f"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/frozen_code/eqnsac/config.py",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/frozen_code/eqnsac/config.py",
+      "bytes": 4534,
+      "sha256": "9b99acf152d99fb98677f228bee9538c270304668f98d150ff13668f3beafb6d"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/frozen_code/eqnsac/environment.py",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/frozen_code/eqnsac/environment.py",
+      "bytes": 9287,
+      "sha256": "58ec0438dc9f42df7a9f354a45915dbc7d828f4eae9e2cc5ce211972fd042a6b"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/frozen_code/eqnsac/networks.py",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/frozen_code/eqnsac/networks.py",
+      "bytes": 4920,
+      "sha256": "2597d8262c659ebc0f714e2da092c3d0bf042ed9eab3fd2da61b6e91c85b1505"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/frozen_code/eqnsac/replay.py",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/frozen_code/eqnsac/replay.py",
+      "bytes": 2903,
+      "sha256": "c8daa26092103beb63b3eec6e8a947b22d82ff6564ce56a5039e557ac6f35142"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/frozen_code/eqnsac/runner.py",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/frozen_code/eqnsac/runner.py",
+      "bytes": 12140,
+      "sha256": "aed8d4926ed3d8829360be448f0af574c026fd2edded640ffe154f93f76afd9a"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/frozen_code/eqnsac/scenarios.py",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/frozen_code/eqnsac/scenarios.py",
+      "bytes": 6468,
+      "sha256": "e77f002d9b8da4b2550d9f5c3f99129fa4cf6c9a73a5bb3c761e3ab304766cd1"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/frozen_code/eqnsac/single_source.py",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/frozen_code/eqnsac/single_source.py",
+      "bytes": 1150,
+      "sha256": "49a1f0b82519132f2c8d649a586e3a5d7ba77db3772795949d03db551d265a08"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/frozen_code/requirements.txt",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/frozen_code/requirements.txt",
+      "bytes": 35,
+      "sha256": "d0b2ed7fa39d2c5ddd86ca76b5762e2b69ea53b0c9af1be3766fe6c2b0b8aafd"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/frozen_code/tests/legacy_fixtures.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/frozen_code/tests/legacy_fixtures.json",
+      "bytes": 152267,
+      "sha256": "1dcb4ca81e53d0f33f02322ebe92baf8de35d64d9e9deaa8c85439dc511c83f9"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/frozen_code/tests/test_core.py",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/frozen_code/tests/test_core.py",
+      "bytes": 6558,
+      "sha256": "b79d27e3e08c15c5a072ac1950d7a07cd6b07d858a5e833a4363da21b8448c0d"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/frozen_code/tests/test_single_source.py",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/frozen_code/tests/test_single_source.py",
+      "bytes": 1992,
+      "sha256": "75e87051620f04bfb9beadf15c96575de832f1477312255cdd55e0ece5d871c5"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/frozen_code/tools/audit.py",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/frozen_code/tools/audit.py",
+      "bytes": 4632,
+      "sha256": "e945755bf82ed1e8ceecfc4837583a43a2871931406f6cdb3d9dd8510ffd1b9d"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/frozen_code/tools/benchmark.py",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/frozen_code/tools/benchmark.py",
+      "bytes": 1726,
+      "sha256": "5499bd3309438044b94abd06d174e0ea89660747c1e0cd26a339dc95c80d519f"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/frozen_code/train.py",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/frozen_code/train.py",
+      "bytes": 70,
+      "sha256": "2ccdbe7e44dd80bf1004881ef01d099a55ce8740d6fc1b4992e1ddfc9b7e460d"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/frozen_code/审查报告.md",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/frozen_code/审查报告.md",
+      "bytes": 16417,
+      "sha256": "53f4ce865b08b2a383341963e6f4fc5242086aba5a876a5de90f5d965c91be60"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/launch.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/launch.json",
+      "bytes": 561,
+      "sha256": "f866c4b29e36db56c222c85dc03f963585764aab76b6bdc695af6815699f5219"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/complete.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/complete.json",
+      "bytes": 107,
+      "sha256": "ae12a392426aaec19c987be5ebf2094a2592c0a1dd57dc72fd82cb439c226328"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/config.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/config.json",
+      "bytes": 1013,
+      "sha256": "fac3930268fb22bf87048af7469f9d2eefd8cf3833a1e4fc9af0b5e2127cbb49"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/evaluation_00000.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/evaluation_00000.json",
+      "bytes": 31382,
+      "sha256": "af85d4a8980869c03173d497617407bbc2a8c1553ee592cbf64bbddaf71a3bbb"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/evaluation_00100.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/evaluation_00100.json",
+      "bytes": 31450,
+      "sha256": "695d927a7bc56aec7e3272559b59dd317d3a99d621c5c2eb20ebcd6b14bc62b2"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/evaluation_00200.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/evaluation_00200.json",
+      "bytes": 31487,
+      "sha256": "474ae5fdfdc9b97e38b32f8b37fb6f91f76941c267143a1b80351c5baf780e89"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/evaluation_00300.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/evaluation_00300.json",
+      "bytes": 31486,
+      "sha256": "0205311522d67e76701fe591f792c2d6470db3ae2ca3877a1bf75f6c0d25c4f8"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/evaluation_00400.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/evaluation_00400.json",
+      "bytes": 31484,
+      "sha256": "567214f6970471361841909485e14c2502b764644f6efa58deed3a3c678bd39c"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/evaluation_00500.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/evaluation_00500.json",
+      "bytes": 31419,
+      "sha256": "b1c38033797490c5302726f3cdcbefa3760fadc4e7e3227c44c01ba7d8b33c49"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/evaluation_00600.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/evaluation_00600.json",
+      "bytes": 31392,
+      "sha256": "47e02a88a607b84142a97ef70c0decab99d794d2443fadb96a4de42e7844b823"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/evaluation_00700.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/evaluation_00700.json",
+      "bytes": 31474,
+      "sha256": "3b0e4ef035cbf23a1ddc1d9b3f9af6113c2ffb2a841c690e89ab6a50364c46b2"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/evaluation_00800.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/evaluation_00800.json",
+      "bytes": 31465,
+      "sha256": "6776033fa34c4624bd1d1b68657b9477c3adcc55fcdccc8c148b9f79e85e4e91"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/evaluation_00900.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/evaluation_00900.json",
+      "bytes": 31484,
+      "sha256": "d453e0d36092594d307819f04d4474700de1332278604af59d8206758b99efbf"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/evaluation_01000.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/evaluation_01000.json",
+      "bytes": 31479,
+      "sha256": "0cc54caf269355f5da86cf4a93c97581ed0d20c9c0958d443a0dcc6c7cc090d5"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/evaluation_01100.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/evaluation_01100.json",
+      "bytes": 31480,
+      "sha256": "239ebc40cab9fd0abf1cd51914ce92a7930c652cf9c798a165fdff9961bea0d9"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/evaluation_01200.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/evaluation_01200.json",
+      "bytes": 31478,
+      "sha256": "61371a9907449b0e6d08f92ee818d4cf2727cd63d48469f1b3c6899ffb3eb9a4"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/evaluation_01300.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/evaluation_01300.json",
+      "bytes": 31484,
+      "sha256": "d9768349f8b4b310f56d5a8d76f3f7031023278761fd1a2030612c49691f8b5c"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/evaluation_01400.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/evaluation_01400.json",
+      "bytes": 31479,
+      "sha256": "844e85de5bd87ecff85ce51458911387cd269de68d6cd12fe27bcece66648b4b"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/evaluation_01500.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/evaluation_01500.json",
+      "bytes": 31484,
+      "sha256": "98e85908f5a29a2dcf7f471f3917dc1b6a3882663100dc740c9575b054c42a11"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/evaluation_01600.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/evaluation_01600.json",
+      "bytes": 31485,
+      "sha256": "49882aee2345f47ceb16d1acc1fd55779ba7e3a3c6974508202f2fe63d657249"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/evaluation_01700.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/evaluation_01700.json",
+      "bytes": 31509,
+      "sha256": "0a5fd4a818c538a02a96affb88ebac0a7f8d81f8b404dcb3ea6b18e026196a9c"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/evaluation_01800.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/evaluation_01800.json",
+      "bytes": 31464,
+      "sha256": "b68bf161564534e151dfdecf124bc11f6021599355971cefcfdb8b8d8f0cf626"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/evaluation_01900.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/evaluation_01900.json",
+      "bytes": 31457,
+      "sha256": "c1002b1e06fbf93f08633533ec7152296f2ed4067f3d07b70ac538f577d62bbd"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/evaluation_02000.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/evaluation_02000.json",
+      "bytes": 31480,
+      "sha256": "561215ffd77be366b479183652613aa8d1b576d4d436ec864520141336470d77"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/evaluation_02100.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/evaluation_02100.json",
+      "bytes": 31485,
+      "sha256": "941680b77ff3f09c7ac2c4b5a860c0f6f4785fdef69bb380ae9f5bcf57a20f79"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/evaluation_02200.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/evaluation_02200.json",
+      "bytes": 31478,
+      "sha256": "04726fcd15f33ea6b30fbf16474d8617c7194f3d284121d255b820e6254db0bf"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/evaluation_02300.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/evaluation_02300.json",
+      "bytes": 31489,
+      "sha256": "9831bc55e9b7bc0064e483531abd31290d7ae06b96b785cb33302346df443def"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/evaluation_02400.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/evaluation_02400.json",
+      "bytes": 31475,
+      "sha256": "a0f62673b3d3e024c1559f53c387c307adf68ab2319fc07b509209b9a176c1eb"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/evaluation_02500.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/evaluation_02500.json",
+      "bytes": 31480,
+      "sha256": "d6e612d49ce4e8ba264655cf9c5ea5517fa8a140c320b76b0917dfd6e4d7bfaa"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/evaluation_02600.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/evaluation_02600.json",
+      "bytes": 31480,
+      "sha256": "96fc4dd6fca875502711e0dcd267628c2a03a14290fbdd78b38eada40e4fc7fc"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/evaluation_02700.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/evaluation_02700.json",
+      "bytes": 31474,
+      "sha256": "882c04a6f7bdb3c8fc780b4f9f37b3e3efa5a179fc46a706cfd3aeb9f8c46b51"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/evaluation_02800.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/evaluation_02800.json",
+      "bytes": 31482,
+      "sha256": "24a9028909d951461d1c42d81c7fcde0257ba300bb69d3e80725f643aef1bafb"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/evaluation_02900.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/evaluation_02900.json",
+      "bytes": 31446,
+      "sha256": "a47500ca6b44c10a50a69c5f36ef8bfa60e42ae5fd69795808777b39dd4058b0"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/evaluation_03000.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/evaluation_03000.json",
+      "bytes": 31468,
+      "sha256": "9cfcc278136cb34b380846b5fd67aa4f2fae612cc7f63641c9f18dabbcb3b7b9"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/evaluation_03100.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/evaluation_03100.json",
+      "bytes": 31449,
+      "sha256": "35a2819014dd856db57de0c35aa6b7e18e762b97a51125a42cf8744e083e5ee7"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/evaluation_03200.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/evaluation_03200.json",
+      "bytes": 31487,
+      "sha256": "8f7f96e555b7eab8a87b6b8b822dd02e52057683962af7e3550b08c3bfd8aacc"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/evaluation_03300.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/evaluation_03300.json",
+      "bytes": 31456,
+      "sha256": "27d5916c0c29041ec81001bcd848ee7cdc76f1a1254aa360bb05cc717a907a9d"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/evaluation_03400.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/evaluation_03400.json",
+      "bytes": 31478,
+      "sha256": "93b5c0b4baf894469d9b3c7719c4e4b53cf99037c405f9b9f275d07772054af3"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/evaluation_03500.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/evaluation_03500.json",
+      "bytes": 31492,
+      "sha256": "aec75119518d55599f92a857cba75e174501574f86eab1935b844c4766be0223"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/evaluation_03600.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/evaluation_03600.json",
+      "bytes": 31469,
+      "sha256": "c30132a52585ecc5c8d6843e202ef984df2d469ff0a9dc72fb5bc0ffe90c65f6"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/evaluation_03700.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/evaluation_03700.json",
+      "bytes": 31482,
+      "sha256": "e1b8c830c48b9c7b1c60508ec79ab025161cc129c936a606ec776423ea4c56d9"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/evaluation_03800.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/evaluation_03800.json",
+      "bytes": 31476,
+      "sha256": "e6939f796496c7b23d7df0790d05e4f4dc7ec72e69c4be588920f6f0747dff21"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/evaluation_03900.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/evaluation_03900.json",
+      "bytes": 31469,
+      "sha256": "eddb7865b952392ff4aafd8e53e59d91f652c639e4c6c4a4cefd317b8d754e38"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/evaluation_04000.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/evaluation_04000.json",
+      "bytes": 31459,
+      "sha256": "85cc1058792dd935ae6dfffa23423149c9fcc87f035362db405c6976999a5287"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/evaluation_04100.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/evaluation_04100.json",
+      "bytes": 31449,
+      "sha256": "146b6e1d4ce4c6a8b0496ed8669d3cdd60f3e6fd96ccad6a885f71f885a3dd88"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/evaluation_04200.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/evaluation_04200.json",
+      "bytes": 31471,
+      "sha256": "bff20061e711f8c33e98a69b5425dc155851383cd1e8a9efc39aac09a45439a1"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/evaluation_04300.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/evaluation_04300.json",
+      "bytes": 31454,
+      "sha256": "f610917e33c645f0ea279c768d30a2f1675658235463928431c21c3f49f9775d"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/evaluation_04400.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/evaluation_04400.json",
+      "bytes": 31460,
+      "sha256": "c46920a427b8439905ecb84f66ab509cc6ee091427b813c61ba2dbe7dc384b02"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/evaluation_04500.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/evaluation_04500.json",
+      "bytes": 31442,
+      "sha256": "e56fe0dc82149afb6ba9b40d16acc489f11d4090214f874d7f06e75379d93d09"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/evaluation_04600.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/evaluation_04600.json",
+      "bytes": 31457,
+      "sha256": "1622321cacedbebcd9d4198c7b6f02eb0f58be8cae6eefa91f82ef083d1d161e"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/evaluation_04700.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/evaluation_04700.json",
+      "bytes": 31454,
+      "sha256": "95ef30fc0538451a37ec33561efe5cf1f0901dc9925e56fff0b9dc6b5c9dc668"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/evaluation_04800.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/evaluation_04800.json",
+      "bytes": 31455,
+      "sha256": "0bd3682e1d0c657a4d5f776555ba11f8bb0c6497451ed0af89711fb0de1e9254"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/evaluation_04900.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/evaluation_04900.json",
+      "bytes": 31468,
+      "sha256": "32b0c6ad15791fde3923c4b457989d86a8564e36e7020f480685a1df427375d4"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/evaluation_05000.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/evaluation_05000.json",
+      "bytes": 31487,
+      "sha256": "c1e474512d5900fae0b228167fbe9a03b62841f77b9bebfd5c1b19cf2eb7f2d4"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/manifest.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/manifest.json",
+      "bytes": 1372,
+      "sha256": "92958b4f246e630797f50f472416a766d600b4ec33dd5ca74d9dcbcc9a9666b4"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/reference_case.json",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/reference_case.json",
+      "bytes": 4907,
+      "sha256": "9e69e818847ee7bea015be5b21dcf1b525660a16a7df12368587ad9ba1ca0b1a"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/training.csv",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/run/training.csv",
+      "bytes": 1564664,
+      "sha256": "5b9a90f786c966b267f7cdc9fa6d6553e03b91a89627440b1f81c429814b8cd5"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/training_stderr.log",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/training_stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/training_stdout.log",
+      "destination": "experiments/historical/20261010_original_load_scale_5000ep/training_stdout.log",
+      "bytes": 31324,
+      "sha256": "83acffa3855985d2927c68ceea3e80fed03d0a4309e63480f315e046870a3b94"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/figures_20261012/固定验证曲线.png",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/figures_20261012/固定验证曲线.png",
+      "bytes": 173476,
+      "sha256": "c3ca75a17782b46b46bcfca7735d5d51c7d825e85cd840a9632c1c80f23390b9"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/figures_20261012/训练指标.csv",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/figures_20261012/训练指标.csv",
+      "bytes": 1605698,
+      "sha256": "7fae59a66aa2fa9a24a653fa8824af66239cfb7427e1f856273f104bda9657d2"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/figures_20261012/训练曲线.png",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/figures_20261012/训练曲线.png",
+      "bytes": 206591,
+      "sha256": "06b1893ec53d046e3bb51917c858b69ea50b85e1d190787a88b25fe3acfe2338"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/figures_20261012/验证指标.csv",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/figures_20261012/验证指标.csv",
+      "bytes": 3217,
+      "sha256": "40f87e59440371a514b7a9a5bf7e8ba4933c02b76e198f5c254b823f08dc2e5c"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/frozen_code/.gitignore",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/frozen_code/.gitignore",
+      "bytes": 46,
+      "sha256": "f8741a2ff3c75946c74a258dece00f9ac5079d98d5facc17ad605b2aec6e38d4"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/frozen_code/README.md",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/frozen_code/README.md",
+      "bytes": 4843,
+      "sha256": "c197313a1af604aadd918d003d297ef7be45cff9b3ce57c08200cca6ff266068"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/frozen_code/configs/baseline.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/frozen_code/configs/baseline.json",
+      "bytes": 918,
+      "sha256": "cedccc0f87af6e6f824ef0ccd71df8a12de10fa2c1ca50a7aac57c39f83d6c14"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/frozen_code/configs/original_load_scale_5000.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/frozen_code/configs/original_load_scale_5000.json",
+      "bytes": 1013,
+      "sha256": "18ab6f44650fecf41d7d6910ca9df9b3dc1d8607d7768cfb70d1c3f3118ee849"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/frozen_code/configs/original_price_scale_5000.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/frozen_code/configs/original_price_scale_5000.json",
+      "bytes": 1073,
+      "sha256": "77f8fd3013eaaebebf1b6ee25c657fbc7b591c93d6ff3c25302ae65fad322e08"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/frozen_code/configs/original_wind_scale_5000.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/frozen_code/configs/original_wind_scale_5000.json",
+      "bytes": 1042,
+      "sha256": "df5790236b27e075a90bee8cb7111165580509e5c94fdc8c76b315fe53191fa5"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/frozen_code/configs/storage_candidate.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/frozen_code/configs/storage_candidate.json",
+      "bytes": 915,
+      "sha256": "f38b0f11e5fd4b6f09dbb96f7ad4eae3c5178810b9f2bfcd382c012a164b71d4"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/frozen_code/data/environment.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/frozen_code/data/environment.json",
+      "bytes": 1624,
+      "sha256": "e93e1278e70567df4172131b2075824cfb64416988eacfb1606c26327fd86022"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/frozen_code/data/profile.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/frozen_code/data/profile.json",
+      "bytes": 4285,
+      "sha256": "ba6149855dfe04a4a49f5564ef6cd8c46bce3975298f6d741f37a1181597602c"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/frozen_code/data/provenance.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/frozen_code/data/provenance.json",
+      "bytes": 10783,
+      "sha256": "07f1519c333c5650c6bc1adee7ce0a188308ff1d402d714c24788f70fd18d2dd"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/frozen_code/eqnsac/__init__.py",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/frozen_code/eqnsac/__init__.py",
+      "bytes": 65,
+      "sha256": "8f026b134970847aed886bceeeec645204f948a856fb95336db55c6c42f921d0"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/frozen_code/eqnsac/agent.py",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/frozen_code/eqnsac/agent.py",
+      "bytes": 7815,
+      "sha256": "89cc69626529e8eb234abeb524b70463f213bea5f20c5a36fd048e26654ff68f"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/frozen_code/eqnsac/config.py",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/frozen_code/eqnsac/config.py",
+      "bytes": 4980,
+      "sha256": "6078bc7fc5c4cbd4e18c27632ca5720d076d19933d045a9962de0884a36311c5"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/frozen_code/eqnsac/environment.py",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/frozen_code/eqnsac/environment.py",
+      "bytes": 9287,
+      "sha256": "58ec0438dc9f42df7a9f354a45915dbc7d828f4eae9e2cc5ce211972fd042a6b"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/frozen_code/eqnsac/networks.py",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/frozen_code/eqnsac/networks.py",
+      "bytes": 4920,
+      "sha256": "2597d8262c659ebc0f714e2da092c3d0bf042ed9eab3fd2da61b6e91c85b1505"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/frozen_code/eqnsac/replay.py",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/frozen_code/eqnsac/replay.py",
+      "bytes": 2903,
+      "sha256": "c8daa26092103beb63b3eec6e8a947b22d82ff6564ce56a5039e557ac6f35142"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/frozen_code/eqnsac/runner.py",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/frozen_code/eqnsac/runner.py",
+      "bytes": 12734,
+      "sha256": "61e835a51dd66109456d4c6136563ad11fd2f29ffa05a64205ab9f62fb84bbb0"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/frozen_code/eqnsac/scenarios.py",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/frozen_code/eqnsac/scenarios.py",
+      "bytes": 6468,
+      "sha256": "e77f002d9b8da4b2550d9f5c3f99129fa4cf6c9a73a5bb3c761e3ab304766cd1"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/frozen_code/eqnsac/single_source.py",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/frozen_code/eqnsac/single_source.py",
+      "bytes": 2308,
+      "sha256": "b64887116268e422dbb271d7a2d7427612630bde24bbd5837f9a27cfd5c24ff0"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/frozen_code/requirements.txt",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/frozen_code/requirements.txt",
+      "bytes": 35,
+      "sha256": "d0b2ed7fa39d2c5ddd86ca76b5762e2b69ea53b0c9af1be3766fe6c2b0b8aafd"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/frozen_code/tests/legacy_fixtures.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/frozen_code/tests/legacy_fixtures.json",
+      "bytes": 152267,
+      "sha256": "1dcb4ca81e53d0f33f02322ebe92baf8de35d64d9e9deaa8c85439dc511c83f9"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/frozen_code/tests/test_core.py",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/frozen_code/tests/test_core.py",
+      "bytes": 6558,
+      "sha256": "b79d27e3e08c15c5a072ac1950d7a07cd6b07d858a5e833a4363da21b8448c0d"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/frozen_code/tests/test_single_source.py",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/frozen_code/tests/test_single_source.py",
+      "bytes": 3959,
+      "sha256": "b6ba5f045127210e4a44345bbd96e45705d669f933d4738a96febebfa9b02451"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/frozen_code/tools/audit.py",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/frozen_code/tools/audit.py",
+      "bytes": 4632,
+      "sha256": "e945755bf82ed1e8ceecfc4837583a43a2871931406f6cdb3d9dd8510ffd1b9d"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/frozen_code/tools/benchmark.py",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/frozen_code/tools/benchmark.py",
+      "bytes": 1726,
+      "sha256": "5499bd3309438044b94abd06d174e0ea89660747c1e0cd26a339dc95c80d519f"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/frozen_code/train.py",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/frozen_code/train.py",
+      "bytes": 70,
+      "sha256": "2ccdbe7e44dd80bf1004881ef01d099a55ce8740d6fc1b4992e1ddfc9b7e460d"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/frozen_code/审查报告.md",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/frozen_code/审查报告.md",
+      "bytes": 16417,
+      "sha256": "53f4ce865b08b2a383341963e6f4fc5242086aba5a876a5de90f5d965c91be60"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/launch.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/launch.json",
+      "bytes": 313,
+      "sha256": "853577d58dbee17060c6edf0346285d3a67dd3c799744de2e05de346ab474099"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/complete.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/complete.json",
+      "bytes": 107,
+      "sha256": "126e4252d4df21ca8f696c171e12f6a0667cdd6397fe8fe299fc85fb4e609f17"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/config.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/config.json",
+      "bytes": 1073,
+      "sha256": "df70a54cae319d02db39a3c7721f3f29046232fd928bd939d3d891369c1ccd50"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/evaluation_00000.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/evaluation_00000.json",
+      "bytes": 36716,
+      "sha256": "5af595fa2ebe07293f3c44e190f817344e4fef4b26e063a1115f5bb5917bdf74"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/evaluation_00100.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/evaluation_00100.json",
+      "bytes": 36786,
+      "sha256": "5e8d0c6a02dfedd02f74e5a23e378e73ef8db006de4e68465631fa24233a2b01"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/evaluation_00200.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/evaluation_00200.json",
+      "bytes": 36815,
+      "sha256": "5e713e2907046a5af059a1e1dfe45f78e0bdccefbb4d95a28ddaea59aa24422a"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/evaluation_00300.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/evaluation_00300.json",
+      "bytes": 36797,
+      "sha256": "57ee3c789615e383cee6408ebb46a07b2eba718ad3aa9ec02d77d6dda66f94a0"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/evaluation_00400.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/evaluation_00400.json",
+      "bytes": 36785,
+      "sha256": "126f6feb501417a12620ebdf4ace8751b5205e960df6fef2a0ef3bf429f2edee"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/evaluation_00500.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/evaluation_00500.json",
+      "bytes": 36737,
+      "sha256": "60032326972786466e46d64d245e3fdba5698ee9f0b2747c7caa823ddb61c7ca"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/evaluation_00600.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/evaluation_00600.json",
+      "bytes": 36787,
+      "sha256": "9ea4c520924a47f5bd00f3574ddf8f104c26644843d80931021275f20f49bf14"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/evaluation_00700.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/evaluation_00700.json",
+      "bytes": 36703,
+      "sha256": "b15af4f1a55d005d655326f428b06a6622ab2eafa3a03cc73b96c1a2015326cd"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/evaluation_00800.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/evaluation_00800.json",
+      "bytes": 36695,
+      "sha256": "482ded5cfb834b0d33f4fbb55975f0a9cfc91a4925a936a8137c3111fc279bb0"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/evaluation_00900.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/evaluation_00900.json",
+      "bytes": 36784,
+      "sha256": "2374365f65caa7b7b469d05505d5fe6f676291bdd9a8d3b4d34941cbe26e16db"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/evaluation_01000.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/evaluation_01000.json",
+      "bytes": 36806,
+      "sha256": "250b4421ecedeafbe20e22d2c67e41aef39bbf64a1e47c7aa0b116c99c76f516"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/evaluation_01100.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/evaluation_01100.json",
+      "bytes": 36804,
+      "sha256": "0507d1fadf985e7d0ef45ef0e73d1dfffc40d2562546c12804e54ecb1074b7d4"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/evaluation_01200.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/evaluation_01200.json",
+      "bytes": 36814,
+      "sha256": "cf15f19eb7b0a01ef556bcd143009ff06788d594871e6ecb9e9863a4d9b68f81"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/evaluation_01300.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/evaluation_01300.json",
+      "bytes": 36804,
+      "sha256": "9fe76db5aa59bce75c48ed4d11412bf5c674648a9ebffa9ac71dc1cd15c52e4a"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/evaluation_01400.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/evaluation_01400.json",
+      "bytes": 36795,
+      "sha256": "738e9fb048a779207a273906a2ace6e8d8194619a9ac862a1c29bd13d185689c"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/evaluation_01500.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/evaluation_01500.json",
+      "bytes": 36816,
+      "sha256": "aaaa419047f4588ecc72463fd0f8798c54b9359884690c45aecd5c8d8f65c92c"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/evaluation_01600.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/evaluation_01600.json",
+      "bytes": 36814,
+      "sha256": "bfb477adc0615e7e8a99e302aff47a45b82dd3f3dcae5c41a2adf0fb97fc1007"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/evaluation_01700.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/evaluation_01700.json",
+      "bytes": 36802,
+      "sha256": "a71b15771d4fca577697b581260b0090e8e9fb3c51596ae0ef2a1718d07f1351"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/evaluation_01800.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/evaluation_01800.json",
+      "bytes": 36810,
+      "sha256": "9e84826aa1fd611d1327a3e9c677ad54e9e034ed1423990883a1efc5bb1ae0dc"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/evaluation_01900.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/evaluation_01900.json",
+      "bytes": 36787,
+      "sha256": "80da7af5302c044218a81c328e0f0b45726004d4f89b8916a06a2c003847b941"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/evaluation_02000.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/evaluation_02000.json",
+      "bytes": 36830,
+      "sha256": "3abfc8d1ef06f71c098a2b61961e451cd80d46b8e1eb6eacc050b6cbcf5bffe5"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/evaluation_02100.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/evaluation_02100.json",
+      "bytes": 36797,
+      "sha256": "26987f9cce44e84d94ca74391bc05482658a744791c25e8dbcfb79cc883581c8"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/evaluation_02200.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/evaluation_02200.json",
+      "bytes": 36801,
+      "sha256": "759937e19bec12c90fe374b13ea69fdd5ef38779a6888109740f1f2b77e1a2c1"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/evaluation_02300.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/evaluation_02300.json",
+      "bytes": 36804,
+      "sha256": "a08cb2d3db1a773ecc157c65fc06979642a253f5defa52c40d5703da93143e4f"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/evaluation_02400.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/evaluation_02400.json",
+      "bytes": 36807,
+      "sha256": "8bcc5813efa47f161117703c62e1f89f65236e51696e6bde5c5115f68bb9b08f"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/evaluation_02500.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/evaluation_02500.json",
+      "bytes": 36801,
+      "sha256": "885d5baa21c004e3ee50f58c047dd1f06e2ddcd7c96f5cd0cc509225c4e5e128"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/evaluation_02600.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/evaluation_02600.json",
+      "bytes": 36801,
+      "sha256": "27c657497eedb0f8d0a535b3a4c12a3135398af64fa1b5447ce492a0a0eb76a1"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/evaluation_02700.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/evaluation_02700.json",
+      "bytes": 36812,
+      "sha256": "fe344271a18da327e045c55501318b5278fa2c54ff3e26ab5890533ef2a46a51"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/evaluation_02800.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/evaluation_02800.json",
+      "bytes": 36800,
+      "sha256": "6ceeb097cfc115b334c0dd4ae9f12619c812dfd51102f4550364518a1da56202"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/evaluation_02900.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/evaluation_02900.json",
+      "bytes": 36815,
+      "sha256": "8bc63095ee62b730687033177b88a8b77dbad2dce5fbb3c0fb8813aafae7060c"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/evaluation_03000.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/evaluation_03000.json",
+      "bytes": 36806,
+      "sha256": "e9fea2a7ccb629e4f9f1383f41681389077a7c6c5499501f2db7de54765aa901"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/evaluation_03100.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/evaluation_03100.json",
+      "bytes": 36821,
+      "sha256": "3be3c8b3fb64a1c10f1bc21c615e1d2991588585c58ea00adfb28383376ba7e9"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/evaluation_03200.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/evaluation_03200.json",
+      "bytes": 36805,
+      "sha256": "2439cbeaf2163c0e3f4189f627710824d6105939959dd14a38c70cae37df1641"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/evaluation_03300.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/evaluation_03300.json",
+      "bytes": 36813,
+      "sha256": "df231bff7c190827b453b4512a3ba02732d656d3bfad1bd8a8c2bba84c1598a5"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/evaluation_03400.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/evaluation_03400.json",
+      "bytes": 36797,
+      "sha256": "c1f1b0c15d1b1187d6fb821ce182bc0177c5d33532f6acbc27b945dae6ec4fe4"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/evaluation_03500.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/evaluation_03500.json",
+      "bytes": 36800,
+      "sha256": "606cfcd66a28c1a8e54146e5e5badff5329057ab719a7aa11ab2464c8efcf340"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/evaluation_03600.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/evaluation_03600.json",
+      "bytes": 36792,
+      "sha256": "3cf2b419210189517da39288c8d1e2a6cd6a2b555fffce07cd3a26cadc7b6f49"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/evaluation_03700.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/evaluation_03700.json",
+      "bytes": 36820,
+      "sha256": "23d86a40bd02cc78cc760702dd31dbd7ba7bd29eb1156174a81a419cc9af2f46"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/evaluation_03800.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/evaluation_03800.json",
+      "bytes": 36821,
+      "sha256": "5f1476f43791c6aa032a9c15b6b748ba0cbd3184981982c73e3fde9a3cebf89f"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/evaluation_03900.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/evaluation_03900.json",
+      "bytes": 36821,
+      "sha256": "f490a7f0d9915d190517f11038ee61d5288dbe7471d3cb937866920b0983ab01"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/evaluation_04000.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/evaluation_04000.json",
+      "bytes": 36800,
+      "sha256": "b0e04afb2cb08a306db9b1f85645b7aa08e67ceef0459a2873a4f318cba53943"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/evaluation_04100.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/evaluation_04100.json",
+      "bytes": 36798,
+      "sha256": "1ac4f4bddaa8236ec9f3c197cd07a11e8667054be35b19134315bf6cf74ade6d"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/evaluation_04200.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/evaluation_04200.json",
+      "bytes": 36793,
+      "sha256": "2da3875af00ffcc123a685730439a89884e063c0e877c7f5ce47fe031fad0295"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/evaluation_04300.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/evaluation_04300.json",
+      "bytes": 36824,
+      "sha256": "f4dec58094646a9d3777313413407f17a672e1231617206daed7de5fe50ff559"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/evaluation_04400.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/evaluation_04400.json",
+      "bytes": 36808,
+      "sha256": "78d1a2e168920cf60bc4e8b90ec0e2b4570652d3f00e39c8ffff83f1ef9e0b54"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/evaluation_04500.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/evaluation_04500.json",
+      "bytes": 36811,
+      "sha256": "aedd9b2c84e59784275ca6647130ce9f4c790544edb890a4f802c1b31d487ddc"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/evaluation_04600.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/evaluation_04600.json",
+      "bytes": 36803,
+      "sha256": "7d015cd7e9bc2cc0ec2e8572e9b9cda35b944af95c7b3f7b30fe12951ce2f215"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/evaluation_04700.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/evaluation_04700.json",
+      "bytes": 36796,
+      "sha256": "dda2f3daac70088320f1467f507391fce6ac93dc96e79528e07f06a7bc718403"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/evaluation_04800.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/evaluation_04800.json",
+      "bytes": 36806,
+      "sha256": "b399fdf81ffd37d4743eb168e8336e729dc319b615ae8278564256106bf4b109"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/evaluation_04900.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/evaluation_04900.json",
+      "bytes": 36786,
+      "sha256": "386ebf91bfe843c4415346bf4b60d115b8219d38613befd56f186da8f19fb3d9"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/evaluation_05000.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/evaluation_05000.json",
+      "bytes": 36777,
+      "sha256": "48b1b2a178314bf16d508300cad3a6e40d52c86f7812b408782aa50795e1ecb8"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/manifest.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/manifest.json",
+      "bytes": 1372,
+      "sha256": "9a2c0f9f7414649fa64d5ed83c66ebfcb0625f33553d1b809fd6d95c249836cc"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/reference_case.json",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/reference_case.json",
+      "bytes": 4953,
+      "sha256": "73f5bf5501ce5819aa75164d344084ee60d106e3bf885d0575267b4ee28b2250"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/training.csv",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/run/training.csv",
+      "bytes": 1605698,
+      "sha256": "7fae59a66aa2fa9a24a653fa8824af66239cfb7427e1f856273f104bda9657d2"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/training_stderr.log",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/training_stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/training_stdout.log",
+      "destination": "experiments/historical/20261011_original_price_scale_5000ep/training_stdout.log",
+      "bytes": 31336,
+      "sha256": "7b5f075ac62fa6a423f5bb84972f3371ae1aa98e8e1207d0fbfd14baa5b25f22"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/before_resume_01/training.csv",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/before_resume_01/training.csv",
+      "bytes": 226420,
+      "sha256": "6c04de8b6fdaf29e14e76d150e162c6fd6edf2e3c2d04c420f5a862d05a67a46"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/figures/01_新能源训练曲线.png",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/figures/01_新能源训练曲线.png",
+      "bytes": 236799,
+      "sha256": "bf968688094fa18f8a9ab66481c4c2e1c1a934c2208fede9c965b46aa2db3303"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/figures/02_新能源固定验证曲线.png",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/figures/02_新能源固定验证曲线.png",
+      "bytes": 211105,
+      "sha256": "e021d059bc276f536f1f1008a6af440c302c61a7f99ecfeb9439c95f218c33b0"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/figures/训练指标.csv",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/figures/训练指标.csv",
+      "bytes": 1583935,
+      "sha256": "df0dbd2290d02b83e925045bbcc8c0821a0c9b5def362845ee5b4e2e59756495"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/figures/验证指标.csv",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/figures/验证指标.csv",
+      "bytes": 3217,
+      "sha256": "ea5279a3bb7905d875b546e436db588158231c94ad0f93913e8b9a826b0bc11a"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/figures_20261012/固定验证曲线.png",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/figures_20261012/固定验证曲线.png",
+      "bytes": 180170,
+      "sha256": "53f15298807b9b67720cd198cb3c7f0ab25e59dd416c7712fecc88ef3fda9425"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/figures_20261012/训练指标.csv",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/figures_20261012/训练指标.csv",
+      "bytes": 1583935,
+      "sha256": "df0dbd2290d02b83e925045bbcc8c0821a0c9b5def362845ee5b4e2e59756495"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/figures_20261012/训练曲线.png",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/figures_20261012/训练曲线.png",
+      "bytes": 203988,
+      "sha256": "9d7577701d80fd2d89ee35857fe2116242166cda1cde881d26ff4faf3c18811b"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/figures_20261012/验证指标.csv",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/figures_20261012/验证指标.csv",
+      "bytes": 3217,
+      "sha256": "ea5279a3bb7905d875b546e436db588158231c94ad0f93913e8b9a826b0bc11a"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/frozen_code/.gitignore",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/frozen_code/.gitignore",
+      "bytes": 46,
+      "sha256": "f8741a2ff3c75946c74a258dece00f9ac5079d98d5facc17ad605b2aec6e38d4"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/frozen_code/README.md",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/frozen_code/README.md",
+      "bytes": 4843,
+      "sha256": "c197313a1af604aadd918d003d297ef7be45cff9b3ce57c08200cca6ff266068"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/frozen_code/configs/baseline.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/frozen_code/configs/baseline.json",
+      "bytes": 918,
+      "sha256": "cedccc0f87af6e6f824ef0ccd71df8a12de10fa2c1ca50a7aac57c39f83d6c14"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/frozen_code/configs/original_load_scale_5000.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/frozen_code/configs/original_load_scale_5000.json",
+      "bytes": 1013,
+      "sha256": "18ab6f44650fecf41d7d6910ca9df9b3dc1d8607d7768cfb70d1c3f3118ee849"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/frozen_code/configs/original_wind_scale_5000.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/frozen_code/configs/original_wind_scale_5000.json",
+      "bytes": 1042,
+      "sha256": "df5790236b27e075a90bee8cb7111165580509e5c94fdc8c76b315fe53191fa5"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/frozen_code/configs/storage_candidate.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/frozen_code/configs/storage_candidate.json",
+      "bytes": 915,
+      "sha256": "f38b0f11e5fd4b6f09dbb96f7ad4eae3c5178810b9f2bfcd382c012a164b71d4"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/frozen_code/data/environment.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/frozen_code/data/environment.json",
+      "bytes": 1624,
+      "sha256": "e93e1278e70567df4172131b2075824cfb64416988eacfb1606c26327fd86022"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/frozen_code/data/profile.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/frozen_code/data/profile.json",
+      "bytes": 4285,
+      "sha256": "ba6149855dfe04a4a49f5564ef6cd8c46bce3975298f6d741f37a1181597602c"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/frozen_code/data/provenance.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/frozen_code/data/provenance.json",
+      "bytes": 10783,
+      "sha256": "07f1519c333c5650c6bc1adee7ce0a188308ff1d402d714c24788f70fd18d2dd"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/frozen_code/eqnsac/__init__.py",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/frozen_code/eqnsac/__init__.py",
+      "bytes": 65,
+      "sha256": "8f026b134970847aed886bceeeec645204f948a856fb95336db55c6c42f921d0"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/frozen_code/eqnsac/agent.py",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/frozen_code/eqnsac/agent.py",
+      "bytes": 7815,
+      "sha256": "89cc69626529e8eb234abeb524b70463f213bea5f20c5a36fd048e26654ff68f"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/frozen_code/eqnsac/config.py",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/frozen_code/eqnsac/config.py",
+      "bytes": 4689,
+      "sha256": "07784d408bc44a2edf38896851fc45da437f3ef837588e8a29f90566af8ed958"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/frozen_code/eqnsac/environment.py",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/frozen_code/eqnsac/environment.py",
+      "bytes": 9287,
+      "sha256": "58ec0438dc9f42df7a9f354a45915dbc7d828f4eae9e2cc5ce211972fd042a6b"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/frozen_code/eqnsac/networks.py",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/frozen_code/eqnsac/networks.py",
+      "bytes": 4920,
+      "sha256": "2597d8262c659ebc0f714e2da092c3d0bf042ed9eab3fd2da61b6e91c85b1505"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/frozen_code/eqnsac/replay.py",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/frozen_code/eqnsac/replay.py",
+      "bytes": 2903,
+      "sha256": "c8daa26092103beb63b3eec6e8a947b22d82ff6564ce56a5039e557ac6f35142"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/frozen_code/eqnsac/runner.py",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/frozen_code/eqnsac/runner.py",
+      "bytes": 12485,
+      "sha256": "12d4ad3e4fb88249d343b4c6839723b964ac9a1318297c87b1e7442d19ebdcd2"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/frozen_code/eqnsac/scenarios.py",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/frozen_code/eqnsac/scenarios.py",
+      "bytes": 6468,
+      "sha256": "e77f002d9b8da4b2550d9f5c3f99129fa4cf6c9a73a5bb3c761e3ab304766cd1"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/frozen_code/eqnsac/single_source.py",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/frozen_code/eqnsac/single_source.py",
+      "bytes": 2058,
+      "sha256": "f2d1f01c6eb402f476b86a459c476c16c5cd6b450bba88c265c1f5d3379d2e1e"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/frozen_code/requirements.txt",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/frozen_code/requirements.txt",
+      "bytes": 35,
+      "sha256": "d0b2ed7fa39d2c5ddd86ca76b5762e2b69ea53b0c9af1be3766fe6c2b0b8aafd"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/frozen_code/tests/legacy_fixtures.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/frozen_code/tests/legacy_fixtures.json",
+      "bytes": 152267,
+      "sha256": "1dcb4ca81e53d0f33f02322ebe92baf8de35d64d9e9deaa8c85439dc511c83f9"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/frozen_code/tests/test_core.py",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/frozen_code/tests/test_core.py",
+      "bytes": 6558,
+      "sha256": "b79d27e3e08c15c5a072ac1950d7a07cd6b07d858a5e833a4363da21b8448c0d"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/frozen_code/tests/test_single_source.py",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/frozen_code/tests/test_single_source.py",
+      "bytes": 3023,
+      "sha256": "785e92fb5152f540eefe5ea48a0f6d25a0b826aae73d637356897226d442c4e3"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/frozen_code/tools/audit.py",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/frozen_code/tools/audit.py",
+      "bytes": 4632,
+      "sha256": "e945755bf82ed1e8ceecfc4837583a43a2871931406f6cdb3d9dd8510ffd1b9d"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/frozen_code/tools/benchmark.py",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/frozen_code/tools/benchmark.py",
+      "bytes": 1726,
+      "sha256": "5499bd3309438044b94abd06d174e0ea89660747c1e0cd26a339dc95c80d519f"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/frozen_code/train.py",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/frozen_code/train.py",
+      "bytes": 70,
+      "sha256": "2ccdbe7e44dd80bf1004881ef01d099a55ce8740d6fc1b4992e1ddfc9b7e460d"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/frozen_code/审查报告.md",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/frozen_code/审查报告.md",
+      "bytes": 16417,
+      "sha256": "53f4ce865b08b2a383341963e6f4fc5242086aba5a876a5de90f5d965c91be60"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/launch.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/launch.json",
+      "bytes": 347,
+      "sha256": "13eb8b9be0aaa032425c48df3c189c31845824ca223ad3cde4c12064f8761846"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/resume_01_stderr.log",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/resume_01_stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/resume_01_stdout.log",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/resume_01_stdout.log",
+      "bytes": 27090,
+      "sha256": "489415f44c987ec94359bb01547da033d350b10fa9096a1194ab6f260fbb4e29"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/complete.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/complete.json",
+      "bytes": 107,
+      "sha256": "781401c8629ec2d08773611c1ea842d59ad78cdeea07f49a522cc16c3ec8e04e"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/config.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/config.json",
+      "bytes": 1042,
+      "sha256": "045d2dceebc79dd372725f9dc79e4de97d105fedef35e1baec6c740c87ad9f76"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/evaluation_00000.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/evaluation_00000.json",
+      "bytes": 33985,
+      "sha256": "bde63c761302914d45de3c34304c8b8c5eba915c393624a3fd404938fd321a68"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/evaluation_00100.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/evaluation_00100.json",
+      "bytes": 34043,
+      "sha256": "5497c4a9e10ee2dd93767c1ded4f4ecbc8fd5f0e3b34f86433d1230ae1d76fe7"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/evaluation_00200.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/evaluation_00200.json",
+      "bytes": 34171,
+      "sha256": "9c66120616b33218d71431cb5f07e200fe11d4c1a6698415792d217d17f4dbdf"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/evaluation_00300.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/evaluation_00300.json",
+      "bytes": 34036,
+      "sha256": "5294c784118a9eaa408da78a95078faced8e582222e5611b86d1911324de3560"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/evaluation_00400.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/evaluation_00400.json",
+      "bytes": 34124,
+      "sha256": "4f7a577472de00fcac622e9f307bcc5b72780671acf80c3e8450a5ed90f168f8"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/evaluation_00500.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/evaluation_00500.json",
+      "bytes": 34090,
+      "sha256": "b67e4a6a5c3c4f358e36386489e5d614349ca5257a2d21f2a4e5b54e2aff4fec"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/evaluation_00600.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/evaluation_00600.json",
+      "bytes": 34038,
+      "sha256": "ffbf289b9889779be318340512d06347163194c611915a8f330ad9561a53cdb1"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/evaluation_00700.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/evaluation_00700.json",
+      "bytes": 33978,
+      "sha256": "c3b8059583455a2c3ae124c0c01ed6cb03f4a9e853eeb14717725b5ac18524bc"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/evaluation_00800.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/evaluation_00800.json",
+      "bytes": 33975,
+      "sha256": "9ee4c930146353823837352911a7f1e27c9b5b19531d38fd37356f7881bef130"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/evaluation_00900.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/evaluation_00900.json",
+      "bytes": 34050,
+      "sha256": "738beb0806b93e834fdba9da1cf5cb225837fd80a18f3a90d255a54a00c236fd"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/evaluation_01000.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/evaluation_01000.json",
+      "bytes": 34066,
+      "sha256": "46841deda3f522dafec9df37d84a198ec10358c393815902d2ef94e3ea58f703"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/evaluation_01100.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/evaluation_01100.json",
+      "bytes": 34072,
+      "sha256": "15ccd5769f4a9f1342f584b18d23fb8d37adfdecf29f1130d47d4cd8a39f063d"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/evaluation_01200.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/evaluation_01200.json",
+      "bytes": 34108,
+      "sha256": "f025c3362b179f3a4e4d836747d7d0179f0e66b1464f92ddb021134b7eeac50b"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/evaluation_01300.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/evaluation_01300.json",
+      "bytes": 34099,
+      "sha256": "fb7629de336919fb3d6fa25bfc35fd33327ce46cea8801aa13893404be7038ef"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/evaluation_01400.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/evaluation_01400.json",
+      "bytes": 34069,
+      "sha256": "942f6b2c6b597b228c18bc9e564b9a397e764ae22c3ceba7da41846f0fbfafe1"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/evaluation_01500.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/evaluation_01500.json",
+      "bytes": 34096,
+      "sha256": "7c967cf46d6ade4e9eb103b172e1e6d731291de0e20e20fb46a944b65f3de156"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/evaluation_01600.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/evaluation_01600.json",
+      "bytes": 34084,
+      "sha256": "622591c66d816bc0b1466cc8eb93238addd66bc14c2e6790a518d578c0ace955"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/evaluation_01700.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/evaluation_01700.json",
+      "bytes": 34098,
+      "sha256": "8379fbdabb3bca792f0196e98f2fb4f0ab84be086041117cf6de2797abf0ec46"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/evaluation_01800.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/evaluation_01800.json",
+      "bytes": 34074,
+      "sha256": "32f540bfc3574c26a4f0105b5fa2624d798e843c915be3f3dff7087b47acc398"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/evaluation_01900.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/evaluation_01900.json",
+      "bytes": 34074,
+      "sha256": "65ca7d8f39ec6ca992b91cc177762377baed160820fea5c18de16c200db8fe03"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/evaluation_02000.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/evaluation_02000.json",
+      "bytes": 34081,
+      "sha256": "cccbf7e45c22fdfaaa7fb640143691ffff32d713dc6dddb151f6a7f3867048a3"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/evaluation_02100.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/evaluation_02100.json",
+      "bytes": 34086,
+      "sha256": "5689d97bae0c30c7c401f79f70d934f5700ec9db9762f11829021121c475135f"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/evaluation_02200.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/evaluation_02200.json",
+      "bytes": 34083,
+      "sha256": "6f75e97f33b69148eef3382deb2036daa97d1fd196cfaf0c411db12fc0a19c1b"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/evaluation_02300.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/evaluation_02300.json",
+      "bytes": 34057,
+      "sha256": "dfb5b7184ca955c25f3c530d582e4f41ee804f8ed5e1fe1ddc2a629367e4137f"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/evaluation_02400.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/evaluation_02400.json",
+      "bytes": 34063,
+      "sha256": "53c006ef3cad2b27ea8d24e70b89bbadf1e802729844d2402c851f193a33916a"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/evaluation_02500.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/evaluation_02500.json",
+      "bytes": 34096,
+      "sha256": "ba95e4fe57f208e9392d98997b344073f5af1744aa70d27e69863f7f24d86bd1"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/evaluation_02600.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/evaluation_02600.json",
+      "bytes": 34075,
+      "sha256": "c6ffccad98b63440d4999bd97fb884955e5c2185602b6220e012ffa526907126"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/evaluation_02700.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/evaluation_02700.json",
+      "bytes": 34063,
+      "sha256": "114fddddfd031d77504cc94edd9b64141195d7c2a7cf3cb5efafd2ae6fe03f46"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/evaluation_02800.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/evaluation_02800.json",
+      "bytes": 34045,
+      "sha256": "bf56abf428366e23e747cf478c09d02d85ada61ebc68f2e6c69ccdd0487344fc"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/evaluation_02900.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/evaluation_02900.json",
+      "bytes": 34059,
+      "sha256": "52c1eb1772563a44c96a5d5fcfdbdb28fa73e322d394804cfe98ef02d9ef95e8"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/evaluation_03000.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/evaluation_03000.json",
+      "bytes": 34033,
+      "sha256": "828a4c5645f82112d2d932395278c07cbe4aa622f642d33f757a58de4779243b"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/evaluation_03100.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/evaluation_03100.json",
+      "bytes": 34045,
+      "sha256": "8ea910324038a5204813873340328bee8b9ab5a30fbdf5ecd3de54e73b599067"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/evaluation_03200.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/evaluation_03200.json",
+      "bytes": 34051,
+      "sha256": "243802e849e3f79d7fbd961586c20c88b73d00d4de8991e95fffe1ad2f5a6b6e"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/evaluation_03300.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/evaluation_03300.json",
+      "bytes": 34045,
+      "sha256": "c217e2436ff1c52bd021110e140eb0326e715fb4723cdcf2c572157dd7a50718"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/evaluation_03400.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/evaluation_03400.json",
+      "bytes": 34056,
+      "sha256": "80e9df12077b16e83ecf2fbcf894c8546fed394074d37bf9708ce4c04fb61b15"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/evaluation_03500.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/evaluation_03500.json",
+      "bytes": 34037,
+      "sha256": "247dc63c5a9bb6752a79b92a4f059b686f8209c5fb11647831cee58977d1e205"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/evaluation_03600.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/evaluation_03600.json",
+      "bytes": 34070,
+      "sha256": "6e7f8d72d1e3dea34642c48ea8304258ab5ceb7062c2c07607443ec65c830c1f"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/evaluation_03700.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/evaluation_03700.json",
+      "bytes": 34071,
+      "sha256": "a1b60204cd82bf0c98a16b98c3c715c0f01474b735d41b13239b3ac1db80f240"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/evaluation_03800.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/evaluation_03800.json",
+      "bytes": 34037,
+      "sha256": "8080652efc17419dc46f31544ce4f0367f8779f1131f31b787167fc7bea0f7fd"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/evaluation_03900.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/evaluation_03900.json",
+      "bytes": 34065,
+      "sha256": "3e54087b0b1e97a64b173319110e9db57c6d264c353f7870046eda203a849c38"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/evaluation_04000.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/evaluation_04000.json",
+      "bytes": 34052,
+      "sha256": "33d8a5fedd2fcecc99541cc77cb28b1460aee6b0e0dbb040436d2ac1795605a2"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/evaluation_04100.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/evaluation_04100.json",
+      "bytes": 34050,
+      "sha256": "8b15e93da86da35560a1e78bcf5ecd13dd5957ee50e83efef89da1b347c58726"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/evaluation_04200.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/evaluation_04200.json",
+      "bytes": 34065,
+      "sha256": "e5469554f5e9fa40a3ceb238652fde4df115c33f20a04498d506b51ce0b5a84a"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/evaluation_04300.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/evaluation_04300.json",
+      "bytes": 34049,
+      "sha256": "feb4c491efb64da7c056bb43143fff727f040d26c52913d7489546d2e4de1a3b"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/evaluation_04400.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/evaluation_04400.json",
+      "bytes": 34058,
+      "sha256": "9571442b2cd21f20faa6835f75f9bc960ff7aa1b483f360323d55516185ac776"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/evaluation_04500.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/evaluation_04500.json",
+      "bytes": 34042,
+      "sha256": "7ce750e033a7250aae98478b7a37c8b29b906ee471ec16ddfb34749a329cf90a"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/evaluation_04600.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/evaluation_04600.json",
+      "bytes": 34065,
+      "sha256": "8ada251f06f6b94de917b049fc18b1d80b598f6f6061f23fdb359f1e9de81177"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/evaluation_04700.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/evaluation_04700.json",
+      "bytes": 34041,
+      "sha256": "aeff6be444cef4094d0f20201e529c44b2bb61713516d04bb2ccce14bfa5d4c4"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/evaluation_04800.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/evaluation_04800.json",
+      "bytes": 34047,
+      "sha256": "5cca292c3c9ba3a69d159ae1c17416fe141e42ba5d7a8021e21e42147bc36011"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/evaluation_04900.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/evaluation_04900.json",
+      "bytes": 34048,
+      "sha256": "e9b029d2f17a25746ee8064d5ea15ebe7fdd06579388afddf2c2106e94c929ee"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/evaluation_05000.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/evaluation_05000.json",
+      "bytes": 34054,
+      "sha256": "0ff80972354d4e39ce8f12a0d53eb34d81b4ec2f3d09afa4458cfa0317bea7b4"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/manifest.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/manifest.json",
+      "bytes": 1372,
+      "sha256": "1c7fb3cba7426539ae459309c47f0de6bfc26a1d2e890e18d945cd45eb1ca49c"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/reference_case.json",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/reference_case.json",
+      "bytes": 4947,
+      "sha256": "307896faf837a986b4c5de8d5afebcbe780b3baf48db24bbbcc3aff04c2e3e0c"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/training.csv",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/run/training.csv",
+      "bytes": 1583935,
+      "sha256": "df0dbd2290d02b83e925045bbcc8c0821a0c9b5def362845ee5b4e2e59756495"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/training_stderr.log",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/training_stderr.log",
+      "bytes": 786,
+      "sha256": "990cecf564d25d74d8f9ca235ef469d1cfa5ccb94324d225bc0cf300a960193d"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/training_stdout.log",
+      "destination": "experiments/historical/20261011_original_wind_scale_5000ep/training_stdout.log",
+      "bytes": 4360,
+      "sha256": "a0ea70aec6d29951b91bb2af6872c647cfa3b2fe551f7b73c4b3b3d2cc96e66a"
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/06_结果图与审查报告/三组最终结果与平台.csv",
+      "destination": "experiments/summary/三组最终结果与平台.csv",
+      "bytes": 433,
+      "sha256": "2f3252607907dabd1046bbd8e45a493800175e7b694a3742f3651efa87f7c36a"
+    },
+    {
+      "source": "archive/local/代码审查_20261018/历史模型复查/20261010_original_load_scale_5000ep_case_differences.csv",
+      "destination": "experiments/summary/20261010_original_load_scale_5000ep_case_differences.csv",
+      "bytes": 37163,
+      "sha256": "ac0651ab26f7ffa89ec5eda4d9a47aa29905dbd3686824fb89a2fd626a5f858e"
+    },
+    {
+      "source": "archive/local/代码审查_20261018/历史模型复查/20261011_original_price_scale_5000ep_case_differences.csv",
+      "destination": "experiments/summary/20261011_original_price_scale_5000ep_case_differences.csv",
+      "bytes": 39653,
+      "sha256": "0de02ec748e030167db58286698b130291b06445590fcf3bc96da8e3b57dde41"
+    },
+    {
+      "source": "archive/local/代码审查_20261018/历史模型复查/20261011_original_wind_scale_5000ep_case_differences.csv",
+      "destination": "experiments/summary/20261011_original_wind_scale_5000ep_case_differences.csv",
+      "bytes": 38407,
+      "sha256": "93bf9070fb6ce6086773ff70438e233eadd11e81da98b3e1b9c7076b2b2d6f24"
+    },
+    {
+      "source": "archive/local/代码审查_20261018/历史模型复查/复查汇总.csv",
+      "destination": "experiments/summary/复查汇总.csv",
+      "bytes": 1335,
+      "sha256": "22eaa3d199a216e510fb18cf29009d2e8fbe12260aedcc511baaed970e1858dd"
+    }
+  ],
+  "excluded_model_checkpoints": [
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261010_original_load_scale_5000ep/run/checkpoint.pt",
+      "bytes": 68829053,
+      "sha256": "93df3af0cf9425335e467597be34751d7eb9c2a3d73acfb96dc890fb389d6fd2",
+      "reason": "Model checkpoint retained in local archive; not copied into the Git experiment tree."
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_price_scale_5000ep/run/checkpoint.pt",
+      "bytes": 68813437,
+      "sha256": "2bc52807da2ec8056ec8158249c2121ba69c357553b764030995f4e43d8a0ded",
+      "reason": "Model checkpoint retained in local archive; not copied into the Git experiment tree."
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/before_resume_01/checkpoint.pt",
+      "bytes": 44460989,
+      "sha256": "ae93ffaca5e1a3140409ebca3ced63d5ebb5dda2abc0e87fcf5ad711a2ef9759",
+      "reason": "Model checkpoint retained in local archive; not copied into the Git experiment tree."
+    },
+    {
+      "source": "archive/local/EQN-SAC_项目交接_20261018/05_近三次实验完整记录/20261011_original_wind_scale_5000ep/run/checkpoint.pt",
+      "bytes": 69061693,
+      "sha256": "09b92de3d8d834822c5e2054b0dc2941b4ea1559f99817d72ae37d7d7ff93b5e",
+      "reason": "Model checkpoint retained in local archive; not copied into the Git experiment tree."
+    }
+  ],
+  "all_copied_sha256_verified": true
+}

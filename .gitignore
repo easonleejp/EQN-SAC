@@ -1,0 +1,24 @@
+# Local environment and Python caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.DS_Store
+
+# Generated training and validation outputs
+/runs/
+/checks/
+/smoke_clean/
+*.pt
+*.pth
+
+# Complete original handoff and audit backups remain on this computer
+/archive/local/
+
+# Local credentials and editor files
+.env
+.env.*
+!.env.example
+.idea/
+.vscode/

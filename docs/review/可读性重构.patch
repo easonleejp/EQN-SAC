@@ -1,0 +1,1454 @@
+diff --git a/EQN-SAC_项目交接_20261018/03_代码/当前精简代码/README.md b/EQN-SAC_项目交接_20261018/03_代码/当前精简代码/README.md
+--- a/EQN-SAC_项目交接_20261018/03_代码/当前精简代码/README.md
++++ b/EQN-SAC_项目交接_20261018/03_代码/当前精简代码/README.md
+@@ -1,6 +1,6 @@
+ # EQN SAC 当前开发代码
+ 
+-更新于2026年10月18日。本目录是后续开发入口，检查点版本为 `clean-2`。本次修复数值计算、输入校验、回放快照和断点恢复，保留两 Actor、两套各5成员 IQN Critic、19维全局状态、奖励与场景定义。完整问题和验证见[本轮审查报告](../../../代码审查_20261018/项目审查报告.md)。
++更新于2026年10月18日。本目录是后续开发入口，检查点版本为 `clean-2`。本次修复数值计算、输入校验、回放快照和断点恢复，保留两 Actor、两套各5成员 IQN Critic、19维全局状态、奖励与场景定义。随后已完成可读性重构与原EQN论文对照，见[项目整体分析与原论文对照](../../../算法与可读性审查_20261018/项目与EQN对照.md)。第一轮数值修复见[审查报告](../../../代码审查_20261018/项目审查报告.md)。
+ 
+ 三组 Original 单因素实验已各完成5000轮，其模型和冻结代码位于 `../../05_近三次实验完整记录`。新代码的测试与短训练不代表重新完成这些实验。10月8日的[审查报告](审查报告.md)作为历史分析保留。
+ 
+@@ -12,7 +12,8 @@
+ | `scenarios.py` | 三源负荷、风电和购电价场景生成 |
+ | `single_source.py` | 负荷、新能源或电价的单日缩放实验 |
+ | `environment.py` | 19维状态、响应、储能可行域、结算和输入快照 |
+-| `networks.py` | Actor、储能动作映射、IQN、分位损失和风险目标 |
++| `networks.py` | Actor、储能动作映射、IQN及分位损失 |
++| `risk.py` | 原EQN两类不确定性诊断、自适应风险水平和Tail惩罚 |
+ | `replay.py` | 环形回放、固定 bootstrap 成员归属和独立快照 |
+ | `agent.py` | 两套目标更新、温度优化、非有限值定位 |
+ | `runner.py` | 训练、固定评价、来源核验、故障记录和恢复 |
+@@ -47,7 +48,7 @@
+ python train.py evaluate --checkpoint runs/original_new/checkpoint.pt --output evaluation_new.json --cases 270
+ ```
+ 
+-其他 arm 为 `adaptive_only`、`tail_only`、`full`。单因素实验应显式选择 `original_load_scale_5000.json`、`original_wind_scale_5000.json` 或 `original_price_scale_5000.json`；这些原配置指定 CUDA，本机 CPU 运行需另存配置并将 device 改为 `cpu`。`storage_candidate.json` 同时改变观测、学习率、预热和响应随机流，只是候选配置，不能用于单因素归因。
++这里的 `original` 是本项目的EQN-SAC基础组，既不是普通SAC，也不是原EQN论文的直接复现。其他 arm 为 `adaptive_only`、`tail_only`、`full`。单因素实验应显式选择 `original_load_scale_5000.json`、`original_wind_scale_5000.json` 或 `original_price_scale_5000.json`；这些原配置指定 CUDA，本机 CPU 运行需另存配置并将 device 改为 `cpu`。`storage_candidate.json` 同时改变观测、学习率、预热和响应随机流，只是候选配置，不能用于单因素归因。
+ 
+ ## 检查点和故障处理
+ 
+@@ -55,7 +56,7 @@
+ 
+ 训练中的非有限损失、梯度、参数、Adam状态、动作或环境输出会中止运行，`failure.json` 记录轮次、小时、场景种子与错误位置。不会用零替换 NaN，也不会覆盖最后有效检查点。恢复时，超过检查点的日志和评价以及原完成/失败记录先保存在 `recovery_archive`。
+ 
+-日志的 `price_risk_level`、`storage_risk_level` 是风险水平，不是CVaR数值。评价 `cvar10` 按精确10%经验下尾质量计算，边界样本使用部分权重；100案例时仍取最差10个。`seconds`/`wall_seconds` 累计已提交检查点对应的训练片段，不包含中断后丢失的工作和全部初始化开销，不应解释为总算力耗时。
++日志的 `price_risk_level`、`storage_risk_level` 是风险水平，不是CVaR数值。`price_aleatoric_std/storage_aleatoric_std` 是先平均成员再跨分位计算的标准差；新增 `price_epistemic_std/storage_epistemic_std` 是先平均分位再跨成员计算的原EQN认知标准差。原来的 `price_ue/storage_ue` 实际是尾部分歧，现在明确命名为 `price_tail_disagreement/storage_tail_disagreement`。这项惩罚仍沿用既有Actor目标；日志与Agent共享字段顺序。评价 `cvar10` 按精确10%经验下尾质量计算，边界样本使用部分权重；100案例时仍取最差10个。`seconds`/`wall_seconds` 累计已提交检查点对应的训练片段，不包含中断后丢失的工作和全部初始化开销，不应解释为总算力耗时。
+ 
+ ## 模型和结论边界
+ 
+diff --git a/EQN-SAC_项目交接_20261018/03_代码/当前精简代码/eqnsac/agent.py b/EQN-SAC_项目交接_20261018/03_代码/当前精简代码/eqnsac/agent.py
+--- a/EQN-SAC_项目交接_20261018/03_代码/当前精简代码/eqnsac/agent.py
++++ b/EQN-SAC_项目交接_20261018/03_代码/当前精简代码/eqnsac/agent.py
+@@ -1,16 +1,30 @@
+-"""Two decentralized actors and two objective-specific centralized ensembles."""
++"""双Actor与按奖励目标划分的两套集中式EQN集成。
++
++Price目标是总利润；Storage目标是环境返回的储能混合奖励。
++每套有K个bootstrap成员，不是标准SAC的两支clipped-double-Q。
++更新顺序固定为Critic -> 两个Actor -> 熵温度 -> target软更新。
++"""
+ 
+ import copy
+ import numpy as np
+ import torch
+ from torch import nn
+-from .environment import STORAGE_INDICES
++from .environment import ACTION_NAMES, PRICE_INDICES, STATE_DIM, STORAGE_INDICES
+ from .networks import (
+     Actor,
+     QuantileCritic,
+     storage_transform,
+     quantile_loss,
+-    risk_value,
++)
++from .risk import midpoint_quantiles, risk_statistics
++
++PRICE = 0
++STORAGE = 1
++UPDATE_METRIC_NAMES = (
++    "critic_loss", "price_actor_loss", "storage_actor_loss",
++    "price_aleatoric_std", "price_epistemic_std", "price_tail_disagreement", "price_risk_level",
++    "storage_aleatoric_std", "storage_epistemic_std", "storage_tail_disagreement", "storage_risk_level",
++    "price_alpha", "storage_alpha",
+ )
+ 
+ 
+@@ -54,7 +68,7 @@
+         self.actors = nn.ModuleList(
+             [
+                 Actor(
+-                    (0, 1, 2, 3),
++                    PRICE_INDICES,
+                     cfg.hidden_dim,
+                     env.spec["price_actor_offset"],
+                     env.spec["price_actor_scale"],
+@@ -102,15 +116,16 @@
+         self.tau_rng = torch.Generator(device=self.device).manual_seed(cfg.seed + 20001)
+ 
+     def sample(self, state, deterministic=False):
+-        price, lp = self.actors[0].sample(state, deterministic, self.action_rng)
+-        raw, ls = self.actors[1].sample(state, deterministic, self.action_rng)
++        """返回联合执行动作[B,2]和两Actor各自的logp[B,1]。"""
++        price, lp = self.actors[PRICE].sample(state, deterministic, self.action_rng)
++        raw, ls = self.actors[STORAGE].sample(state, deterministic, self.action_rng)
+         storage, jac = storage_transform(state, raw, self.storage)
+         return torch.cat((price, storage), -1), [lp, ls - jac]
+ 
+     @torch.no_grad()
+     def act(self, state, deterministic=False):
+         state = np.asarray(state, dtype=np.float32)
+-        if state.shape != (19,) or not np.isfinite(state).all():
++        if state.shape != (STATE_DIM,) or not np.isfinite(state).all():
+             raise FloatingPointError("Policy requires a finite 19-element state")
+         action = (
+             self.sample(
+@@ -124,87 +139,120 @@
+         return action
+ 
+     def update(self, replay):
+-        c = self.cfg
++        """执行一次更新，返回与 UPDATE_METRIC_NAMES 同序的一维设备张量。
++
++        保留bootstrap批次、随机流消费及优化器更新顺序。风险诊断中的
++        epistemic_std与tail_disagreement分别记录，后者才参与Tail惩罚。
++        """
++        entropy_weights = self.log_alpha.exp().detach()
++        critic_loss = self._update_critics(replay, entropy_weights)
++        actor_losses, mean_log_probs, diagnostics = self._update_actors(
++            replay, entropy_weights
++        )
++        self._update_temperature(mean_log_probs)
++        self._update_targets()
++        # Metrics stay on device; checked_step itself does synchronize for safety.
++        return torch.stack([
++            critic_loss, *actor_losses, *diagnostics,
++            *self.log_alpha.exp().detach(),
++        ])
++
++    def _update_critics(self, replay, entropy_weights):
++        """成员k从自己的固定bootstrap池采样，两奖励目标共享这批转移。"""
++        cfg = self.cfg
+         losses = []
+-        alpha = self.log_alpha.exp().detach()
+-        for member in range(c.ensemble_size):
+-            batch = replay.sample(c.batch_size, self.device, member)
+-            s, a, r, ns, d = [
+-                batch[k] for k in ("state", "action", "reward", "next_state", "done")
+-            ]
+-            tau = torch.rand(
+-                (len(s), c.quantiles), device=self.device, generator=self.tau_rng
++        for member in range(cfg.ensemble_size):
++            batch = replay.sample(cfg.batch_size, self.device, member)
++            states = batch["state"]
++            actions = batch["action"]
++            rewards = batch["reward"]
++            next_states = batch["next_state"]
++            terminals = batch["done"]
++            # Critic learns the FULL return distribution for every ablation arm.
++            taus = torch.rand(
++                (len(states), cfg.quantiles), device=self.device, generator=self.tau_rng
+             )
+-            tau_next = torch.rand(
+-                (len(s), c.quantiles), device=self.device, generator=self.tau_rng
++            next_taus = torch.rand(
++                (len(states), cfg.quantiles), device=self.device, generator=self.tau_rng
+             )
+             with torch.no_grad():
+-                na, logps = self.sample(ns)
+-            for objective in range(2):
++                next_actions, next_log_probs = self.sample(next_states)
++            for objective in (PRICE, STORAGE):
+                 with torch.no_grad():
+-                    target = r[
+-                        :, objective : objective + 1
+-                    ] * c.reward_scale + c.gamma * (1 - d) * (
+-                        self.targets[objective][member](ns, na, tau_next)
+-                        - alpha[objective] * logps[objective]
++                    # Project's soft Bellman target uses this role's entropy only.
++                    # Unlike original discrete EQN, next actions come from Actors.
++                    target = rewards[:, objective:objective + 1] * cfg.reward_scale + (
++                        cfg.gamma * (1 - terminals) * (
++                            self.targets[objective][member](next_states, next_actions, next_taus)
++                            - entropy_weights[objective] * next_log_probs[objective]
++                        )
+                     )
+-                prediction = self.critics[objective][member](s, a, tau)
+-                loss = quantile_loss(prediction, target, tau)
+-                opt = self.critic_opts[objective][member]
+-                checked_step(loss, opt, f"critic objective={objective} member={member}")
++                predicted = self.critics[objective][member](states, actions, taus)
++                loss = quantile_loss(predicted, target, taus)
++                checked_step(
++                    loss, self.critic_opts[objective][member],
++                    f"critic objective={objective} ({ACTION_NAMES[objective]}) member={member}",
++                )
+                 losses.append(loss.detach())
+-        s = replay.sample(c.batch_size, self.device)["state"]
+-        tau = (
+-            (torch.arange(c.quantiles, device=self.device) + 0.5) / c.quantiles
+-        ).expand(len(s), -1)
+-        actor_losses = []
+-        entropy_terms = []
+-        diagnostics = []
+-        for objective in range(2):
++        return torch.stack(losses).mean()
++
++    def _sample_actor_joint_action(self, states, objective):
++        """固定另一Actor的动作，只对当前Actor的动作分量传播梯度。"""
++        with torch.no_grad():
++            fixed_actions, _ = self.sample(states)
++        raw_action, log_prob = self.actors[objective].sample(
++            states, generator=self.action_rng
++        )
++        if objective == STORAGE:
++            executed_action, log_jacobian = storage_transform(states, raw_action, self.storage)
++            joint_action = torch.cat((fixed_actions[:, :1], executed_action), -1)
++            log_prob = log_prob - log_jacobian
++        else:
++            joint_action = torch.cat((raw_action, fixed_actions[:, 1:]), -1)
++        return joint_action, log_prob
++
++    def _update_actors(self, replay, entropy_weights):
++        cfg = self.cfg
++        states = replay.sample(cfg.batch_size, self.device)["state"]
++        taus = midpoint_quantiles(len(states), cfg.quantiles, self.device)
++        actor_losses, mean_log_probs, diagnostics = [], [], []
++        for objective in (PRICE, STORAGE):
+             ensemble = self.critics[objective]
+-            for q in ensemble:
+-                q.learned.requires_grad_(False)
++            # Freeze Critic weights while retaining dQ/da, including prior dQ/da.
++            for critic in ensemble:
++                critic.learned.requires_grad_(False)
+             try:
+-                with torch.no_grad():
+-                    fixed, _ = self.sample(s)
+-                raw, logp = self.actors[objective].sample(s, generator=self.action_rng)
+-                if objective == 1:
+-                    selected, jac = storage_transform(s, raw, self.storage)
+-                    logp = logp - jac
+-                    joint = torch.cat((fixed[:, :1], selected), -1)
+-                else:
+-                    joint = torch.cat((raw, fixed[:, 1:]), -1)
+-                z = torch.stack([q(s, joint, tau) for q in ensemble])
+-                value, ua, ue, level = risk_value(z, tau, c)
+-                loss = (alpha[objective] * logp.squeeze(-1) - value).mean()
+-                opt = self.actor_opts[objective]
+-                checked_step(loss, opt, f"actor objective={objective}")
++                joint_action, log_prob = self._sample_actor_joint_action(states, objective)
++                quantiles = torch.stack([critic(states, joint_action, taus) for critic in ensemble])
++                risk = risk_statistics(quantiles, taus, cfg)
++                loss = (entropy_weights[objective] * log_prob.squeeze(-1) - risk.policy_value).mean()
++                checked_step(loss, self.actor_opts[objective], f"actor objective={objective} ({ACTION_NAMES[objective]})")
+                 actor_losses.append(loss.detach())
+-                entropy_terms.append(logp.detach().mean())
+-                diagnostics.extend(
+-                    [ua.detach().mean(), ue.detach().mean(), level.detach().mean()]
+-                )
++                mean_log_probs.append(log_prob.detach().mean())
++                diagnostics.extend([
++                    risk.aleatoric_std.detach().mean(),
++                    risk.epistemic_std.detach().mean(),
++                    risk.tail_disagreement.detach().mean(),
++                    risk.cvar_level.detach().mean(),
++                ])
+             finally:
+-                for q in ensemble:
+-                    q.learned.requires_grad_(True)
+-        entropy = torch.stack(entropy_terms)
+-        alpha_loss = -(self.log_alpha * (entropy + c.target_entropy)).sum()
+-        checked_step(alpha_loss, self.alpha_opt, "entropy temperature")
++                for critic in ensemble:
++                    critic.learned.requires_grad_(True)
++        return actor_losses, mean_log_probs, diagnostics
++
++    def _update_temperature(self, mean_log_probs):
++        """各Actor独立调节SAC温度；仅Storage保留既有的温度上限。"""
++        log_probs = torch.stack(mean_log_probs)
++        loss = -(self.log_alpha * (log_probs + self.cfg.target_entropy)).sum()
++        checked_step(loss, self.alpha_opt, "entropy temperature")
+         with torch.no_grad():
+-            self.log_alpha[1].clamp_(max=float(np.log(c.storage_alpha_max)))
+-            for online, target in zip(
+-                self.critics.parameters(), self.targets.parameters()
+-            ):
+-                target.lerp_(online, c.target_tau)
+-        # Return device metrics; caller synchronizes only at episode boundaries.
+-        return torch.stack(
+-            [
+-                torch.stack(losses).mean(),
+-                *actor_losses,
+-                *diagnostics,
+-                *self.log_alpha.exp().detach(),
+-            ]
+-        )
++            self.log_alpha[STORAGE].clamp_(max=float(np.log(self.cfg.storage_alpha_max)))
++
++    @torch.no_grad()
++    def _update_targets(self):
++        """target_tau是online权重所占比例，原网络键名与更新顺序保持不变。"""
++        for online, target in zip(self.critics.parameters(), self.targets.parameters()):
++            target.lerp_(online, self.cfg.target_tau)
+ 
+     def optimizer_state(self):
+         return {
+diff --git a/EQN-SAC_项目交接_20261018/03_代码/当前精简代码/eqnsac/config.py b/EQN-SAC_项目交接_20261018/03_代码/当前精简代码/eqnsac/config.py
+--- a/EQN-SAC_项目交接_20261018/03_代码/当前精简代码/eqnsac/config.py
++++ b/EQN-SAC_项目交接_20261018/03_代码/当前精简代码/eqnsac/config.py
+@@ -10,22 +10,33 @@
+ 
+ @dataclass
+ class Config:
++    """单次实验配置；默认值保留已有实验口径，不代表已调优的参数。
++
++    initial_alpha/target_entropy属于SAC熵温度；adaptive_min_level属于
++    CVaR分位水平。两者物理含义不同，不混用alpha命名解释。
++    """
++
++    # Experiment identity and budget.
+     seed: int = 42
+     device: str = "auto"
+     arm: str = "original"
+     episodes: int = 5000
++    # Network capacity and fixed randomized-prior ensemble.
+     hidden_dim: int = 256
+     ensemble_size: int = 5
+     quantiles: int = 32
+     embedding_dim: int = 64
+     prior_scale: float = 300.0
++    # Replay sampling; membership is fixed when each transition is inserted.
+     bootstrap_probability: float = 0.5
+     batch_size: int = 128
+     replay_size: int = 200000
+     warmup_steps: int = 200
++    # Soft Bellman target. gamma=1 is a finite 24-hour terminal task here.
+     gamma: float = 1.0
+     target_tau: float = 0.005
+     reward_scale: float = 0.001
++    # Optimizers and per-role entropy temperatures.
+     price_lr: float = 0.0003
+     storage_lr: float = 0.001
+     critic_lr: float = 0.0003
+@@ -33,12 +44,15 @@
+     initial_alpha: float = 0.2
+     storage_alpha_max: float = 0.2
+     target_entropy: float = -1.0
++    # Observation/reward choices; keep these fixed across method ablations.
+     storage_observation: str = "compact10"
+     storage_reward_mix: float = 0.1
++    # Project extensions beyond original EQN; beta multiplies a std, not a variance.
+     adaptive_beta: float = 0.01
+     adaptive_min_level: float = 0.1
+     tail_fraction: float = 0.1
+     tail_lambda: float = 0.1
++    # Scenario distribution and daily single-source scale bounds.
+     level_probabilities: tuple = (0.2, 0.6, 0.2)
+     response_rng: str = "paired_fixed"
+     scenario_mode: str = "three_source"
+@@ -46,6 +60,7 @@
+     wind_scale_bound: float = 0.05
+     price_scale_bound: float = 0.03
+     reference_seed: int = 20260914
++    # Output cadence, measured in complete episodes.
+     evaluation_every: int = 500
+     evaluation_cases: int = 27
+     checkpoint_every: int = 500
+diff --git a/EQN-SAC_项目交接_20261018/03_代码/当前精简代码/eqnsac/environment.py b/EQN-SAC_项目交接_20261018/03_代码/当前精简代码/eqnsac/environment.py
+--- a/EQN-SAC_项目交接_20261018/03_代码/当前精简代码/eqnsac/environment.py
++++ b/EQN-SAC_项目交接_20261018/03_代码/当前精简代码/eqnsac/environment.py
+@@ -1,7 +1,8 @@
+-"""24-hour retail/storage environment, preserving the audited historical equations.
+-
+-Actions are [shared price, physical normalized storage power]; positive storage
+-means charging. No action replacement, optimizer, imitation, or future outcomes.
++"""24 小时零售定价与储能环境，保留历史环境的响应和结算公式。
++
++动作 shape=(2,)：[共享归一化零售价，物理归一化储能功率]。
++储能动作正值充电、负值放电；这里的 soc 是储能量，状态中的 soc 才是归一化比例。
++时步固定为 1 小时。功率、能量和价格沿用导出数据，货币/电价单位尚待核准。
+ """
+ 
+ import copy
+@@ -12,6 +13,8 @@
+ from .config import ROOT
+ from .scenarios import ThreeSourceGenerator
+ 
++# 顺序是模型、回放和历史检查点的共同约定，调整排列会改变模型输入含义。
++# previous_price_1/2/3 指上小时三类用户的零售价，并非零售价的三个时间滞后。
+ FEATURES = (
+     "price",
+     "net_load",
+@@ -33,13 +36,37 @@
+     "wind_lag2",
+     "wind_lag3",
+ )
++STATE_DIM = len(FEATURES)
++FEATURE_INDEX = {name: index for index, name in enumerate(FEATURES)}
++ACTION_NAMES = ("price", "storage")
++ACTION_DIM = len(ACTION_NAMES)
++PRICE_INDICES = tuple(
++    FEATURE_INDEX[name] for name in ("price", "net_load", "temperature", "hour")
++)
+ STORAGE_INDICES = {
+-    "compact10": (5, 3, 0, 1, 10, 11, 12, 16, 17, 18),
+-    "causal15": (5, 3, 0, 1, 4, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18),
++    "compact10": tuple(
++        FEATURE_INDEX[name]
++        for name in (
++            "soc", "hour", "price", "net_load",
++            "price_lag1", "price_lag2", "price_lag3",
++            "wind_lag1", "wind_lag2", "wind_lag3",
++        )
++    ),
++    "causal15": tuple(
++        FEATURE_INDEX[name]
++        for name in (
++            "soc", "hour", "price", "net_load", "wind", "previous_response",
++            "price_lag1", "price_lag2", "price_lag3",
++            "load_forecast1", "load_forecast2", "load_forecast3",
++            "wind_lag1", "wind_lag2", "wind_lag3",
++        )
++    ),
+ }
+ 
+ 
+ class Environment:
++    """一个 episode 对应一天；reset 提供外生场景，step 推进一步响应与结算。"""
++
+     def __init__(self, storage_reward_mix=0.1):
+         self.profile = {
+             k: np.asarray(v, dtype=np.float32)
+@@ -50,16 +77,19 @@
+         self.spec = json.loads((ROOT / "data/environment.json").read_text("utf-8"))
+         self.generator = ThreeSourceGenerator(self.profile)
+         self.storage = SimpleNamespace(**self.spec["storage"])
+-        b = self.storage
+-        if not b.soc_min <= b.soc_init <= b.soc_max or b.soc_min >= b.soc_max:
++        storage = self.storage
++        if (
++            not storage.soc_min <= storage.soc_init <= storage.soc_max
++            or storage.soc_min >= storage.soc_max
++        ):
+             raise ValueError("Invalid SOC limits")
+         if (
+-            min(b.p_ch_max, b.p_dis_max, b.eta_ch, b.eta_dis) <= 0
+-            or max(b.eta_ch, b.eta_dis) > 1
+-            or b.c_es < 0
++            min(storage.p_ch_max, storage.p_dis_max, storage.eta_ch, storage.eta_dis) <= 0
++            or max(storage.eta_ch, storage.eta_dis) > 1
++            or storage.c_es < 0
+         ):
+             raise ValueError("Invalid storage parameters")
+-        if self.spec["params"]["dt"] != 1 or b.eta_self != 1:
++        if self.spec["params"]["dt"] != 1 or storage.eta_self != 1:
+             raise ValueError("This audited model supports dt=1 and eta_self=1 only")
+         if not 0 <= storage_reward_mix <= 1:
+             raise ValueError("Reward mix must be in [0,1]")
+@@ -74,6 +104,11 @@
+         self.t = 24
+ 
+     def reset(self, case, response_seed=42):
++        """复制三条 shape=(24,) 的外生曲线，返回首小时 shape=(STATE_DIM,) 状态。
++
++        用户类别负荷按名义占比分配，shape=(24, 3)。先完成校验，再替换活动
++        episode；外部继续修改 case 不会改变本次模拟的预测或结算。
++        """
+         if not isinstance(case, Mapping):
+             raise ValueError("Scenario must be a mapping")
+         snapshot = copy.deepcopy(dict(case))
+@@ -95,11 +130,12 @@
+                 raise ValueError(key + " exceeds the float32 range")
+             snapshot[key] = source
+             arrays[key] = values
+-        # Validate everything before replacing a running episode's state.
++        # RNG 初始化也可能失败，必须放在替换活动状态之前。
+         rng = np.random.default_rng(response_seed)
+         shares = self.generator.shares
+         load = arrays["baseline_load"]
+         classes = load.astype(float)[:, None] * shares
++        # 第三类取余量，保持三类之和等于本次场景总负荷。
+         classes[:, 2] = load.astype(float) - classes[:, :2].sum(1)
+         self.case = snapshot
+         self.load = load
+@@ -115,147 +151,186 @@
+         self.rng = rng
+         return self.state()
+ 
++    def _normalized_history(self, values, scale):
++        """前三小时的已知量；日初不足的历史位置用第 0 小时填充。"""
++        return [float(values[max(0, self.t - lag)]) / scale for lag in (1, 2, 3)]
++
+     def state(self):
++        """按 FEATURES 顺序生成 float32 状态；终止状态为同维度零向量。"""
+         if self.t >= 24:
+-            return np.zeros(19, dtype=np.float32)
+-        t = self.t
+-        n = self.norm
+-        b = self.storage
+-        history = lambda x, scale: [
+-            float(x[max(0, t - lag)]) / scale for lag in (1, 2, 3)
+-        ]
+-        forecast = self.generator.observations(self.case, t)["load_forecast"]
+-        prev = (self.previous_price - self.user.price_min) / (
++            return np.zeros(STATE_DIM, dtype=np.float32)
++        hour = self.t
++        normalizers = self.norm
++        storage = self.storage
++        forecast = self.generator.observations(self.case, hour)["load_forecast"]
++        previous_prices = (self.previous_price - self.user.price_min) / (
+             self.user.price_max - self.user.price_min
+         )
+         return np.asarray(
+             [
+-                self.price[t] / n["max_grid_price"],
+-                (self.load[t] - self.wind[t]) / n["max_load"],
+-                self.profile["temperature"][t] / n["temp_scale"],
+-                t / 23,
+-                self.wind[t] / n["max_pv"],
+-                np.clip((self.soc - b.soc_min) / (b.soc_max - b.soc_min), 0, 1),
+-                *prev,
+-                self.previous_response / n["max_load"],
+-                *history(self.price, n["max_grid_price"]),
+-                *(np.asarray(forecast) / n["max_load"]),
+-                *history(self.wind, n["max_pv"]),
++                self.price[hour] / normalizers["max_grid_price"],
++                (self.load[hour] - self.wind[hour]) / normalizers["max_load"],
++                self.profile["temperature"][hour] / normalizers["temp_scale"],
++                hour / 23,
++                self.wind[hour] / normalizers["max_pv"],  # 历史字段名，实际用于风电。
++                np.clip(
++                    (self.soc - storage.soc_min) / (storage.soc_max - storage.soc_min),
++                    0, 1,
++                ),
++                *previous_prices,
++                self.previous_response / normalizers["max_load"],
++                *self._normalized_history(self.price, normalizers["max_grid_price"]),
++                *(np.asarray(forecast) / normalizers["max_load"]),
++                *self._normalized_history(self.wind, normalizers["max_pv"]),
+             ],
+             dtype=np.float32,
+         )
+ 
+     def feasible_bounds(self):
+-        b = self.storage
++        """返回储能物理归一化动作的 (放电下界, 充电上界)，均在 [-1, 1]。"""
++        storage = self.storage
+         dt = self.spec["params"]["dt"]
+-        e = self.soc * b.eta_self
+-        upper = min(b.p_ch_max, max(0, (b.soc_max - e) / (b.eta_ch * dt))) / b.p_ch_max
++        energy_after_self_discharge = self.soc * storage.eta_self
++        upper = min(
++            storage.p_ch_max,
++            max(0, (storage.soc_max - energy_after_self_discharge) / (storage.eta_ch * dt)),
++        ) / storage.p_ch_max
+         lower = (
+-            -min(b.p_dis_max, max(0, (e - b.soc_min) * b.eta_dis / dt)) / b.p_dis_max
++            -min(
++                storage.p_dis_max,
++                max(0, (energy_after_self_discharge - storage.soc_min) * storage.eta_dis / dt),
++            ) / storage.p_dis_max
+         )
+         return lower, upper
+ 
+     def response(self, prices):
+-        t = self.t
+-        u = self.user
+-        d = self.demand
+-        load_g = self.classes[t].astype(np.float32)
+-        share = load_g / max(float(load_g.sum()), 1e-8)
++        """将三类用户价格 shape=(3,) 转为实际削减量、基线负荷和平均满意度。
++
++        正响应表示削减用电，负响应表示增加用电。每小时先抽曲率和需求噪声，
++        再做三次满意度—参与响应迭代；随机调用次数和顺序与历史模型一致。
++        """
++        hour = self.t
++        user = self.user
++        demand = self.demand
++        class_load = self.classes[hour].astype(np.float32)
++        class_share = class_load / max(float(class_load.sum()), 1e-8)
+         curvature = max(
+-            float(self.rng.normal(d.curvature_mean, d.curvature_std)), d.min_curvature
+-        )
+-        noise = float(self.rng.normal(0, d.demand_noise_std))
+-        reference = self.spec["hourly_demand_reference"][t]
+-        rational = (
+-            load_g
+-            + (prices - reference) / (2 * (-curvature / np.maximum(share, 1e-8)))
+-            + share * noise
+-        )
+-        theory = (load_g - rational).astype(np.float32)
+-        billing = np.full(3, float(self.profile["retail_price"][t]), dtype=np.float32)
+-        eta = np.abs(prices - billing) / np.maximum(billing, 1e-8)
+-        temp = np.full(
+-            3, 20 / (abs(self.profile["temperature"][t] - 22) + 0.001), dtype=np.float32
+-        )
+-        actual = theory.copy()
++            float(self.rng.normal(demand.curvature_mean, demand.curvature_std)),
++            demand.min_curvature,
++        )
++        demand_noise = float(self.rng.normal(0, demand.demand_noise_std))
++        reference_price = self.spec["hourly_demand_reference"][hour]
++        rational_load = (
++            class_load
++            + (prices - reference_price) / (2 * (-curvature / np.maximum(class_share, 1e-8)))
++            + class_share * demand_noise
++        )
++        theoretical_response = (class_load - rational_load).astype(np.float32)
++        billing_price = np.full(
++            3, float(self.profile["retail_price"][hour]), dtype=np.float32
++        )
++        relative_price_change = np.abs(prices - billing_price) / np.maximum(billing_price, 1e-8)
++        temperature_sensitivity = np.full(
++            3, 20 / (abs(self.profile["temperature"][hour] - 22) + 0.001), dtype=np.float32
++        )
++        actual_response = theoretical_response.copy()
+         for _ in range(3):
+-            comfort = 1 - np.square(actual) / np.maximum(np.square(load_g), 1e-8)
+-            bill = prices * np.maximum(load_g - actual, 0)
+-            base = billing * load_g
+-            economic = 1 - (bill - base) / np.maximum(np.abs(base), 1e-8)
++            comfort = 1 - np.square(actual_response) / np.maximum(np.square(class_load), 1e-8)
++            bill = prices * np.maximum(class_load - actual_response, 0)
++            baseline_bill = billing_price * class_load
++            economic = 1 - (bill - baseline_bill) / np.maximum(np.abs(baseline_bill), 1e-8)
+             satisfaction = np.clip(
+-                u.comfort_weight * comfort + u.comp_weight * economic, 0, 5
++                user.comfort_weight * comfort + user.comp_weight * economic, 0, 5
+             )
+-            participation = 1 / (1 + np.exp(-u.lambda_s * (satisfaction - u.s_ref)))
+-            mu_p = 1 / (1 + np.exp(-4.2 * (eta - 0.05)))
+-            mu_t = 1 / (1 + np.exp(-(temp - 1)))
+-            mu_s = 1 / (1 + np.exp(-4 * (participation - 0.5)))
+-            mu = np.clip(
+-                0.42 * mu_p + 0.22 * mu_t + 0.36 * mu_s + self.rng.normal(0, 0.025, 3),
+-                0,
+-                1,
++            participation = 1 / (1 + np.exp(-user.lambda_s * (satisfaction - user.s_ref)))
++            price_factor = 1 / (1 + np.exp(-4.2 * (relative_price_change - 0.05)))
++            temperature_factor = 1 / (1 + np.exp(-(temperature_sensitivity - 1)))
++            satisfaction_factor = 1 / (1 + np.exp(-4 * (participation - 0.5)))
++            response_fraction = np.clip(
++                0.42 * price_factor
++                + 0.22 * temperature_factor
++                + 0.36 * satisfaction_factor
++                + self.rng.normal(0, 0.025, 3),
++                0, 1,
+             )
+-            actual = np.minimum(mu * theory, load_g)
+-        # Historical satisfaction is from the last fixed-point iteration input.
+-        return actual.astype(np.float32), load_g, float(satisfaction.mean())
++            # 削减量不超过该类负荷，保证响应后的购电需求非负。
++            actual_response = np.minimum(response_fraction * theoretical_response, class_load)
++        # 历史满意度取最后一次迭代的输入响应计算值；不额外重算或消耗随机数。
++        return actual_response.astype(np.float32), class_load, float(satisfaction.mean())
+ 
+     def step(self, action):
++        """推进一小时，返回 (19 维状态, 2 维奖励, 是否终止, 结算明细)。
++
++        奖励顺序为 [零售总利润, 储能训练奖励]。这里只执行 SOC/功率物理限制，
++        不用优化器或未来实现替换策略动作。日末 SOC 自由，没有残值奖励。
++        """
+         if self.t >= 24:
+             raise RuntimeError("Reset before stepping a terminated episode")
+-        a = np.asarray(action, dtype=np.float32)
+-        if a.shape != (2,) or not np.isfinite(a).all():
++        normalized_action = np.asarray(action, dtype=np.float32)
++        if normalized_action.shape != (ACTION_DIM,) or not np.isfinite(normalized_action).all():
+             raise ValueError("Expected two finite actions")
+-        a = np.clip(a, -1, 1)
+-        t = self.t
+-        b = self.storage
++        normalized_action = np.clip(normalized_action, -1, 1)
++        hour = self.t
++        storage = self.storage
+         dt = self.spec["params"]["dt"]
+-        prices = self.user.price_min + (a[0] + 1) * 0.5 * (
++
++        # 同一个归一化价格动作映射到三类用户各自的价格范围。
++        prices = self.user.price_min + (normalized_action[0] + 1) * 0.5 * (
+             self.user.price_max - self.user.price_min
+         )
+-        actual, classes, satisfaction = self.response(prices)
+-        user_load = float(np.sum(classes - actual))
+-        total_response = float(actual.sum())
+-        lo, hi = self.feasible_bounds()
+-        executed = min(hi, max(lo, float(a[1])))
+-        charge = max(executed, 0) * b.p_ch_max
+-        discharge = max(-executed, 0) * b.p_dis_max
++        actual_response, class_load, satisfaction = self.response(prices)
++        user_load = float(np.sum(class_load - actual_response))
++        total_response = float(actual_response.sum())
++        lower, upper = self.feasible_bounds()
++        executed = min(upper, max(lower, float(normalized_action[1])))
++        charge = max(executed, 0) * storage.p_ch_max
++        discharge = max(-executed, 0) * storage.p_dis_max
++
++        # 储能量平衡：充电只有 eta_ch 部分入库，放电需从库中扣除 discharge/eta_dis。
+         self.soc = (
+-            self.soc * b.eta_self + (b.eta_ch * charge - discharge / b.eta_dis) * dt
+-        )
+-        if not b.soc_min - 1e-6 <= self.soc <= b.soc_max + 1e-6:
++            self.soc * storage.eta_self
++            + (storage.eta_ch * charge - discharge / storage.eta_dis) * dt
++        )
++        if not storage.soc_min - 1e-6 <= self.soc <= storage.soc_max + 1e-6:
+             raise RuntimeError("SOC violation")
+-        self.soc = float(np.clip(self.soc, b.soc_min, b.soc_max))
+-        cost = b.c_es * (charge + discharge) * dt
+-        purchase = max(user_load + charge - discharge - float(self.wind[t]), 0)
+-        grid = float(self.price[t] * purchase * dt)
+-        revenue = float(np.sum(prices * (classes - actual)))
+-        profit = revenue - grid - cost
+-        no_storage = float(self.price[t] * max(user_load - float(self.wind[t]), 0) * dt)
+-        marginal = no_storage - grid - cost
+-        mixed = self.mix * profit + (1 - self.mix) * marginal
++        self.soc = float(np.clip(self.soc, storage.soc_min, storage.soc_max))
++
++        # 不向电网售电：风电和放电抵扣需求后，多余电量不产生销售收入。
++        storage_cost = storage.c_es * (charge + discharge) * dt
++        grid_purchase = max(user_load + charge - discharge - float(self.wind[hour]), 0)
++        grid_cost = float(self.price[hour] * grid_purchase * dt)
++        revenue = float(np.sum(prices * (class_load - actual_response)))
++        profit = revenue - grid_cost - storage_cost
++        grid_cost_without_storage = float(
++            self.price[hour] * max(user_load - float(self.wind[hour]), 0) * dt
++        )
++        storage_marginal = grid_cost_without_storage - grid_cost - storage_cost
++        # 混合奖励 = mix×总利润 + (1-mix)×储能边际收益。
++        # 等价于 mix×无储能零售利润 + 储能边际收益；不改变原计算顺序。
++        storage_reward = self.mix * profit + (1 - self.mix) * storage_marginal
+         self.previous_price = prices.astype(np.float32)
+         self.previous_response = total_response
+         self.t += 1
+         info = dict(
+             profit=profit,
+-            storage_marginal_profit_reward=marginal,
+-            storage_training_reward=mixed,
++            storage_marginal_profit_reward=storage_marginal,
++            storage_training_reward=storage_reward,
+             soc=self.soc,
+             charge=charge,
+             discharge=discharge,
+             user_load=user_load,
+             mean_satisfaction=satisfaction,
+             total_response=total_response,
+-            grid_cost=grid,
++            grid_cost=grid_cost,
+             revenue=revenue,
+-            storage_cost=cost,
++            storage_cost=storage_cost,
+             executed_storage_action=executed,
+             price=float(prices.mean()),
+-            hour=t,
++            hour=hour,
+         )
+         return (
+             self.state(),
+-            np.asarray([profit, mixed], dtype=np.float32),
++            np.asarray([profit, storage_reward], dtype=np.float32),
+             self.t == 24,
+             info,
+         )
+diff --git a/EQN-SAC_项目交接_20261018/03_代码/当前精简代码/eqnsac/networks.py b/EQN-SAC_项目交接_20261018/03_代码/当前精简代码/eqnsac/networks.py
+--- a/EQN-SAC_项目交接_20261018/03_代码/当前精简代码/eqnsac/networks.py
++++ b/EQN-SAC_项目交接_20261018/03_代码/当前精简代码/eqnsac/networks.py
+@@ -1,12 +1,21 @@
+-"""Tanh policies, state-dependent feasible actions, and implicit quantile critics."""
++"""神经网络与可微动作映射；风险目标在 risk.py 中单独定义。
++
++Actor 输入为全局状态，但只读取各自 indices 指定的观测。
++Critic 输入 [B, STATE_DIM + ACTION_DIM]，输出 [B, N] 分位价值。
++"""
+ 
+ import math
+ import torch
+ from torch import nn
+ from torch.nn import functional as F
+ 
++from .environment import ACTION_DIM, FEATURE_INDEX, STATE_DIM
++from .risk import risk_value  # Public compatibility import for older callers.
++
+ 
+ class Actor(nn.Module):
++    """一维 tanh-Gaussian 策略；网络参数名保留以兼容现有模型权重。"""
++
+     def __init__(self, indices, hidden, offset=None, scale=None):
+         super().__init__()
+         self.register_buffer("indices", torch.tensor(indices))
+@@ -27,6 +36,7 @@
+         self.log_std = nn.Linear(hidden, 1)
+ 
+     def sample(self, state, deterministic=False, generator=None):
++        """返回 [B,1] 原始动作及其含 tanh 雅可比的 log probability。"""
+         h = self.trunk((state[:, self.indices] - self.offset) / self.scale)
+         mu = self.mean(h)
+         log_std = self.log_std(h).clamp(-20, 2)
+@@ -51,8 +61,14 @@
+ 
+ 
+ def storage_transform(state, raw, storage):
++    """将 [-1,1] 的策略输出映射至当前SOC可行域，正号表示充电。
++
++    返回执行动作及 log|da_exec/da_raw|，后者须从策略 logp 中扣除。
++    环境目前限定 dt=1、eta_self=1，与 Environment.feasible_bounds 一致。
++    """
+     b = storage
+-    energy = b.soc_min + state[:, 5:6].clamp(0, 1) * (b.soc_max - b.soc_min)
++    soc_index = FEATURE_INDEX["soc"]
++    energy = b.soc_min + state[:, soc_index:soc_index + 1].clamp(0, 1) * (b.soc_max - b.soc_min)
+     after = energy * b.eta_self
+     lo = -((after - b.soc_min) * b.eta_dis).clamp(0, b.p_dis_max) / b.p_dis_max
+     hi = ((b.soc_max - after) / b.eta_ch).clamp(0, b.p_ch_max) / b.p_ch_max
+@@ -61,6 +77,11 @@
+ 
+ 
+ class QuantileCritic(nn.Module):
++    """Z_k(s,a,tau)=learned_k + prior_scale * frozen_prior_k，EQN式(14)。
++
++    prior参数冻结，动作导数仍保留，Actor可通过两个分支获得梯度。
++    """
++
+     def __init__(self, hidden, embedding, prior_scale):
+         super().__init__()
+         self.prior_scale = prior_scale
+@@ -72,7 +93,7 @@
+             return nn.ModuleDict(
+                 {
+                     "sa": nn.Sequential(
+-                        nn.Linear(21, hidden),
++                        nn.Linear(STATE_DIM + ACTION_DIM, hidden),
+                         nn.ReLU(),
+                         nn.Linear(hidden, hidden),
+                         nn.ReLU(),
+@@ -89,6 +110,7 @@
+         self.prior.requires_grad_(False)
+ 
+     def forward(self, state, action, tau):
++        """state [B,S]、action [B,A]、tau [B,N] -> 分位值 [B,N]。"""
+         sa = torch.cat((state, action), -1)
+         phi = torch.cos(math.pi * tau[:, :, None] * self.cosine_indices)
+ 
+@@ -105,6 +127,12 @@
+ 
+ 
+ def quantile_loss(prediction, target, tau):
++    """EQN式(16)的成对分位Huber损失，当前kappa固定为1。
++
++    prediction [B,N]、target [B,N′]、tau [B,N]。
++    对预测分位求和，对目标分位及batch取均值；不是对两类分位都取均值。
++    原EQN交通实验表I使用kappa=10，此处是项目既有超参数选择。
++    """
+     delta = target[:, None, :] - prediction[:, :, None]
+     absolute = delta.abs()
+     quadratic = absolute.clamp(max=1)
+@@ -116,32 +144,3 @@
+         ((tau[:, :, None] - (delta.detach() < 0).float()).abs() * huber).sum(1).mean()
+     )
+ 
+-
+-def risk_value(z, tau, cfg):
+-    """Same midpoint grid for ALL arms; discrete stop-gradient risk level.
+-
+-    This deliberately does not claim a continuous gradient through alpha.
+-    Tail score is quantile disagreement, not a guaranteed Wasserstein metric.
+-    """
+-    mean = z.mean(0)
+-    alea = mean.std(-1, unbiased=False)
+-    adaptive = cfg.arm in ("adaptive_only", "full")
+-    tail = cfg.arm in ("tail_only", "full")
+-    level = (
+-        torch.exp(-cfg.adaptive_beta * alea.detach()).clamp(cfg.adaptive_min_level, 1)
+-        if adaptive
+-        else torch.ones_like(alea)
+-    )
+-    mask = tau <= level[:, None]
+-    mask[:, 0] = True
+-    value = (mean * mask).sum(-1) / mask.sum(-1)
+-    tail_mask = tau <= cfg.tail_fraction
+-    tail_mask[:, 0] = True
+-    pair_i, pair_j = torch.triu_indices(len(z), len(z), offset=1, device=z.device)
+-    disagreement = ((z[pair_i] - z[pair_j]).abs() * tail_mask[None]).sum(
+-        -1
+-    ) / tail_mask.sum(-1)[None]
+-    epi = disagreement.mean(0)
+-    if tail:
+-        value = value - cfg.tail_lambda * epi
+-    return value, alea, epi, level
+diff --git a/EQN-SAC_项目交接_20261018/03_代码/当前精简代码/eqnsac/replay.py b/EQN-SAC_项目交接_20261018/03_代码/当前精简代码/eqnsac/replay.py
+--- a/EQN-SAC_项目交接_20261018/03_代码/当前精简代码/eqnsac/replay.py
++++ b/EQN-SAC_项目交接_20261018/03_代码/当前精简代码/eqnsac/replay.py
+@@ -3,8 +3,17 @@
+ import numpy as np
+ import torch
+ 
++from .environment import ACTION_DIM, STATE_DIM
++
+ 
+ class Replay:
++    """每条转移仅存一次，各成员用索引池表示自己的bootstrap子集。
++
++    data: state/next_state [capacity,19]，执行action [capacity,2]，
++    reward [capacity,2]（价格、储能目标），done [capacity,1]。
++    positions[member, slot]为slot在成员池中的位置，-1表示不属于该池。
++    """
++
+     def __init__(self, capacity, members, probability, seed):
+         self.capacity = capacity
+         self.members = members
+@@ -15,10 +24,10 @@
+         self.data = {
+             k: np.zeros((capacity, d), np.float32)
+             for k, d in [
+-                ("state", 19),
+-                ("action", 2),
++                ("state", STATE_DIM),
++                ("action", ACTION_DIM),
+                 ("reward", 2),
+-                ("next_state", 19),
++                ("next_state", STATE_DIM),
+                 ("done", 1),
+             ]
+         }
+@@ -26,6 +35,7 @@
+         self.positions = np.full((members, capacity), -1, dtype=np.int64)
+ 
+     def add(self, state, action, reward, next_state, done):
++        """插入时一次性决定成员归属；回放采样时不重新抽bootstrap mask。"""
+         idx = self.cursor
+         for key, value in zip(self.data, (state, action, reward, next_state, done)):
+             self.data[key][idx] = value
+@@ -33,6 +43,7 @@
+         for member, pool in enumerate(self.pools):
+             position = self.positions[member, idx]
+             if position >= 0:
++                # Swap with the last entry to remove an overwritten slot in O(1).
+                 last = pool.pop()
+                 if position < len(pool):
+                     pool[position] = last
+@@ -48,6 +59,7 @@
+         return all(len(p) >= batch_size for p in self.pools)
+ 
+     def sample(self, batch_size, device, member=None):
++        """member=None从全回放采Actor状态，否则从指定Critic成员池采样。"""
+         if member is None:
+             indices = self.rng.integers(self.size, size=batch_size)
+         else:
+diff --git a/EQN-SAC_项目交接_20261018/03_代码/当前精简代码/eqnsac/risk.py b/EQN-SAC_项目交接_20261018/03_代码/当前精简代码/eqnsac/risk.py
+--- /dev/null
++++ b/EQN-SAC_项目交接_20261018/03_代码/当前精简代码/eqnsac/risk.py
+@@ -0,0 +1,85 @@
++"""EQN 不确定性诊断与本项目的 Actor 风险目标。
++
++输入 quantiles 的维度为 [成员 K, 批量 B, 分位 N]，taus 为 [B, N]。
++原 EQN 的两个方差是 Var_tau(E_k Z) 与 Var_k(E_tau Z)；这里与作者
++官方实现一样报告标准差。自适应风险水平和尾部分歧惩罚是本项目扩展。
++"""
++
++from typing import NamedTuple
++
++import torch
++
++
++class RiskStatistics(NamedTuple):
++    """每个字段均为 [B]；policy_value 用于训练，其余字段用于解释目标。"""
++
++    policy_value: torch.Tensor
++    aleatoric_std: torch.Tensor
++    epistemic_std: torch.Tensor
++    tail_disagreement: torch.Tensor
++    cvar_level: torch.Tensor
++
++
++def midpoint_quantiles(batch_size, count, device):
++    """所有消融组共享 (i+0.5)/N 网格，避免比较时混入采样方式差异。"""
++    return ((torch.arange(count, device=device) + 0.5) / count).expand(batch_size, -1)
++
++
++def risk_statistics(quantiles, taus, cfg):
++    """计算原 EQN 诊断和现有四组策略目标，不改变历史风险公式。
++
++    Original: E_tau E_k Z。
++    Adaptive-only: level=clip(exp(-beta * aleatoric_std), min_level, 1)，
++        再对 tau <= level 的网格点取均值；level 明确停止梯度。
++    Tail-only: 全分位均值减 lambda * tail_disagreement。
++    Full: 自适应低尾均值减 lambda * tail_disagreement。
++
++    tail_disagreement 是不同成员在相同低尾分位上的成对绝对差，
++    不是原 EQN 的 epistemic_std。未强制分位单调时也不等同于精确 W1。
++    低尾均值是硬网格近似；例如 N=32、level=.1 时使用3个中点。
++    """
++    mean_quantiles = quantiles.mean(0)              # [B, N] = E_k Z
++    aleatoric_std = mean_quantiles.std(-1, unbiased=False)
++    member_means = quantiles.mean(-1)              # [K, B] = E_tau Z
++    epistemic_std = member_means.std(0, unbiased=False)
++
++    use_adaptive = cfg.arm in ("adaptive_only", "full")
++    use_tail_penalty = cfg.arm in ("tail_only", "full")
++    cvar_level = (
++        torch.exp(-cfg.adaptive_beta * aleatoric_std.detach()).clamp(
++            cfg.adaptive_min_level, 1
++        )
++        if use_adaptive
++        else torch.ones_like(aleatoric_std)
++    )
++    selected_quantiles = taus <= cvar_level[:, None]
++    selected_quantiles[:, 0] = True  # Even a very low level retains one quantile.
++    policy_value = (mean_quantiles * selected_quantiles).sum(-1) / selected_quantiles.sum(-1)
++
++    tail_mask = taus <= cfg.tail_fraction
++    tail_mask[:, 0] = True
++    first, second = torch.triu_indices(
++        len(quantiles), len(quantiles), offset=1, device=quantiles.device
++    )
++    pair_disagreement = (
++        (quantiles[first] - quantiles[second]).abs() * tail_mask[None]
++    ).sum(-1) / tail_mask.sum(-1)[None]
++    tail_disagreement = pair_disagreement.mean(0)
++    if use_tail_penalty:
++        policy_value = policy_value - cfg.tail_lambda * tail_disagreement
++
++    return RiskStatistics(
++        policy_value, aleatoric_std, epistemic_std, tail_disagreement, cvar_level
++    )
++
++
++def risk_value(z, tau, cfg):
++    """兼容旧四元组接口；第三项一直是尾部分歧，不是原 EQN 认知标准差。
++
++    新代码请使用 risk_statistics 的具名字段。
++    """
++    result = risk_statistics(z, tau, cfg)
++    return (
++        result.policy_value, result.aleatoric_std,
++        result.tail_disagreement, result.cvar_level,
++    )
+diff --git a/EQN-SAC_项目交接_20261018/03_代码/当前精简代码/eqnsac/runner.py b/EQN-SAC_项目交接_20261018/03_代码/当前精简代码/eqnsac/runner.py
+--- a/EQN-SAC_项目交接_20261018/03_代码/当前精简代码/eqnsac/runner.py
++++ b/EQN-SAC_项目交接_20261018/03_代码/当前精简代码/eqnsac/runner.py
+@@ -15,19 +15,18 @@
+ import torch
+ from .config import Config, ROOT, load_config
+ from .environment import Environment
+-from .agent import Agent
++from .agent import Agent, UPDATE_METRIC_NAMES
+ from .replay import Replay
+ from .scenarios import LEVELS
+ from .single_source import sample_case
+ 
+ 
+ CHECKPOINT_VERSION = "clean-2"
++# Agent owns the metric order, so logging cannot silently relabel a tensor.
+ COLUMNS = [
+-    "episode", "profit", "storage_net", "satisfaction", "final_soc", "seconds",
+-    "updates", "critic_loss", "price_actor_loss", "storage_actor_loss",
+-    "price_ua", "price_ue", "price_risk_level", "storage_ua", "storage_ue",
+-    "storage_risk_level", "price_alpha", "storage_alpha", "scenario_seed",
+-    "load_delta", "wind_delta", "price_delta",
++    "episode", "profit", "storage_net", "satisfaction", "final_soc", "seconds", "updates",
++    *UPDATE_METRIC_NAMES,
++    "scenario_seed", "load_delta", "wind_delta", "price_delta",
+ ]
+ 
+ 
+@@ -327,7 +326,7 @@
+                                   state=input_state, action=action, error=error)
+                     raise
+             values = (
+-                [float("nan")] * 11
++                [float("nan")] * len(UPDATE_METRIC_NAMES)
+                 if metrics is None
+                 else metrics.detach().cpu().tolist()
+             )
+diff --git a/EQN-SAC_项目交接_20261018/03_代码/当前精简代码/eqnsac/scenarios.py b/EQN-SAC_项目交接_20261018/03_代码/当前精简代码/eqnsac/scenarios.py
+--- a/EQN-SAC_项目交接_20261018/03_代码/当前精简代码/eqnsac/scenarios.py
++++ b/EQN-SAC_项目交接_20261018/03_代码/当前精简代码/eqnsac/scenarios.py
+@@ -1,4 +1,9 @@
+-"""Historical three-source generator; no filesystem or training side effects."""
++"""负荷、风电、购电价的历史三源场景生成器；没有文件写入或训练副作用。
++
++三条曲线均为 shape=(24,)，用户类别负荷为 shape=(24, 3)。每条外生源使用
++独立随机流；low/medium/high 控制扰动参数，不代表真实数据校准后的置信区间。
++数值沿用导出数据的单位和缩放，不能直接将利润解释为已核准的货币金额。
++"""
+ 
+ from dataclasses import dataclass
+ import numpy as np
+@@ -11,6 +16,8 @@
+ 
+ @dataclass
+ class GeneratorConfig:
++    """24 个一小时时步；三个元素的参数按 LEVELS 顺序对应扰动档位。"""
++
+     horizon: int = 24
+     dt: float = 1.0
+     target_penetration: float = 0.2
+@@ -31,6 +38,7 @@
+ 
+ 
+ class ThreeSourceGenerator:
++    """围绕名义负荷/电价生成一天；风电来自相关风速和功率曲线。"""
+ 
+     def __init__(self, profile, cfg=None, spike_time=17, spike_multiplier=2.0):
+         self.cfg = cfg or GeneratorConfig()
+@@ -49,45 +57,61 @@
+         self.shift_prob = np.array([0.1, 0.2, 0.4, 0.2, 0.1])
+         self.shifted = np.array(
+             [
+-                np.interp((np.arange(24) - s) % 24, np.arange(24), self.load, period=24)
+-                for s in self.shifts
++                np.interp((np.arange(24) - shift) % 24, np.arange(24), self.load, period=24)
++                for shift in self.shifts
+             ]
+         )
++        # 修正负荷平移带来的均值变化，使各时刻的期望仍以名义曲线为中心。
+         self.load_center_correction = self.load / (self.shift_prob @ self.shifted)
+         self.mean_cf = self.cf_moment(2.0, 10.0, 1)
+         self.wind_capacity = (
+             self.cfg.target_penetration * self.load.mean() / self.mean_cf
+         )
+         self.wind_scales = {
+-            level: brentq(lambda c: self.cf_moment(k, c, 1) - self.mean_cf, 3.0, 12.0)
+-            for level, k in zip(LEVELS, self.cfg.wind_shapes)
++            level: self._wind_scale_for_shape(shape)
++            for level, shape in zip(LEVELS, self.cfg.wind_shapes)
+         }
+         self.price_corrections = {}
+         for level, width in zip(LEVELS, self.cfg.spike_time_widths):
+             starts = np.arange(self.t0 - width, self.t0 + width + 1)
+             assert starts.min() >= 0 and starts.max() + self.cfg.spike_duration <= 24
+             expected = np.ones(24)
+-            for t in starts:
+-                expected[t : t + self.cfg.spike_duration] += (self.k0 - 1) / len(starts)
++            for start in starts:
++                expected[start : start + self.cfg.spike_duration] += (self.k0 - 1) / len(starts)
+             self.price_corrections[level] = expected
+ 
++    def _wind_scale_for_shape(self, shape):
++        """求 Weibull 尺度参数，使各风电档位具有相同的期望容量因子。"""
++        def mean_capacity_factor_error(scale):
++            return self.cf_moment(shape, scale, 1) - self.mean_cf
++
++        return brentq(mean_capacity_factor_error, 3.0, 12.0)
++
+     def cf(self, v):
+-        v = np.asarray(v)
+-        c = self.cfg
++        """风速 v（标量或数组）对应的容量因子，取值 [0, 1]。"""
++        wind_speed = np.asarray(v)
++        config = self.cfg
+         return np.where(
+-            (v >= c.wind_cut_in) & (v < c.wind_rated_speed),
+-            ((v - c.wind_cut_in) / (c.wind_rated_speed - c.wind_cut_in)) ** 3,
+-            np.where((v >= c.wind_rated_speed) & (v <= c.wind_cut_out), 1.0, 0.0),
++            (wind_speed >= config.wind_cut_in) & (wind_speed < config.wind_rated_speed),
++            ((wind_speed - config.wind_cut_in) / (config.wind_rated_speed - config.wind_cut_in)) ** 3,
++            np.where(
++                (wind_speed >= config.wind_rated_speed) & (wind_speed <= config.wind_cut_out),
++                1.0, 0.0,
++            ),
+         )
+ 
+     def cf_moment(self, k, c, power):
+-
+-        def density(v):
+-            return k / c * (v / c) ** (k - 1) * np.exp(-((v / c) ** k))
+-
++        """Weibull 风速下容量因子的 power 阶矩；k 为形状、c 为尺度参数。"""
++        def density(wind_speed):
++            return k / c * (wind_speed / c) ** (k - 1) * np.exp(-((wind_speed / c) ** k))
++
++        def weighted_density(wind_speed):
++            return float(self.cf(wind_speed)) ** power * density(wind_speed)
++
++        # 额定风速至切出风速区间容量因子为 1，直接积分概率密度。
+         return (
+             quad(
+-                lambda v: float(self.cf(v)) ** power * density(v),
++                weighted_density,
+                 self.cfg.wind_cut_in,
+                 self.cfg.wind_rated_speed,
+             )[0]
+@@ -96,63 +120,82 @@
+ 
+     @staticmethod
+     def ar(rng, rho):
+-        z = rng.normal(size=24)
+-        for t in range(1, 24):
+-            z[t] = rho * z[t - 1] + np.sqrt(1 - rho * rho) * z[t]
+-        return z
++        """生成 shape=(24,) 的单位方差 AR(1) 正态潜变量，rho 为相邻时刻相关系数。"""
++        latent = rng.normal(size=24)
++        for hour in range(1, 24):
++            latent[hour] = rho * latent[hour - 1] + np.sqrt(1 - rho * rho) * latent[hour]
++        return latent
+ 
+     def sample(
+         self, seed, load_level="medium", wind_level="medium", price_level="medium"
+     ):
+-        indices = [LEVELS.index(x) for x in (load_level, wind_level, price_level)]
+-        lr, wr, pr = [
+-            np.random.default_rng(s) for s in np.random.SeedSequence(int(seed)).spawn(3)
++        """返回一天的外生曲线和抽样元数据；同 seed/档位重复调用得到相同结果。"""
++        load_index, wind_index, price_index = [
++            LEVELS.index(level) for level in (load_level, wind_level, price_level)
+         ]
+-        il, iw, ip = indices
+-        c = self.cfg
+-        shift_idx = lr.choice(5, p=self.shift_prob)
+-        z = self.ar(lr, c.load_rho)
+-        sd = c.load_sigmas[il]
+-        dd = c.load_daily_sigmas[il]
++        load_rng, wind_rng, price_rng = [
++            np.random.default_rng(child_seed)
++            for child_seed in np.random.SeedSequence(int(seed)).spawn(3)
++        ]
++        config = self.cfg
++
++        # 负荷 = 平移后的名义曲线 × 均值修正 × 小时扰动 × 整日扰动。
++        shift_index = load_rng.choice(5, p=self.shift_prob)
++        load_latent = self.ar(load_rng, config.load_rho)
++        hourly_sigma = config.load_sigmas[load_index]
++        daily_sigma = config.load_daily_sigmas[load_index]
+         load = (
+-            self.shifted[shift_idx]
++            self.shifted[shift_index]
+             * self.load_center_correction
+-            * np.exp(sd * z - 0.5 * sd**2)
+-            * np.exp(dd * lr.normal() - 0.5 * dd**2)
+-        )
+-        wz = self.ar(wr, c.wind_rho)
+-        u = np.clip(ndtr(wz), 1e-12, 1 - 1e-12)
+-        v = self.wind_scales[wind_level] * (-np.log1p(-u)) ** (1 / c.wind_shapes[iw])
+-        wind = self.wind_capacity * self.cf(v)
+-        width = c.spike_time_widths[ip]
+-        t = int(pr.integers(self.t0 - width, self.t0 + width + 1))
+-        k = self.k0 + pr.uniform(-c.spike_offsets[ip], c.spike_offsets[ip])
++            * np.exp(hourly_sigma * load_latent - 0.5 * hourly_sigma**2)
++            * np.exp(daily_sigma * load_rng.normal() - 0.5 * daily_sigma**2)
++        )
++
++        # 正态潜变量经 CDF 和 Weibull 逆 CDF 变为风速，再经过风机功率曲线。
++        wind_latent = self.ar(wind_rng, config.wind_rho)
++        wind_probability = np.clip(ndtr(wind_latent), 1e-12, 1 - 1e-12)
++        wind_speed = self.wind_scales[wind_level] * (-np.log1p(-wind_probability)) ** (
++            1 / config.wind_shapes[wind_index]
++        )
++        wind = self.wind_capacity * self.cf(wind_speed)
++
++        # 脉冲除以其期望形状作均值修正；这并不保证每条最终曲线都有实际尖峰。
++        spike_width = config.spike_time_widths[price_index]
++        spike_start = int(price_rng.integers(self.t0 - spike_width, self.t0 + spike_width + 1))
++        spike_multiplier = self.k0 + price_rng.uniform(
++            -config.spike_offsets[price_index], config.spike_offsets[price_index]
++        )
+         pulse = np.ones(24)
+-        pulse[t : t + c.spike_duration] = k
+-        ps = c.price_sigmas[ip]
+-        pz = self.ar(pr, c.price_rho)
++        pulse[spike_start : spike_start + config.spike_duration] = spike_multiplier
++        price_sigma = config.price_sigmas[price_index]
++        price_latent = self.ar(price_rng, config.price_rho)
+         price = (
+             self.price
+             * pulse
+             / self.price_corrections[price_level]
+-            * np.exp(ps * pz - 0.5 * ps**2)
++            * np.exp(price_sigma * price_latent - 0.5 * price_sigma**2)
+         )
+         return {
+             "seed": int(seed),
+             "load_level": load_level,
+             "wind_level": wind_level,
+             "price_level": price_level,
+-            "load_shift_hours": float(self.shifts[shift_idx]),
+-            "spike_time": t,
+-            "spike_multiplier_raw": float(k),
++            "load_shift_hours": float(self.shifts[shift_index]),
++            "spike_time": spike_start,
++            "spike_multiplier_raw": float(spike_multiplier),
+             "baseline_load": load,
+             "wind_power": wind,
+-            "wind_speed": v,
++            "wind_speed": wind_speed,
+             "grid_price": price,
+             "class_baseline_load": load[:, None] * self.shares,
+         }
+ 
+     def observations(self, r, t):
++        """提取场景 r 在时刻 t 的可用观测，历史/负荷预测各含 3 个值。
++
++        预测仅用当前负荷与已知名义曲线，比例按 rho**步长衰减；不读取未来
++        实际负荷、风电或价格。单因素模式也保留这套历史预测公式。
++        """
+         ratio = r["baseline_load"][t] / self.load[t]
+         return {
+             "hour": t,
+@@ -162,7 +205,7 @@
+             "price_history": [float(r["grid_price"][max(0, t - i)]) for i in (1, 2, 3)],
+             "wind_history": [float(r["wind_power"][max(0, t - i)]) for i in (1, 2, 3)],
+             "load_forecast": [
+-                float(self.load[min(23, t + i)] * ratio**self.cfg.load_rho**i)
++                float(self.load[min(23, t + i)] * ratio ** (self.cfg.load_rho**i))
+                 for i in (1, 2, 3)
+             ],
+         }
+diff --git a/EQN-SAC_项目交接_20261018/03_代码/当前精简代码/eqnsac/single_source.py b/EQN-SAC_项目交接_20261018/03_代码/当前精简代码/eqnsac/single_source.py
+--- a/EQN-SAC_项目交接_20261018/03_代码/当前精简代码/eqnsac/single_source.py
++++ b/EQN-SAC_项目交接_20261018/03_代码/当前精简代码/eqnsac/single_source.py
+@@ -1,38 +1,53 @@
+-"""One daily multiplier on the selected source; all other inputs are fixed."""
++"""单因素场景：只给选中的外生源乘一个整日系数，其他输入保持固定。"""
+ 
+ import numpy as np
+ 
+ 
+ def sample_case(env, cfg, seed, levels=("medium", "medium", "medium")):
++    """按配置生成一天；曲线 shape=(24,)，用户类别负荷 shape=(24, 3)。
++
++    three_source 使用 levels 指定三个源的扰动档位。单因素模式抽取一个
++    delta ~ Uniform(-bound, bound)，将对应整条曲线乘以 1+delta，因此日内
++    形状保持不变；响应随机流是否固定由调用方根据 cfg.response_rng 处理。
++    """
+     if cfg.scenario_mode == "three_source":
+         return env.generator.sample(seed, *levels)
+-    # The exported nominal input contains no wind curve. Freeze one reproducible
+-    # low-level wind realization rather than resampling wind each episode.
++
++    # 导出的名义输入没有风电曲线：固定 reference_seed 的 low 档样本作为参照。
++    # 每次重新生成相同参照，避免调用方修改返回值后污染后续案例。
+     reference = env.generator.sample(cfg.reference_seed, "low", "low", "low")
+     if cfg.scenario_mode not in ("load_scale", "wind_scale", "price_scale"):
+         raise ValueError("Unsupported single-source mode")
+-    bound = {"load_scale": cfg.load_scale_bound, "wind_scale": cfg.wind_scale_bound,
+-             "price_scale": cfg.price_scale_bound}[cfg.scenario_mode]
++    bound = {
++        "load_scale": cfg.load_scale_bound,
++        "wind_scale": cfg.wind_scale_bound,
++        "price_scale": cfg.price_scale_bound,
++    }[cfg.scenario_mode]
+     delta = float(np.random.default_rng(seed).uniform(-bound, bound))
+     load_delta = delta if cfg.scenario_mode == "load_scale" else 0.0
+     wind_delta = delta if cfg.scenario_mode == "wind_scale" else 0.0
+     price_delta = delta if cfg.scenario_mode == "price_scale" else 0.0
+     load = env.generator.load * (1 + load_delta)
+     if cfg.scenario_mode == "wind_scale":
++        # 用整个允许范围的上界检查装机容量；截断会破坏“同一曲线整日缩放”。
+         if reference["wind_power"].max() * (1 + bound) > env.generator.wind_capacity:
+             raise ValueError("Wind scaling exceeds capacity; do not silently clip curve shape")
+         reference["wind_power"] = reference["wind_power"] * (1 + wind_delta)
+-        # This is a power-profile experiment, not a wind-speed perturbation.
++        # 调整的是风电功率，原风速仅作参照，不能解释为调整后功率对应的风速。
+         reference["reference_wind_speed"] = reference.pop("wind_speed")
+     reference.update(
+-        seed=int(seed), scenario_mode=cfg.scenario_mode, load_delta=load_delta,
++        seed=int(seed),
++        scenario_mode=cfg.scenario_mode,
++        load_delta=load_delta,
+         wind_delta=wind_delta,
+         price_delta=price_delta,
+         reference_seed=cfg.reference_seed,
+         load_level="daily_uniform" if cfg.scenario_mode == "load_scale" else "nominal_fixed",
+         wind_level="daily_uniform" if cfg.scenario_mode == "wind_scale" else "fixed",
+-        price_level="daily_uniform" if cfg.scenario_mode == "price_scale" else "nominal_fixed", load_shift_hours=0.0,
+-        spike_time=-1, spike_multiplier_raw=1.0,
++        price_level="daily_uniform" if cfg.scenario_mode == "price_scale" else "nominal_fixed",
++        load_shift_hours=0.0,
++        spike_time=-1,
++        spike_multiplier_raw=1.0,
+         baseline_load=load,
+         class_baseline_load=load[:, None] * env.generator.shares,
+         grid_price=env.generator.price * (1 + price_delta),
+diff --git a/EQN-SAC_项目交接_20261018/03_代码/当前精简代码/tests/test_risk.py b/EQN-SAC_项目交接_20261018/03_代码/当前精简代码/tests/test_risk.py
+--- /dev/null
++++ b/EQN-SAC_项目交接_20261018/03_代码/当前精简代码/tests/test_risk.py
+@@ -0,0 +1,69 @@
++"""Hand-calculated checks separating original EQN statistics from Tail extensions."""
++
++import unittest
++
++import torch
++
++from eqnsac.agent import UPDATE_METRIC_NAMES
++from eqnsac.config import Config
++from eqnsac.risk import midpoint_quantiles, risk_statistics, risk_value
++from eqnsac.runner import COLUMNS
++
++
++class RiskDefinitionTests(unittest.TestCase):
++    def test_equal_means_can_have_nonzero_tail_disagreement(self):
++        # The members agree on E[Z]=0, but differ in the lower-tail quantile.
++        quantiles = torch.tensor([[[-1.0, 1.0]], [[-2.0, 2.0]]])
++        taus = midpoint_quantiles(1, 2, "cpu")
++        cfg = Config(arm="tail_only", tail_fraction=0.5, tail_lambda=0.1)
++        result = risk_statistics(quantiles, taus, cfg)
++        torch.testing.assert_close(result.aleatoric_std, torch.tensor([1.5]))
++        torch.testing.assert_close(result.epistemic_std, torch.tensor([0.0]))
++        torch.testing.assert_close(result.tail_disagreement, torch.tensor([1.0]))
++        torch.testing.assert_close(result.policy_value, torch.tensor([-0.1]))
++        # The voltage paper's E_k Var_tau differs from original EQN Var_tau E_k.
++        voltage_variance = quantiles.var(-1, unbiased=False).mean(0)
++        torch.testing.assert_close(voltage_variance, torch.tensor([2.5]))
++        torch.testing.assert_close(result.aleatoric_std.square(), torch.tensor([2.25]))
++
++    def test_member_location_disagreement_is_epistemic(self):
++        quantiles = torch.tensor([[[1.0, 1.0]], [[3.0, 3.0]]])
++        result = risk_statistics(quantiles, midpoint_quantiles(1, 2, "cpu"), Config())
++        torch.testing.assert_close(result.aleatoric_std, torch.tensor([0.0]))
++        torch.testing.assert_close(result.epistemic_std, torch.tensor([1.0]))
++        torch.testing.assert_close(result.policy_value, torch.tensor([2.0]))
++
++    def test_adaptive_level_stops_gradient_and_uses_existing_grid_rule(self):
++        quantiles = torch.arange(32, dtype=torch.float32).expand(2, 1, -1).clone()
++        quantiles.requires_grad_(True)
++        taus = midpoint_quantiles(1, 32, "cpu")
++        cfg = Config(arm="adaptive_only", adaptive_beta=100, adaptive_min_level=0.1)
++        result = risk_statistics(quantiles, taus, cfg)
++        self.assertFalse(result.cvar_level.requires_grad)
++        torch.testing.assert_close(result.policy_value, torch.tensor([1.0]))
++        result.policy_value.sum().backward()
++        expected = torch.zeros_like(quantiles)
++        expected[:, :, :3] = 1 / 6
++        torch.testing.assert_close(quantiles.grad, expected)
++
++    def test_legacy_interface_explicitly_returns_tail_as_third_value(self):
++        quantiles = torch.tensor([[[-1.0, 1.0]], [[-2.0, 2.0]]])
++        taus = midpoint_quantiles(1, 2, "cpu")
++        cfg = Config(tail_fraction=0.5)
++        result = risk_statistics(quantiles, taus, cfg)
++        value, aleatoric, third, level = risk_value(quantiles, taus, cfg)
++        torch.testing.assert_close(value, result.policy_value)
++        torch.testing.assert_close(aleatoric, result.aleatoric_std)
++        torch.testing.assert_close(third, result.tail_disagreement)
++        torch.testing.assert_close(level, result.cvar_level)
++
++    def test_log_schema_exposes_eqn_epistemic_and_tail_separately(self):
++        for role in ("price", "storage"):
++            self.assertIn(role + "_epistemic_std", UPDATE_METRIC_NAMES)
++            self.assertIn(role + "_tail_disagreement", UPDATE_METRIC_NAMES)
++            self.assertNotIn(role + "_ue", COLUMNS)
++        self.assertEqual(tuple(COLUMNS[7:7 + len(UPDATE_METRIC_NAMES)]), UPDATE_METRIC_NAMES)
++
++
++if __name__ == "__main__":
++    unittest.main()
+--- a/README.md
++++ b/README.md
+@@ -1,8 +1,9 @@
+ # EQN SAC 项目开发入口
+ 
+-当前项目研究售电定价与储能联合控制：两个 Actor 分别控制价格和储能，两套集中式 IQN Critic 学习不同奖励目标。本次已完成当前训练代码审查、可复现错误修复和短时验证；原三组 5000 轮实验仍以各自冻结代码为准。
++当前项目研究售电定价与储能联合控制：两个 Actor 分别控制价格和储能，两套集中式 IQN Critic 学习不同奖励目标。当前代码已完成数值审查及可读性重构，并对照EQN原论文、作者实现与电压控制论文。该项目是EQN-SAC扩展，原三组5000轮实验仍以各自冻结代码为准。
+ 
+-- [本次代码审查与项目整理](代码审查_20261018/项目审查报告.md)：问题、修复、验证和剩余研究边界。
++- [项目整体分析与EQN原论文对照](算法与可读性审查_20261018/项目与EQN对照.md)：算法来源、公式差异、可读性整理和行为等价验证。
++- [第一轮代码审查与项目整理](代码审查_20261018/项目审查报告.md)：问题、修复、验证和剩余研究边界。
+ - [当前开发代码说明](EQN-SAC_项目交接_20261018/03_代码/当前精简代码/README.md)：模块职责、测试和运行方法。
+ - [原项目交接入口](EQN-SAC_项目交接_20261018/README_新对话先读.md)：论文、数据、既有实验和导师意见。
+ - [修改前代码备份](代码审查_20261018/修改前代码/)：本轮开始时的活动代码；不是新的运行入口。
+@@ -15,4 +16,4 @@
+ ../../../.venv/bin/python train.py --help
+ ```
+ 
+-`代码审查_20261018` 保存本轮报告、测试记录、差异补丁和原文件校验信息；`.venv` 只用于本机验证，不属于交接数据。当前目录不是 Git 仓库，修改追溯使用原代码备份与差异补丁。
++`算法与可读性审查_20261018` 保存本轮论文对照、重构备份与验证；`代码审查_20261018` 保存第一轮数值修复记录；`.venv` 只用于本机验证，不属于交接数据。当前目录不是 Git 仓库，修改追溯使用原代码备份与差异补丁。

@@ -1,0 +1,504 @@
+{
+  "passed": true,
+  "method": "Two isolated subprocesses; seed 418; CPU; one intra-op and inter-op thread; deterministic algorithms; each arm uses 160 real-environment transitions, replay capacity 128 and 3 consecutive updates. Compare initial and each post-update snapshot exactly, including all model/optimizer tensors, RNG states, actions, metrics, replay data and reconstructed sample indices.",
+  "config": {
+    "hidden_dim": 16,
+    "embedding_dim": 8,
+    "ensemble_size": 3,
+    "quantiles": 8,
+    "batch_size": 8,
+    "bootstrap_probability": 0.5,
+    "replay_capacity": 128,
+    "seed": 418
+  },
+  "common_metric_order": [
+    "critic_loss",
+    "price_actor_loss",
+    "storage_actor_loss",
+    "price_aleatoric_std",
+    "price_tail_disagreement",
+    "price_risk_level",
+    "storage_aleatoric_std",
+    "storage_tail_disagreement",
+    "storage_risk_level",
+    "price_alpha",
+    "storage_alpha"
+  ],
+  "intentional_new_metrics": [
+    "price_epistemic_std",
+    "storage_epistemic_std"
+  ],
+  "workers": [
+    {
+      "label": "before",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "label": "after",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "before_root": "/Users/liliheng/Desktop/EQN-SAC/算法与可读性审查_20261018/重构前代码",
+  "after_root": "/Users/liliheng/Desktop/EQN-SAC/EQN-SAC_项目交接_20261018/03_代码/当前精简代码",
+  "before_sha256": {
+    "eqnsac/__init__.py": "8f026b134970847aed886bceeeec645204f948a856fb95336db55c6c42f921d0",
+    "eqnsac/agent.py": "23b78faa7f0e9420920eabf1f3fe10b1891fb0fea6514e70d5debf8e0fa6ebcc",
+    "eqnsac/config.py": "d52c8642075ba016ecd78db8e5945a45472380781e471c1e8bde77dcaf4bb847",
+    "eqnsac/environment.py": "86767fe4bedf7028127cc55153081fb26e246aa6eae7b1f24bc95bb567b324f7",
+    "eqnsac/networks.py": "b30bdf5e117677e385316956a4b1a7032ba068038412e3afe63a5772533c0fc7",
+    "eqnsac/replay.py": "63b894a59720e58ce24d46313474ab409b1d7b0a74314296948e19d6030f9e49",
+    "eqnsac/runner.py": "341be2c8d4b52f1db921581265b5a971146523636adce6ad7e337f5e06f07c59",
+    "eqnsac/scenarios.py": "e77f002d9b8da4b2550d9f5c3f99129fa4cf6c9a73a5bb3c761e3ab304766cd1",
+    "eqnsac/single_source.py": "b64887116268e422dbb271d7a2d7427612630bde24bbd5837f9a27cfd5c24ff0",
+    "data/environment.json": "e93e1278e70567df4172131b2075824cfb64416988eacfb1606c26327fd86022",
+    "data/profile.json": "ba6149855dfe04a4a49f5564ef6cd8c46bce3975298f6d741f37a1181597602c",
+    "data/provenance.json": "07f1519c333c5650c6bc1adee7ce0a188308ff1d402d714c24788f70fd18d2dd"
+  },
+  "after_sha256": {
+    "eqnsac/__init__.py": "8f026b134970847aed886bceeeec645204f948a856fb95336db55c6c42f921d0",
+    "eqnsac/agent.py": "b8bd2f3f9a50671559fd889fdcd0a4385737cd9ececeedc0d80c526af21c40ae",
+    "eqnsac/config.py": "1d35b2712cf0869c2ed22f5b088dc1e7a1d14354c8534b4dbfb6d6c25b28bfe7",
+    "eqnsac/environment.py": "22fd289ae65e1b27c0556b0a5513ef31fbe39fe87dbd260841bfdccae0332504",
+    "eqnsac/networks.py": "3a2b1003d1452c99be6257fbf6ff72424748a47995fe8348a90fea88fc86cd1c",
+    "eqnsac/replay.py": "fc73cb8d7ecb23d02517133265c63b8ba8f33ac0fcccd6fe50675bc354d4c7ab",
+    "eqnsac/risk.py": "9500642a35f92e594556bc6dd221d0e47174c39f1c95b3e153c0d498e1783e15",
+    "eqnsac/runner.py": "280d00e65b7c6624b9910979670c5b1f492c6a45ee9e8993cf058d6a4b542b0c",
+    "eqnsac/scenarios.py": "06b02c16f253d7efd296d30a57ccc7d3957a2917e5762493cfe331a306ddbe80",
+    "eqnsac/single_source.py": "80433ddee016cde0282cdf945aac5efc60620a564302c7ac413a686021e022c4",
+    "data/environment.json": "e93e1278e70567df4172131b2075824cfb64416988eacfb1606c26327fd86022",
+    "data/profile.json": "ba6149855dfe04a4a49f5564ef6cd8c46bce3975298f6d741f37a1181597602c",
+    "data/provenance.json": "07f1519c333c5650c6bc1adee7ce0a188308ff1d402d714c24788f70fd18d2dd"
+  },
+  "source_unchanged_during_workers": {
+    "before": true,
+    "after": true
+  },
+  "runtime": {
+    "python": "3.12.14 (main, Aug 25 2026, 13:50:33) [Clang 22.1.3 ]",
+    "torch": "2.7.1",
+    "numpy": "2.5.4"
+  },
+  "arms": [
+    {
+      "arm": "original",
+      "exact_equal": true,
+      "compared": {
+        "tensor_comparisons": 1944,
+        "array_comparisons": 849,
+        "scalar_comparisons": 4301
+      },
+      "mismatch_count": 0,
+      "differences": [],
+      "replay_sample_calls": 16,
+      "added_epistemic_diagnostics": [
+        {
+          "price_epistemic_std": 3.304567337036133,
+          "storage_epistemic_std": 24.38587188720703
+        },
+        {
+          "price_epistemic_std": 3.2216861248016357,
+          "storage_epistemic_std": 24.382369995117188
+        },
+        {
+          "price_epistemic_std": 3.3563613891601562,
+          "storage_epistemic_std": 24.242164611816406
+        }
+      ]
+    },
+    {
+      "arm": "adaptive_only",
+      "exact_equal": true,
+      "compared": {
+        "tensor_comparisons": 1944,
+        "array_comparisons": 849,
+        "scalar_comparisons": 4301
+      },
+      "mismatch_count": 0,
+      "differences": [],
+      "replay_sample_calls": 16,
+      "added_epistemic_diagnostics": [
+        {
+          "price_epistemic_std": 3.304567337036133,
+          "storage_epistemic_std": 24.38587188720703
+        },
+        {
+          "price_epistemic_std": 3.2216861248016357,
+          "storage_epistemic_std": 24.382369995117188
+        },
+        {
+          "price_epistemic_std": 3.3563613891601562,
+          "storage_epistemic_std": 24.242164611816406
+        }
+      ]
+    },
+    {
+      "arm": "tail_only",
+      "exact_equal": true,
+      "compared": {
+        "tensor_comparisons": 1944,
+        "array_comparisons": 849,
+        "scalar_comparisons": 4301
+      },
+      "mismatch_count": 0,
+      "differences": [],
+      "replay_sample_calls": 16,
+      "added_epistemic_diagnostics": [
+        {
+          "price_epistemic_std": 3.304567337036133,
+          "storage_epistemic_std": 24.385986328125
+        },
+        {
+          "price_epistemic_std": 3.2216238975524902,
+          "storage_epistemic_std": 24.382469177246094
+        },
+        {
+          "price_epistemic_std": 3.356245517730713,
+          "storage_epistemic_std": 24.242305755615234
+        }
+      ]
+    },
+    {
+      "arm": "full",
+      "exact_equal": true,
+      "compared": {
+        "tensor_comparisons": 1944,
+        "array_comparisons": 849,
+        "scalar_comparisons": 4301
+      },
+      "mismatch_count": 0,
+      "differences": [],
+      "replay_sample_calls": 16,
+      "added_epistemic_diagnostics": [
+        {
+          "price_epistemic_std": 3.304567337036133,
+          "storage_epistemic_std": 24.385986328125
+        },
+        {
+          "price_epistemic_std": 3.2216238975524902,
+          "storage_epistemic_std": 24.382469177246094
+        },
+        {
+          "price_epistemic_std": 3.356245517730713,
+          "storage_epistemic_std": 24.242305755615234
+        }
+      ]
+    }
+  ],
+  "risk_formula_handchecks": {
+    "passed": true,
+    "checks": [
+      {
+        "example": "equal_member_means_different_lower_tails",
+        "input": [
+          [
+            -2.0,
+            2.0
+          ],
+          [
+            -1.0,
+            1.0
+          ]
+        ],
+        "checks": [
+          {
+            "arm": "original",
+            "actual": {
+              "aleatoric_std": 1.5,
+              "epistemic_std": 0.0,
+              "tail_disagreement": 1.0,
+              "policy_value": 0.0,
+              "cvar_level": 1.0
+            },
+            "expected": {
+              "aleatoric_std": 1.5,
+              "epistemic_std": 0.0,
+              "tail_disagreement": 1.0,
+              "policy_value": 0.0,
+              "cvar_level": 1.0
+            },
+            "cvar_level_stopped_gradient": true,
+            "passed": true
+          },
+          {
+            "arm": "adaptive_only",
+            "actual": {
+              "aleatoric_std": 1.5,
+              "epistemic_std": 0.0,
+              "tail_disagreement": 1.0,
+              "policy_value": -1.5,
+              "cvar_level": 0.5
+            },
+            "expected": {
+              "aleatoric_std": 1.5,
+              "epistemic_std": 0.0,
+              "tail_disagreement": 1.0,
+              "policy_value": -1.5,
+              "cvar_level": 0.5
+            },
+            "cvar_level_stopped_gradient": true,
+            "passed": true
+          },
+          {
+            "arm": "tail_only",
+            "actual": {
+              "aleatoric_std": 1.5,
+              "epistemic_std": 0.0,
+              "tail_disagreement": 1.0,
+              "policy_value": -0.2,
+              "cvar_level": 1.0
+            },
+            "expected": {
+              "aleatoric_std": 1.5,
+              "epistemic_std": 0.0,
+              "tail_disagreement": 1.0,
+              "policy_value": -0.2,
+              "cvar_level": 1.0
+            },
+            "cvar_level_stopped_gradient": true,
+            "passed": true
+          },
+          {
+            "arm": "full",
+            "actual": {
+              "aleatoric_std": 1.5,
+              "epistemic_std": 0.0,
+              "tail_disagreement": 1.0,
+              "policy_value": -1.7,
+              "cvar_level": 0.5
+            },
+            "expected": {
+              "aleatoric_std": 1.5,
+              "epistemic_std": 0.0,
+              "tail_disagreement": 1.0,
+              "policy_value": -1.7,
+              "cvar_level": 0.5
+            },
+            "cvar_level_stopped_gradient": true,
+            "passed": true,
+            "action_proxy_quantile_gradient": [
+              [
+                [
+                  0.7,
+                  0.0
+                ]
+              ],
+              [
+                [
+                  0.3,
+                  0.0
+                ]
+              ]
+            ],
+            "expected_quantile_gradient": [
+              [
+                [
+                  0.7,
+                  0.0
+                ]
+              ],
+              [
+                [
+                  0.3,
+                  0.0
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "example": "different_member_means_equal_lower_tails",
+        "input": [
+          [
+            0.0,
+            2.0
+          ],
+          [
+            0.0,
+            4.0
+          ]
+        ],
+        "checks": [
+          {
+            "arm": "original",
+            "actual": {
+              "aleatoric_std": 1.5,
+              "epistemic_std": 0.5,
+              "tail_disagreement": 0.0,
+              "policy_value": 1.5,
+              "cvar_level": 1.0
+            },
+            "expected": {
+              "aleatoric_std": 1.5,
+              "epistemic_std": 0.5,
+              "tail_disagreement": 0.0,
+              "policy_value": 1.5,
+              "cvar_level": 1.0
+            },
+            "cvar_level_stopped_gradient": true,
+            "passed": true
+          },
+          {
+            "arm": "adaptive_only",
+            "actual": {
+              "aleatoric_std": 1.5,
+              "epistemic_std": 0.5,
+              "tail_disagreement": 0.0,
+              "policy_value": 0.0,
+              "cvar_level": 0.5
+            },
+            "expected": {
+              "aleatoric_std": 1.5,
+              "epistemic_std": 0.5,
+              "tail_disagreement": 0.0,
+              "policy_value": 0.0,
+              "cvar_level": 0.5
+            },
+            "cvar_level_stopped_gradient": true,
+            "passed": true
+          },
+          {
+            "arm": "tail_only",
+            "actual": {
+              "aleatoric_std": 1.5,
+              "epistemic_std": 0.5,
+              "tail_disagreement": 0.0,
+              "policy_value": 1.5,
+              "cvar_level": 1.0
+            },
+            "expected": {
+              "aleatoric_std": 1.5,
+              "epistemic_std": 0.5,
+              "tail_disagreement": 0.0,
+              "policy_value": 1.5,
+              "cvar_level": 1.0
+            },
+            "cvar_level_stopped_gradient": true,
+            "passed": true
+          },
+          {
+            "arm": "full",
+            "actual": {
+              "aleatoric_std": 1.5,
+              "epistemic_std": 0.5,
+              "tail_disagreement": 0.0,
+              "policy_value": 0.0,
+              "cvar_level": 0.5
+            },
+            "expected": {
+              "aleatoric_std": 1.5,
+              "epistemic_std": 0.5,
+              "tail_disagreement": 0.0,
+              "policy_value": 0.0,
+              "cvar_level": 0.5
+            },
+            "cvar_level_stopped_gradient": true,
+            "passed": true
+          }
+        ]
+      },
+      {
+        "example": "constant_quantiles_shifted_between_members",
+        "input": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            2.0,
+            2.0
+          ]
+        ],
+        "checks": [
+          {
+            "arm": "original",
+            "actual": {
+              "aleatoric_std": 0.0,
+              "epistemic_std": 1.0,
+              "tail_disagreement": 2.0,
+              "policy_value": 1.0,
+              "cvar_level": 1.0
+            },
+            "expected": {
+              "aleatoric_std": 0.0,
+              "epistemic_std": 1.0,
+              "tail_disagreement": 2.0,
+              "policy_value": 1.0,
+              "cvar_level": 1.0
+            },
+            "cvar_level_stopped_gradient": true,
+            "passed": true
+          },
+          {
+            "arm": "adaptive_only",
+            "actual": {
+              "aleatoric_std": 0.0,
+              "epistemic_std": 1.0,
+              "tail_disagreement": 2.0,
+              "policy_value": 1.0,
+              "cvar_level": 1.0
+            },
+            "expected": {
+              "aleatoric_std": 0.0,
+              "epistemic_std": 1.0,
+              "tail_disagreement": 2.0,
+              "policy_value": 1.0,
+              "cvar_level": 1.0
+            },
+            "cvar_level_stopped_gradient": true,
+            "passed": true
+          },
+          {
+            "arm": "tail_only",
+            "actual": {
+              "aleatoric_std": 0.0,
+              "epistemic_std": 1.0,
+              "tail_disagreement": 2.0,
+              "policy_value": 0.6,
+              "cvar_level": 1.0
+            },
+            "expected": {
+              "aleatoric_std": 0.0,
+              "epistemic_std": 1.0,
+              "tail_disagreement": 2.0,
+              "policy_value": 0.6,
+              "cvar_level": 1.0
+            },
+            "cvar_level_stopped_gradient": true,
+            "passed": true
+          },
+          {
+            "arm": "full",
+            "actual": {
+              "aleatoric_std": 0.0,
+              "epistemic_std": 1.0,
+              "tail_disagreement": 2.0,
+              "policy_value": 0.6,
+              "cvar_level": 1.0
+            },
+            "expected": {
+              "aleatoric_std": 0.0,
+              "epistemic_std": 1.0,
+              "tail_disagreement": 2.0,
+              "policy_value": 0.6,
+              "cvar_level": 1.0
+            },
+            "cvar_level_stopped_gradient": true,
+            "passed": true
+          }
+        ]
+      }
+    ],
+    "recommended_unit_tests": [
+      "Equal member means can produce zero EQN epistemic_std and nonzero tail_disagreement.",
+      "Equal lower-tail quantiles can produce zero tail_disagreement and nonzero EQN epistemic_std.",
+      "Use population standard deviations (unbiased=False) and distinguish variance from standard deviation.",
+      "Check all four policy-value formulas, stopped risk-level gradient, and finite tail-penalty gradient with hand-computed expected values."
+    ]
+  },
+  "limits": "Small deterministic CPU regression only; does not establish long-run convergence, GPU bitwise equality or economic improvement. Extra epistemic diagnostics are checked by independent hand-calculated examples rather than compared to a missing old output."
+}

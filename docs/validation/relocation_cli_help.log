@@ -1,0 +1,10 @@
+usage: train.py [-h] {train,evaluate} ...
+
+Explicit training/evaluation commands. Never searches settings or starts four
+jobs.
+
+positional arguments:
+  {train,evaluate}
+
+options:
+  -h, --help        show this help message and exit

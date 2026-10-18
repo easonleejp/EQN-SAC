@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "E:\文档\SAC(EQN)\experiments\20261011_original_wind_scale_5000ep\frozen_code\train.py", line 4, in <module>
+    main()
+  File "E:\文档\SAC(EQN)\experiments\20261011_original_wind_scale_5000ep\frozen_code\eqnsac\runner.py", line 300, in main
+    train(cfg, args.output, args.resume)
+  File "E:\文档\SAC(EQN)\experiments\20261011_original_wind_scale_5000ep\frozen_code\eqnsac\runner.py", line 199, in train
+    next_state, reward, done, info = env.step(action)
+                                     ^^^^^^^^^^^^^^^^
+  File "E:\文档\SAC(EQN)\experiments\20261011_original_wind_scale_5000ep\frozen_code\eqnsac\environment.py", line 182, in step
+    raise ValueError("Expected two finite actions")
+ValueError: Expected two finite actions
