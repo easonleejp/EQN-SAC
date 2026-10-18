@@ -1,7 +1,8 @@
 """Auditable parameter overrides; no changes to response or profit equations.
 
-Retail bounds, original TOU, hourly response reference, dispatch constraints and
-settlement rules remain the source values. Each run saves its effective inputs.
+Retail bounds, original TOU, dispatch and settlement equations stay unchanged.
+Optional hourly utility coefficients set response curvature and its effective
+reference price; each run saves the coefficients and nominal reference table.
 """
 
 import json
@@ -15,6 +16,52 @@ from eqnsac.scenarios import GeneratorConfig
 RESPONSE_KEYS = {"curvature_mean", "curvature_std", "demand_noise_std", "min_curvature",
                  "participation_noise_std"}
 STORAGE_KEYS = {"soc_min", "soc_max", "soc_init", "p_ch_max", "p_dis_max", "eta_ch", "eta_dis", "c_es"}
+
+
+def _apply_hourly_utility(spec, coefficients):
+    """Validate 24 coefficient pairs and record their equivalent parameters.
+
+    The original global curvature mean remains available as a fallback. When
+    explicit hourly coefficients exist, their curvature means take precedence.
+    The nominal reference table is for audit; Environment uses the current
+    float32 class-load sum to compute the runtime reference for that same U_h.
+    """
+    if not isinstance(coefficients, dict):
+        raise ValueError("hourly_utility must be a dictionary")
+    if not coefficients:
+        return
+    if set(coefficients) != {"a", "b"}:
+        raise ValueError("hourly_utility requires exactly a and b")
+    for name in ("a", "b"):
+        values = coefficients[name]
+        if not isinstance(values, (list, tuple)) or len(values) != 24:
+            raise ValueError("hourly_utility." + name + " must contain 24 finite numbers")
+        for value in values:
+            try:
+                valid = (not isinstance(value, bool)
+                         and isinstance(value, (int, float)) and math.isfinite(value))
+            except OverflowError:
+                valid = False
+            if not valid:
+                raise ValueError("hourly_utility." + name + " must contain 24 finite numbers")
+    demand = spec["demand"]
+    if any(a >= 0 or -a < demand["min_curvature"] for a in coefficients["a"]):
+        raise ValueError("hourly_utility requires a < 0 and -a >= min_curvature")
+    if demand["curvature_std"] != 0:
+        raise ValueError("hourly_utility requires curvature_std=0")
+
+    profile = json.loads((ROOT / "data/profile.json").read_text("utf-8"))
+    reference = [
+        float(b) + 2 * float(a) * float(load)
+        for a, b, load in zip(coefficients["a"], coefficients["b"], profile["baseline_load"])
+    ]
+    if not all(math.isfinite(value) for value in reference):
+        raise ValueError("hourly_utility produces nonfinite nominal reference prices")
+    # Copy the user-provided coefficients: later mutation must not alter a run.
+    # b is a utility intercept, not a retail action, so no price-bound clipping.
+    spec["hourly_utility"] = {name: list(coefficients[name]) for name in ("a", "b")}
+    demand["hourly_curvature_mean"] = [-float(a) for a in coefficients["a"]]
+    spec["hourly_demand_reference"] = reference
 
 
 def validate_overrides(cfg):
@@ -54,6 +101,7 @@ def validate_overrides(cfg):
         raise ValueError("Storage efficiencies must be in (0, 1]")
     if storage["c_es"] < 0:
         raise ValueError("Storage throughput cost must be nonnegative")
+    _apply_hourly_utility(spec, cfg.hourly_utility)
     return spec
 
 

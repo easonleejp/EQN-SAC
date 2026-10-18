@@ -208,6 +208,21 @@ class Environment:
         )
         return lower, upper
 
+    def effective_demand_reference(self, hour):
+        """返回响应和状态共用的参考价；不改变 TOU 计费参考价。
+
+        对 U_h(L)=a_h L²+b_h L，a_h<0、曲率为 -a_h。三类使用
+        a_hi=a_h/share_hi、b_hi=b_h；参考价是 b_h+2*a_h*总基线负荷。
+        使用 response 同样的 float32 类别负荷求和，适配当前场景。
+        未配置逐时效用时直接返回旧表原值，避免往返换算的舍入变化。
+        """
+        coefficients = self.spec.get("hourly_utility")
+        if not coefficients:
+            return self.spec["hourly_demand_reference"][hour]
+        baseline = float(self.classes[hour].astype(np.float32).sum())
+        return (float(coefficients["b"][hour])
+                + 2 * float(coefficients["a"][hour]) * baseline)
+
     def response(self, prices):
         """将三类用户价格 shape=(3,) 转为实际削减量、基线负荷和平均满意度。
 
@@ -219,12 +234,16 @@ class Environment:
         demand = self.demand
         class_load = self.classes[hour].astype(np.float32)
         class_share = class_load / max(float(class_load.sum()), 1e-8)
+        # Explicit hourly utility takes precedence; otherwise preserve the old
+        # scalar mean, random draw, dtype and arithmetic path without conversion.
+        curvature_mean = (demand.hourly_curvature_mean[hour]
+                          if self.spec.get("hourly_utility") else demand.curvature_mean)
         curvature = max(
-            float(self.rng.normal(demand.curvature_mean, demand.curvature_std)),
+            float(self.rng.normal(curvature_mean, demand.curvature_std)),
             demand.min_curvature,
         )
         demand_noise = float(self.rng.normal(0, demand.demand_noise_std))
-        reference_price = self.spec["hourly_demand_reference"][hour]
+        reference_price = self.effective_demand_reference(hour)
         rational_load = (
             class_load
             + (prices - reference_price) / (2 * (-curvature / np.maximum(class_share, 1e-8)))

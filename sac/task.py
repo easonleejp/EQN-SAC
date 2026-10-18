@@ -55,7 +55,7 @@ class Task:
                 env.wind[hour] / max(float(env.generator.wind_capacity), 1.0),
                 state[5], (24 - hour) / 24, np.sin(phase), np.cos(phase),
                 2 * (env.profile["retail_price"][hour] - low) / (high - low) - 1,
-                2 * (env.spec["hourly_demand_reference"][hour] - low) / (high - low) - 1,
+                2 * (env.effective_demand_reference(hour) - low) / (high - low) - 1,
                 (remaining_quotes.max() - self.price_center) / self.price_spread,
                 (remaining_quotes.min() - self.price_center) / self.price_spread,
             ]
@@ -92,7 +92,7 @@ class Task:
                 # At the day end, use the last known nominal hour (no next day).
                 features += [(env.profile["grid_price"][min(hour + lag, 23)] - self.price_center) / self.price_spread
                              for lag in (1, 3, 6)]
-                reference = env.spec["hourly_demand_reference"][hour]
+                reference = env.effective_demand_reference(hour)
                 features += [2 * (reference - env.user.price_min[0]) / (env.user.price_max[0] - env.user.price_min[0]) - 1]
             return np.asarray(features, dtype=np.float32)
         # Previous prices/response do not affect transitions. Temperature is a

@@ -1,0 +1,104 @@
+{
+  "review_date": "2026-10-18",
+  "reviewer": "algorithm_audit independent read-only review",
+  "base_commit": "acc382cc261503cf27558de3b4022d882e0895e5",
+  "verdict": "pass_no_material_defect_found_in_requested_scope",
+  "material_findings": [],
+  "scope": "核验本轮相对HEAD的hourly_utility参数支持；仅读取源码/既有测试日志、进行AST比较和配置/哈希核对。未运行Actor、train、evaluate、环境episode或重复测试。",
+  "mapping_review": {
+    "status": "pass",
+    "source": "eqnsac/environment.py:effective_demand_reference and response; sac/parameters.py:_apply_hourly_utility",
+    "derivation": "U_t(L)=a_t L^2+b_t L; kappa_t=-a_t>0; reference_t=b_t+2*a_t*L0_t. With s_j=L0_tj/L0_t, a_tj=a_t/s_j and b_tj=b_t, the existing rational formula yields L0_tj+(p-reference_t)/(2*a_tj)=(p-b_t)/(2*a_tj).",
+    "share_implementation": "response仍使用class_load/class_load.sum()的当前小时三类份额，分母仍为2*(-curvature/class_share)，并未把aggregate a错误复制成每类相同a。既有1e-8保护保持原样。",
+    "curvature_consistency": "a为24个负有限数，-a不得低于min_curvature；hourly配置要求curvature_std=0，确保实际curvature等于-a，不被噪声或下界改写。",
+    "actual_response": "理性需求之后原满意度、参与率、三次迭代及截断表达式保持原样。"
+  },
+  "reference_and_state_review": {
+    "status": "pass",
+    "runtime_baseline": "effective_demand_reference使用self.classes[hour].astype(np.float32).sum()，与response的class_load.sum()相同。",
+    "shared_state_reference": "nominal11/dispatch17与market18都调用同一个effective_demand_reference(hour)；显示参考价与实际响应一致。",
+    "nominal_table": "parameters.py保存的hourly_demand_reference是名义profile下审计表；实际计算不误用该表代替当前类负荷总量。",
+    "current_information": "helper只读取当前小时类负荷和预设24对系数；没有读取未来实现负荷来计算当前参考价。",
+    "billing_anchor": "计费TOU和price_factor中的billing参考未改为效用参考价。"
+  },
+  "unchanged_physics_and_rewards": {
+    "status": "pass",
+    "exact_ast_comparisons_to_HEAD": {
+      "eqnsac/environment.py:__init__": true,
+      "eqnsac/environment.py:reset": true,
+      "eqnsac/environment.py:state": true,
+      "eqnsac/environment.py:feasible_bounds": true,
+      "eqnsac/environment.py:step": true,
+      "sac/task.py:__init__": true,
+      "sac/task.py:reset": true,
+      "sac/task.py:reference_price_action": true,
+      "sac/task.py:step": true
+    },
+    "meaning": "Environment.step/feasible_bounds与Task.step AST完全相同，涵盖原SOC、效率、功率界、零售价映射、无外送结算和profit*reward_scale。没有新奖励、约束、动作模板或动作后处理。",
+    "agent_source_unchanged_vs_HEAD": {
+      "sac/agent.py": true,
+      "sac/networks.py": true,
+      "sac/replay.py": true
+    }
+  },
+  "legacy_fallback_review": {
+    "status": "pass",
+    "empty_config": "hourly_utility默认{}；_apply_hourly_utility直接返回，不改原spec；helper直接返回原表元素，不做a/b往返换算。",
+    "rng_and_dtype": "无hourly时curvature_mean仍取同一原标量；rng.normal调用次数/顺序、min_curvature及后续算术类型路径保持。",
+    "static_legacy_expansion_comparisons": {
+      "eqnsac/environment.py:response": true,
+      "sac/task.py:observe": true
+    },
+    "comparison_method": "将新增mean选择在空配置分支静态替换为demand.curvature_mean，并把helper调用展开为旧self.spec或env.spec参考表读取；展开后response和observe的完整AST分别与HEAD一致。未实际执行策略。"
+  },
+  "configuration_and_frozen_source": {
+    "changed_keys_vs_previous_run": [
+      "hourly_utility"
+    ],
+    "adopted_a_b_equal_proposal_main_arrays": true,
+    "all_other_configuration_values_equal": true,
+    "core_files_match_new_run_manifest": {
+      "eqnsac/environment.py": true,
+      "sac/config.py": true,
+      "sac/parameters.py": true,
+      "sac/task.py": true,
+      "sac/agent.py": true,
+      "sac/networks.py": true,
+      "sac/replay.py": true
+    },
+    "training_completion_or_result_claim": "本次只核验实现与输入，未据此重新评价训练表现或验证训练完成时刻。"
+  },
+  "existing_tests_review": {
+    "log": "checks/sac_hourly_utility/tests.log",
+    "reported_result": "92 tests, OK, 2.320 seconds",
+    "rerun_by_this_review": false,
+    "inspected_new_tests": [
+      "test_hourly_tables_match_original_scalar_formula_at_every_hour",
+      "test_invalid_or_ambiguous_coefficients_are_rejected",
+      "test_omitted_table_is_bitwise_identical_and_preserves_rng",
+      "test_state_uses_actual_effective_reference_without_future_data",
+      "test_tables_are_copied_and_do_not_modify_tou_or_limits"
+    ],
+    "coverage": "24小时等价标量路径与逐时路径状态/奖励/信息/RNG逐项一致；空配置RNG和数值保持；当前负荷乘1.1时状态参考一致；扰动未来类负荷不影响当前状态；TOU/用户界/储能原样；系数输入复制与非法值拒绝。",
+    "evidence_boundary": "既有空配置测试比较的是当前实现的两种构造方式，不能单独证明与旧commit相同；本审查通过HEAD源码AST比较补充这一点。"
+  },
+  "limitations": [
+    "本轮未重跑测试，92项通过来自已存在日志。",
+    "本次不审核绘图工具差异或宣称新参数有实测行为学依据；代码代数一致不等于经济参数已经验标定。",
+    "固定a,b后，改变基准负荷会改变reference；这是所选效用模型的自洽含义，与固定reference的原情景不是同一参数假设。"
+  ],
+  "source_sha256": {
+    "eqnsac/environment.py": "6617fae8cb909a5e8e697e61b61eef4abcca63dc44d713a5229a4c3e87fdb6b4",
+    "sac/config.py": "f51e5d9aea8c5f212a4d2ca8d05a426056090ec7a108c7564e0da26d2b262c8b",
+    "sac/parameters.py": "dcd29631215e0ff60b5ccc2c578b8aa8167458725b431f65b0ee4b8bb1fc02d0",
+    "sac/task.py": "665340e42cf27dd4420f516478d25b095f129f8a9a15872344884ae3bf3c0d61",
+    "sac/agent.py": "8f2924f6dcee55335094da38bc06fc6051be8c082c56b6952950412b816d7ee1",
+    "sac/networks.py": "b375e1ba98cdc6299fe603dc1db9b00858d4100658466a835422a282dc449854",
+    "sac/replay.py": "c0bdab55d7d3aa85b46f343d6a659f350dffab36c8363f473f9bef6adcaba4eb",
+    "tests/test_hourly_utility.py": "bcc7b86bd9748cbee78f89ab238723c6bf75fb9ab2931a288ede1334062217c4",
+    "checks/sac_hourly_utility/tests.log": "664544e2b1589fbab26ec8a46b6cc6ea318dd05192a16d62510868723a372ab3",
+    "configs/sac/hourly_utility_500.json": "9998e6946421a6d6c971b680e571fe18539505ab8833c3f0fc04716b6774cc21",
+    "runs/sac_hourly_utility_500/config.json": "0561706d859ffb23e5867bbf038f265f3303103251320fca0a14b58b16e5716a",
+    "runs/sac_fixed_day_refined_500/config.json": "6ed17154efe49bf368d3d78d2886bb356adef4992e44f655981ffe6b4f048009"
+  }
+}

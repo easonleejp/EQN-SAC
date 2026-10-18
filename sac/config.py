@@ -29,6 +29,8 @@ class Config:
     # Only response/storage/renewable parameters may change the business model.
     # The reward is always scaled original profit; it is not a configuration knob.
     response_parameters: dict = field(default_factory=dict)
+    # Optional U_h(L)=a_h*L^2+b_h*L coefficients; {} keeps the legacy path.
+    hourly_utility: dict = field(default_factory=dict)
     storage_parameters: dict = field(default_factory=dict)
     renewable_penetration: float = 0.2
     scenario_mode: str = "three_source"

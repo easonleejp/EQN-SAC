@@ -1,0 +1,18 @@
+{
+  "before": "runs/sac_fixed_day_refined_500",
+  "new_run": "runs/sac_hourly_utility_500",
+  "only_configuration_change": "hourly_utility: 24 a and b coefficients",
+  "training_episodes": 500,
+  "internal_evaluation": 0,
+  "final_policy_tests": 1,
+  "midday_window_hours": [
+    11,
+    12,
+    13,
+    14,
+    15
+  ],
+  "proposal_sha256": "c25f54f9fa1197182e581095d336b2feca28e8412fa92f319c3d926ffa03e6b6",
+  "configuration_sha256": "9998e6946421a6d6c971b680e571fe18539505ab8833c3f0fc04716b6774cc21",
+  "note": "Parameter choice fixed before training; static response scans are not Actor evaluations and do not provide action targets."
+}

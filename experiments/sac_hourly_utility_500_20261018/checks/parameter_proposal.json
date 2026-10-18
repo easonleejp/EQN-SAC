@@ -1,0 +1,1049 @@
+{
+  "created_date": "2026-10-18",
+  "status": "offline_parameter_proposal_only_not_trained",
+  "authorization": "按本轮用户授权逐小时调整二次效用系数；8–12%为情景标定参考，未添加奖励项、响应约束或动作规则。",
+  "baseline_run": "runs/sac_fixed_day_refined_500",
+  "baseline_test_sha256": "7917455f778a73034472e9f40a30b483a87ae90dd36b0e95e17210bb42b6094b",
+  "scope_held_fixed": "固定同一天输入；上一轮dispatch17状态、全部训练超参、储能、新能源、满意度及参与率公式、零噪声设置、零售价界与利润目标。仅修改下面24对a,b。响应参考价由a,b自洽导出，用于原状态中已有对应特征。",
+  "utility_convention": {
+    "aggregate": "U_t(L)=a_t*L^2+b_t*L, a_t<0; maximize U_t(L)-p*L gives rational L=(p-b_t)/(2*a_t).",
+    "forward_mapping": "a_t=-kappa_t; b_t=reference_t+2*kappa_t*L0_t.",
+    "inverse_mapping": "kappa_t=-a_t; reference_t=b_t+2*a_t*L0_t.",
+    "class_mapping": "For class share s_j, a_tj=a_t/s_j and b_tj=b_t. Then L_tj=s_j*(p-b_t)/(2*a_t)=L0_tj+(p-reference_t)/(2*a_tj). Do not give every class the same aggregate a_t.",
+    "actual_response": "以上仅是理性需求层。最终负荷继续使用原3次满意度/参与率迭代，含原非负负荷处理；不把理性最优解替代实际响应。",
+    "baseline_dependency": "b_t用本次固定名义L0构造。未来若改变基准负荷，固定a,b与固定reference是不同模型；本文件只对应当前固定日。",
+    "units": "沿当前建模假设：L是1小时负荷/电量数值，p为澳分/kWh；b与p同单位，a为电价/负荷单位。单位仍属项目假设，非原始数据已核实事实。"
+  },
+  "construction": {
+    "window": "w_t=(1+cos(pi*(t-11)/5))/2 for abs(t-11)<=5, otherwise 0; hour is zero-based 0..23.",
+    "curvature": "kappa_t=0.0011*(1-0.20*w_t)",
+    "reference": "reference_t=previous_reference_t+1.8*w_t",
+    "modified_hours": [
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
+    "rationale": "采用单个升余弦窗口和两个幅度参数，避免24小时逐点任意拟合。提高午间基准边际效用，同时小幅降低曲率绝对值，使降低零售价仍有销量回报；两者结合减轻削减，避免仅增大kappa使价格更容易顶格。",
+    "caveat": "较小kappa本身意味着理性需求更敏感，不能将本方案称为单纯降低价格弹性。午间削减减少来自a,b联合变化及由此形成的利润最优价格变化。"
+  },
+  "candidate": {
+    "hourly_utility_a": [
+      -0.0011,
+      -0.0011,
+      -0.0011,
+      -0.0011,
+      -0.0011,
+      -0.0011,
+      -0.0011,
+      -0.0010789918693812444,
+      -0.0010239918693812444,
+      -0.0009560081306187559,
+      -0.0009010081306187557,
+      -0.0008800000000000001,
+      -0.0009010081306187557,
+      -0.0009560081306187559,
+      -0.0010239918693812444,
+      -0.0010789918693812444,
+      -0.0011,
+      -0.0011,
+      -0.0011,
+      -0.0011,
+      -0.0011,
+      -0.0011,
+      -0.0011,
+      -0.0011
+    ],
+    "hourly_utility_b": [
+      34.7821474609375,
+      34.25131206054688,
+      33.86049462890625,
+      33.081274609375,
+      32.84840869140625,
+      32.93756831054688,
+      33.930890869140626,
+      35.857164150332686,
+      37.16575812975093,
+      37.61590879831891,
+      38.19185681901226,
+      38.413610703125,
+      38.59916912713787,
+      38.76359991767754,
+      38.826065974851204,
+      38.925306976471944,
+      38.86455751953125,
+      39.98757724609375,
+      41.045470214843746,
+      40.744334375,
+      38.69025537109375,
+      37.850609130859375,
+      36.62027670898438,
+      36.432061328125
+    ],
+    "hourly_kappa": [
+      0.0011,
+      0.0011,
+      0.0011,
+      0.0011,
+      0.0011,
+      0.0011,
+      0.0011,
+      0.0010789918693812444,
+      0.0010239918693812444,
+      0.0009560081306187559,
+      0.0009010081306187557,
+      0.0008800000000000001,
+      0.0009010081306187557,
+      0.0009560081306187559,
+      0.0010239918693812444,
+      0.0010789918693812444,
+      0.0011,
+      0.0011,
+      0.0011,
+      0.0011,
+      0.0011,
+      0.0011,
+      0.0011,
+      0.0011
+    ],
+    "hourly_demand_reference": [
+      28.3,
+      28.3,
+      28.3,
+      28.3,
+      28.3,
+      28.3,
+      28.3,
+      28.47188470506255,
+      29.22188470506255,
+      29.87811529493745,
+      30.62811529493745,
+      31.0,
+      31.12811529493745,
+      30.87811529493745,
+      30.42188470506255,
+      30.071884705062548,
+      29.8,
+      30.6,
+      30.4,
+      30.5,
+      29.2,
+      29.0,
+      28.6,
+      28.5
+    ],
+    "class_shares": [
+      [
+        0.3197357725598206,
+        0.4210227300974928,
+        0.25924149734268653
+      ],
+      [
+        0.313069836531829,
+        0.4268017242554124,
+        0.26012843921275863
+      ],
+      [
+        0.304667147381873,
+        0.43499956049815364,
+        0.2603333162684265
+      ],
+      [
+        0.3064316361157618,
+        0.4317786140071338,
+        0.2617897498771044
+      ],
+      [
+        0.3132422525864074,
+        0.43071823067412507,
+        0.2560394872176385
+      ],
+      [
+        0.31877933138598585,
+        0.42866172035307054,
+        0.25255894826094366
+      ],
+      [
+        0.32214207395388744,
+        0.42307507038310443,
+        0.25478287950956224
+      ],
+      [
+        0.33127339932912264,
+        0.4194738846704713,
+        0.24925271600040605
+      ],
+      [
+        0.33743802584524685,
+        0.41811503024980123,
+        0.24444694390495192
+      ],
+      [
+        0.331936653833021,
+        0.418875654401305,
+        0.24918769176567396
+      ],
+      [
+        0.3289449453876747,
+        0.41578887856394686,
+        0.2552661760483784
+      ],
+      [
+        0.3242238064939194,
+        0.4176758632193572,
+        0.25810033028672336
+      ],
+      [
+        0.32753108391018704,
+        0.4215712773504962,
+        0.2508976387393168
+      ],
+      [
+        0.32532264108388226,
+        0.4213568240786948,
+        0.253320534837423
+      ],
+      [
+        0.3259152990249693,
+        0.4187298494761221,
+        0.25535485149890863
+      ],
+      [
+        0.32564873790777865,
+        0.41961137197536025,
+        0.2547398901168611
+      ],
+      [
+        0.3290150456034933,
+        0.4182712790131732,
+        0.2527136753833335
+      ],
+      [
+        0.3325157132164494,
+        0.4151599311178271,
+        0.2523243556657235
+      ],
+      [
+        0.3375801781338279,
+        0.41518264696192164,
+        0.24723717490425043
+      ],
+      [
+        0.33376965491901467,
+        0.4145979140871158,
+        0.2516324309938695
+      ],
+      [
+        0.33103347476644296,
+        0.41613774984959645,
+        0.2528287753839606
+      ],
+      [
+        0.3353028314639471,
+        0.41168275102445806,
+        0.25301443268313184
+      ],
+      [
+        0.33532717705789,
+        0.4137983593548936,
+        0.25087444684498306
+      ],
+      [
+        0.32934646239152937,
+        0.41568907241413494,
+        0.2549644651943357
+      ]
+    ],
+    "hourly": [
+      {
+        "hour": 0,
+        "window_weight": 0.0,
+        "nominal_baseline_load": 2946.4306640625,
+        "a": -0.0011,
+        "b": 34.7821474609375,
+        "kappa": 0.0011,
+        "response_reference": 28.3,
+        "previous_kappa": 0.0011,
+        "previous_reference": 28.3,
+        "class_a": [
+          -0.0034403407263233167,
+          -0.002612685542524704,
+          -0.004243147841975046
+        ],
+        "class_b": [
+          34.7821474609375,
+          34.7821474609375,
+          34.7821474609375
+        ],
+        "saved_policy_price": 29.234376907348633,
+        "saved_policy_old_load_change_pct": -8.410194074199284,
+        "candidate_response_at_saved_price_pct": -8.410194074199284,
+        "original_static_profit_best_price": 29.415,
+        "original_static_profit_best_load_change_pct": -10.134481438578524,
+        "candidate_static_profit_best_price": 29.415,
+        "candidate_static_profit_best_load_change_pct": -10.134481438578524,
+        "candidate_response_at_price_cap_pct": -43.653449701621895
+      },
+      {
+        "hour": 1,
+        "window_weight": 0.0,
+        "nominal_baseline_load": 2705.141845703125,
+        "a": -0.0011,
+        "b": 34.25131206054688,
+        "kappa": 0.0011,
+        "response_reference": 28.3,
+        "previous_kappa": 0.0011,
+        "previous_reference": 28.3,
+        "class_a": [
+          -0.0035135930442413152,
+          -0.002577309175399965,
+          -0.004228680275516941
+        ],
+        "class_b": [
+          34.25131206054688,
+          34.25131206054688,
+          34.25131206054688
+        ],
+        "saved_policy_price": 29.279088973999023,
+        "saved_policy_old_load_change_pct": -9.674113272241513,
+        "candidate_response_at_saved_price_pct": -9.674131322357837,
+        "original_static_profit_best_price": 28.78,
+        "original_static_profit_best_load_change_pct": -4.6069041153453005,
+        "candidate_static_profit_best_price": 28.78,
+        "candidate_static_profit_best_load_change_pct": -4.6069041153453005,
+        "candidate_response_at_price_cap_pct": -47.79672157542137
+      },
+      {
+        "hour": 2,
+        "window_weight": 0.0,
+        "nominal_baseline_load": 2527.49755859375,
+        "a": -0.0011,
+        "b": 33.86049462890625,
+        "kappa": 0.0011,
+        "response_reference": 28.3,
+        "previous_kappa": 0.0011,
+        "previous_reference": 28.3,
+        "class_a": [
+          -0.003610497585488758,
+          -0.002528738187092189,
+          -0.004225352389648829
+        ],
+        "class_b": [
+          33.86049462890625,
+          33.86049462890625,
+          33.86049462890625
+        ],
+        "saved_policy_price": 29.25307273864746,
+        "saved_policy_old_load_change_pct": -10.005901881937252,
+        "candidate_response_at_saved_price_pct": -10.00591154131849,
+        "original_static_profit_best_price": 28.675,
+        "original_static_profit_best_load_change_pct": -3.7995562480258593,
+        "candidate_static_profit_best_price": 28.675,
+        "candidate_static_profit_best_load_change_pct": -3.7995562480258593,
+        "candidate_response_at_price_cap_pct": -50.86161197685999
+      },
+      {
+        "hour": 3,
+        "window_weight": 0.0,
+        "nominal_baseline_load": 2173.306640625,
+        "a": -0.0011,
+        "b": 33.081274609375,
+        "kappa": 0.0011,
+        "response_reference": 28.3,
+        "previous_kappa": 0.0011,
+        "previous_reference": 28.3,
+        "class_a": [
+          -0.003589707687963553,
+          -0.0025476018596461243,
+          -0.004201845184986763
+        ],
+        "class_b": [
+          33.081274609375,
+          33.081274609375,
+          33.081274609375
+        ],
+        "saved_policy_price": 28.226999282836914,
+        "saved_policy_old_load_change_pct": 0.8402509856362705,
+        "candidate_response_at_saved_price_pct": 0.8402509856362705,
+        "original_static_profit_best_price": 27.85,
+        "original_static_profit_best_load_change_pct": 5.041314942578312,
+        "candidate_static_profit_best_price": 27.85,
+        "candidate_static_profit_best_load_change_pct": 5.041314942578312,
+        "candidate_response_at_price_cap_pct": -59.52928229413526
+      },
+      {
+        "hour": 4,
+        "window_weight": 0.0,
+        "nominal_baseline_load": 2067.45849609375,
+        "a": -0.0011,
+        "b": 32.84840869140625,
+        "kappa": 0.0011,
+        "response_reference": 28.3,
+        "previous_kappa": 0.0011,
+        "previous_reference": 28.3,
+        "class_a": [
+          -0.003511659078292979,
+          -0.002553873789550003,
+          -0.004296212322378926
+        ],
+        "class_b": [
+          32.84840869140625,
+          32.84840869140625,
+          32.84840869140625
+        ],
+        "saved_policy_price": 26.873483657836914,
+        "saved_policy_old_load_change_pct": 15.450780616203241,
+        "candidate_response_at_saved_price_pct": 15.450780616203241,
+        "original_static_profit_best_price": 27.465,
+        "original_static_profit_best_load_change_pct": 9.453196682691111,
+        "candidate_static_profit_best_price": 27.465,
+        "candidate_static_profit_best_load_change_pct": 9.453196682691111,
+        "candidate_response_at_price_cap_pct": -62.19432803003196
+      },
+      {
+        "hour": 5,
+        "window_weight": 0.0,
+        "nominal_baseline_load": 2107.985595703125,
+        "a": -0.0011,
+        "b": 32.93756831054688,
+        "kappa": 0.0011,
+        "response_reference": 28.3,
+        "previous_kappa": 0.0011,
+        "previous_reference": 28.3,
+        "class_a": [
+          -0.0034506628620413695,
+          -0.0025661260331199544,
+          -0.00435541883419423
+        ],
+        "class_b": [
+          32.93756831054688,
+          32.93756831054688,
+          32.93756831054688
+        ],
+        "saved_policy_price": 26.939056396484375,
+        "saved_policy_old_load_change_pct": 14.497639591077881,
+        "candidate_response_at_saved_price_pct": 14.497639591077881,
+        "original_static_profit_best_price": 27.665,
+        "original_static_profit_best_load_change_pct": 7.137189553906409,
+        "candidate_static_profit_best_price": 27.665,
+        "candidate_static_profit_best_load_change_pct": 7.137189553906409,
+        "candidate_response_at_price_cap_pct": -60.9030757412087
+      },
+      {
+        "hour": 6,
+        "window_weight": 0.0,
+        "nominal_baseline_load": 2559.495849609375,
+        "a": -0.0011,
+        "b": 33.930890869140626,
+        "kappa": 0.0011,
+        "response_reference": 28.3,
+        "previous_kappa": 0.0011,
+        "previous_reference": 28.3,
+        "class_a": [
+          -0.0034146424479698915,
+          -0.0026000113856955082,
+          -0.004317401554285817
+        ],
+        "class_b": [
+          33.930890869140626,
+          33.930890869140626,
+          33.930890869140626
+        ],
+        "saved_policy_price": 28.66522979736328,
+        "saved_policy_old_load_change_pct": -3.584089388331113,
+        "candidate_response_at_saved_price_pct": -3.584089388331113,
+        "original_static_profit_best_price": 28.49,
+        "original_static_profit_best_load_change_pct": -1.8441875693636645,
+        "candidate_static_profit_best_price": 28.49,
+        "candidate_static_profit_best_load_change_pct": -1.8441875693636645,
+        "candidate_response_at_price_cap_pct": -49.53224984130118
+      },
+      {
+        "hour": 7,
+        "window_weight": 0.09549150281252633,
+        "nominal_baseline_load": 3422.305419921875,
+        "a": -0.0010789918693812444,
+        "b": 35.857164150332686,
+        "kappa": 0.0010789918693812444,
+        "response_reference": 28.47188470506255,
+        "previous_kappa": 0.0011,
+        "previous_reference": 28.3,
+        "class_a": [
+          -0.0032571038651650315,
+          -0.0025722504041672933,
+          -0.004328907169779793
+        ],
+        "class_b": [
+          35.857164150332686,
+          35.857164150332686,
+          35.857164150332686
+        ],
+        "saved_policy_price": 29.93876075744629,
+        "saved_policy_old_load_change_pct": -12.725290048062588,
+        "candidate_response_at_saved_price_pct": -11.552670707872581,
+        "original_static_profit_best_price": 29.775,
+        "original_static_profit_best_load_change_pct": -11.363232492944842,
+        "candidate_static_profit_best_price": 29.8,
+        "candidate_static_profit_best_load_change_pct": -10.388283779658714,
+        "candidate_response_at_price_cap_pct": -35.48136032832058
+      },
+      {
+        "hour": 8,
+        "window_weight": 0.34549150281252633,
+        "nominal_baseline_load": 3878.875244140625,
+        "a": -0.0010239918693812444,
+        "b": 37.16575812975093,
+        "kappa": 0.0010239918693812444,
+        "response_reference": 29.22188470506255,
+        "previous_kappa": 0.0011,
+        "previous_reference": 28.6,
+        "class_a": [
+          -0.0030346072195516563,
+          -0.0024490673506031685,
+          -0.004189014814516979
+        ],
+        "class_b": [
+          37.16575812975093,
+          37.16575812975093,
+          37.16575812975093
+        ],
+        "saved_policy_price": 30.65891456604004,
+        "saved_policy_old_load_change_pct": -14.107483109916597,
+        "candidate_response_at_saved_price_pct": -10.418090577637418,
+        "original_static_profit_best_price": 30.9,
+        "original_static_profit_best_load_change_pct": -15.915138546235863,
+        "candidate_static_profit_best_price": 30.91,
+        "candidate_static_profit_best_load_change_pct": -12.376452153161088,
+        "candidate_response_at_price_cap_pct": -25.680095756052435
+      },
+      {
+        "hour": 9,
+        "window_weight": 0.6545084971874737,
+        "nominal_baseline_load": 4046.9287109375,
+        "a": -0.0009560081306187559,
+        "b": 37.61590879831891,
+        "kappa": 0.0009560081306187559,
+        "response_reference": 29.87811529493745,
+        "previous_kappa": 0.0011,
+        "previous_reference": 28.7,
+        "class_a": [
+          -0.0028800920885937195,
+          -0.002282319634893007,
+          -0.0038364981987864285
+        ],
+        "class_b": [
+          37.61590879831891,
+          37.61590879831891,
+          37.61590879831891
+        ],
+        "saved_policy_price": 31.39150047302246,
+        "saved_policy_old_load_change_pct": -18.252333764875228,
+        "candidate_response_at_saved_price_pct": -11.503828979103803,
+        "original_static_profit_best_price": 31.185000000000002,
+        "original_static_profit_best_load_change_pct": -16.71762923030703,
+        "candidate_static_profit_best_price": 31.185000000000002,
+        "candidate_static_profit_best_load_change_pct": -9.839951448520834,
+        "candidate_response_at_price_cap_pct": -20.929391622456748
+      },
+      {
+        "hour": 10,
+        "window_weight": 0.9045084971874737,
+        "nominal_baseline_load": 4197.376953125,
+        "a": -0.0009010081306187557,
+        "b": 38.19185681901226,
+        "kappa": 0.0009010081306187557,
+        "response_reference": 30.62811529493745,
+        "previous_kappa": 0.0011,
+        "previous_reference": 29.0,
+        "class_a": [
+          -0.002739084893239146,
+          -0.002166984681578451,
+          -0.0035296808396894515
+        ],
+        "class_b": [
+          38.19185681901226,
+          38.19185681901226,
+          38.19185681901226
+        ],
+        "saved_policy_price": 32.08364486694336,
+        "saved_policy_old_load_change_pct": -20.52203594413736,
+        "candidate_response_at_saved_price_pct": -11.419380686505754,
+        "original_static_profit_best_price": 31.715,
+        "original_static_profit_best_load_change_pct": -17.8208511919414,
+        "candidate_static_profit_best_price": 31.7,
+        "candidate_static_profit_best_load_change_pct": -8.257621831342766,
+        "candidate_response_at_price_cap_pct": -14.973241752080103
+      },
+      {
+        "hour": 11,
+        "window_weight": 1.0,
+        "nominal_baseline_load": 4212.27880859375,
+        "a": -0.0008800000000000001,
+        "b": 38.413610703125,
+        "kappa": 0.0008800000000000001,
+        "response_reference": 31.0,
+        "previous_kappa": 0.0011,
+        "previous_reference": 29.2,
+        "class_a": [
+          -0.0027141745373855017,
+          -0.002106896944480216,
+          -0.0034095268263407844
+        ],
+        "class_b": [
+          38.413610703125,
+          38.413610703125,
+          38.413610703125
+        ],
+        "saved_policy_price": 32.43760681152344,
+        "saved_policy_old_load_change_pct": -21.712917974759204,
+        "candidate_response_at_saved_price_pct": -11.597778397813219,
+        "original_static_profit_best_price": 32.13,
+        "original_static_profit_best_load_change_pct": -19.428615444500686,
+        "candidate_static_profit_best_price": 32.1,
+        "candidate_static_profit_best_load_change_pct": -8.73108368658545,
+        "candidate_response_at_price_cap_pct": -12.13719377651854
+      },
+      {
+        "hour": 12,
+        "window_weight": 0.9045084971874737,
+        "nominal_baseline_load": 4145.94140625,
+        "a": -0.0009010081306187557,
+        "b": 38.59916912713787,
+        "kappa": 0.0009010081306187557,
+        "response_reference": 31.12811529493745,
+        "previous_kappa": 0.0011,
+        "previous_reference": 29.5,
+        "class_a": [
+          -0.0027509087682982265,
+          -0.002137261666120706,
+          -0.0035911383428957064
+        ],
+        "class_b": [
+          38.59916912713787,
+          38.59916912713787,
+          38.59916912713787
+        ],
+        "saved_policy_price": 32.45222854614258,
+        "saved_policy_old_load_change_pct": -20.11505157057778,
+        "candidate_response_at_saved_price_pct": -10.609355582125213,
+        "original_static_profit_best_price": 32.375,
+        "original_static_profit_best_load_change_pct": -19.53177335515437,
+        "candidate_static_profit_best_price": 32.365,
+        "candidate_static_profit_best_load_change_pct": -9.869067876057247,
+        "candidate_response_at_price_cap_pct": -11.017263447592285
+      },
+      {
+        "hour": 13,
+        "window_weight": 0.6545084971874737,
+        "nominal_baseline_load": 4124.17236328125,
+        "a": -0.0009560081306187559,
+        "b": 38.76359991767754,
+        "kappa": 0.0009560081306187559,
+        "response_reference": 30.87811529493745,
+        "previous_kappa": 0.0011,
+        "previous_reference": 29.7,
+        "class_a": [
+          -0.002938646161956664,
+          -0.002268880141455136,
+          -0.003773906964282648
+        ],
+        "class_b": [
+          38.76359991767754,
+          38.76359991767754,
+          38.76359991767754
+        ],
+        "saved_policy_price": 32.456214904785156,
+        "saved_policy_old_load_change_pct": -17.779247848615466,
+        "candidate_response_at_saved_price_pct": -11.482316823747185,
+        "original_static_profit_best_price": 32.5,
+        "original_static_profit_best_load_change_pct": -18.04867335479834,
+        "candidate_static_profit_best_price": 32.5,
+        "candidate_static_profit_best_load_change_pct": -11.79565502311366,
+        "candidate_response_at_price_cap_pct": -11.79565502311366
+      },
+      {
+        "hour": 14,
+        "window_weight": 0.34549150281252633,
+        "nominal_baseline_load": 4103.63671875,
+        "a": -0.0010239918693812444,
+        "b": 38.826065974851204,
+        "kappa": 0.0010239918693812444,
+        "response_reference": 30.42188470506255,
+        "previous_kappa": 0.0011,
+        "previous_reference": 29.8,
+        "class_a": [
+          -0.0031418956779405236,
+          -0.002445471395608345,
+          -0.00401007407288528
+        ],
+        "class_b": [
+          38.826065974851204,
+          38.826065974851204,
+          38.826065974851204
+        ],
+        "saved_policy_price": 32.44556427001953,
+        "saved_policy_old_load_change_pct": -17.06335296150232,
+        "candidate_response_at_saved_price_pct": -13.886013358958472,
+        "original_static_profit_best_price": 32.5,
+        "original_static_profit_best_load_change_pct": -17.399093886805815,
+        "candidate_static_profit_best_price": 32.5,
+        "candidate_static_profit_best_load_change_pct": -14.249317725988098,
+        "candidate_response_at_price_cap_pct": -14.249317725988098
+      },
+      {
+        "hour": 15,
+        "window_weight": 0.09549150281252633,
+        "nominal_baseline_load": 4102.63623046875,
+        "a": -0.0010789918693812444,
+        "b": 38.925306976471944,
+        "kappa": 0.0010789918693812444,
+        "response_reference": 30.071884705062548,
+        "previous_kappa": 0.0011,
+        "previous_reference": 29.9,
+        "class_a": [
+          -0.0033133611274329794,
+          -0.0025714075962760207,
+          -0.004235661202830308
+        ],
+        "class_b": [
+          38.925306976471944,
+          38.925306976471944,
+          38.925306976471944
+        ],
+        "saved_policy_price": 32.449920654296875,
+        "saved_policy_old_load_change_pct": -16.477007983267235,
+        "candidate_response_at_saved_price_pct": -15.6260640815577,
+        "original_static_profit_best_price": 32.5,
+        "original_static_profit_best_load_change_pct": -16.787319605260475,
+        "candidate_static_profit_best_price": 32.5,
+        "candidate_static_profit_best_load_change_pct": -15.943135838606059,
+        "candidate_response_at_price_cap_pct": -15.943135838606059
+      },
+      {
+        "hour": 16,
+        "window_weight": 0.0,
+        "nominal_baseline_load": 4120.25341796875,
+        "a": -0.0011,
+        "b": 38.86455751953125,
+        "kappa": 0.0011,
+        "response_reference": 29.8,
+        "previous_kappa": 0.0011,
+        "previous_reference": 29.8,
+        "class_a": [
+          -0.0033433121515228383,
+          -0.0026298721791159756,
+          -0.00435275217429941
+        ],
+        "class_b": [
+          38.86455751953125,
+          38.86455751953125,
+          38.86455751953125
+        ],
+        "saved_policy_price": 32.464134216308594,
+        "saved_policy_old_load_change_pct": -17.139419068746133,
+        "candidate_response_at_saved_price_pct": -17.139419068746133,
+        "original_static_profit_best_price": 32.5,
+        "original_static_profit_best_load_change_pct": -17.360092028244146,
+        "candidate_static_profit_best_price": 32.5,
+        "candidate_static_profit_best_load_change_pct": -17.360092028244146,
+        "candidate_response_at_price_cap_pct": -17.360092028244146
+      },
+      {
+        "hour": 17,
+        "window_weight": 0.0,
+        "nominal_baseline_load": 4267.08056640625,
+        "a": -0.0011,
+        "b": 39.98757724609375,
+        "kappa": 0.0011,
+        "response_reference": 30.6,
+        "previous_kappa": 0.0011,
+        "previous_reference": 30.6,
+        "class_a": [
+          -0.0033081143425061563,
+          -0.0026495813240893125,
+          -0.004359468181729028
+        ],
+        "class_b": [
+          39.98757724609375,
+          39.98757724609375,
+          39.98757724609375
+        ],
+        "saved_policy_price": 32.47251892089844,
+        "saved_policy_old_load_change_pct": -11.396528954577201,
+        "candidate_response_at_saved_price_pct": -11.396528954577201,
+        "original_static_profit_best_price": 32.5,
+        "original_static_profit_best_load_change_pct": -11.559179497014583,
+        "candidate_static_profit_best_price": 32.5,
+        "candidate_static_profit_best_load_change_pct": -11.559179497014583,
+        "candidate_response_at_price_cap_pct": -11.559179497014583
+      },
+      {
+        "hour": 18,
+        "window_weight": 0.0,
+        "nominal_baseline_load": 4838.85009765625,
+        "a": -0.0011,
+        "b": 41.045470214843746,
+        "kappa": 0.0011,
+        "response_reference": 30.4,
+        "previous_kappa": 0.0011,
+        "previous_reference": 30.4,
+        "class_a": [
+          -0.00325848515775095,
+          -0.0026494363578275617,
+          -0.004449169104225552
+        ],
+        "class_b": [
+          41.045470214843746,
+          41.045470214843746,
+          41.045470214843746
+        ],
+        "saved_policy_price": 32.48702621459961,
+        "saved_policy_old_load_change_pct": -11.149090839372288,
+        "candidate_response_at_saved_price_pct": -11.149090839372288,
+        "original_static_profit_best_price": 32.5,
+        "original_static_profit_best_load_change_pct": -11.21590237705179,
+        "candidate_static_profit_best_price": 32.5,
+        "candidate_static_profit_best_load_change_pct": -11.21590237705179,
+        "candidate_response_at_price_cap_pct": -11.21590237705179
+      },
+      {
+        "hour": 19,
+        "window_weight": 0.0,
+        "nominal_baseline_load": 4656.515625,
+        "a": -0.0011,
+        "b": 40.744334375,
+        "kappa": 0.0011,
+        "response_reference": 30.5,
+        "previous_kappa": 0.0011,
+        "previous_reference": 30.5,
+        "class_a": [
+          -0.00329568606309313,
+          -0.002653173020472232,
+          -0.004371455601550816
+        ],
+        "class_b": [
+          40.744334375,
+          40.744334375,
+          40.744334375
+        ],
+        "saved_policy_price": 32.48571014404297,
+        "saved_policy_old_load_change_pct": -10.957722210477927,
+        "candidate_response_at_saved_price_pct": -10.957722210477927,
+        "original_static_profit_best_price": 32.5,
+        "original_static_profit_best_load_change_pct": -11.033965763698038,
+        "candidate_static_profit_best_price": 32.5,
+        "candidate_static_profit_best_load_change_pct": -11.033965763698038,
+        "candidate_response_at_price_cap_pct": -11.033965763698038
+      },
+      {
+        "hour": 20,
+        "window_weight": 0.0,
+        "nominal_baseline_load": 4313.75244140625,
+        "a": -0.0011,
+        "b": 38.69025537109375,
+        "kappa": 0.0011,
+        "response_reference": 29.2,
+        "previous_kappa": 0.0011,
+        "previous_reference": 29.2,
+        "class_a": [
+          -0.003322926784900207,
+          -0.0026433554763959054,
+          -0.004350770589026014
+        ],
+        "class_b": [
+          38.69025537109375,
+          38.69025537109375,
+          38.69025537109375
+        ],
+        "saved_policy_price": 32.46392822265625,
+        "saved_policy_old_load_change_pct": -19.97536947206795,
+        "candidate_response_at_saved_price_pct": -19.97536947206795,
+        "original_static_profit_best_price": 32.5,
+        "original_static_profit_best_load_change_pct": -20.182612273496204,
+        "candidate_static_profit_best_price": 32.5,
+        "candidate_static_profit_best_load_change_pct": -20.182612273496204,
+        "candidate_response_at_price_cap_pct": -20.182612273496204
+      },
+      {
+        "hour": 21,
+        "window_weight": 0.0,
+        "nominal_baseline_load": 4023.004150390625,
+        "a": -0.0011,
+        "b": 37.850609130859375,
+        "kappa": 0.0011,
+        "response_reference": 29.0,
+        "previous_kappa": 0.0011,
+        "previous_reference": 29.0,
+        "class_a": [
+          -0.0032806164958325912,
+          -0.0026719603803236564,
+          -0.004347578074242148
+        ],
+        "class_b": [
+          37.850609130859375,
+          37.850609130859375,
+          37.850609130859375
+        ],
+        "saved_policy_price": 31.218358993530273,
+        "saved_policy_old_load_change_pct": -14.86700782396162,
+        "candidate_response_at_saved_price_pct": -14.867019961191207,
+        "original_static_profit_best_price": 31.665,
+        "original_static_profit_best_load_change_pct": -18.179136405771857,
+        "candidate_static_profit_best_price": 31.665,
+        "candidate_static_profit_best_load_change_pct": -18.179136405771857,
+        "candidate_response_at_price_cap_pct": -24.637635424931993
+      },
+      {
+        "hour": 22,
+        "window_weight": 0.0,
+        "nominal_baseline_load": 3645.580322265625,
+        "a": -0.0011,
+        "b": 36.62027670898438,
+        "kappa": 0.0011,
+        "response_reference": 28.6,
+        "previous_kappa": 0.0011,
+        "previous_reference": 28.6,
+        "class_a": [
+          -0.003280378314848304,
+          -0.0026582995682121265,
+          -0.004384663379765007
+        ],
+        "class_b": [
+          36.62027670898438,
+          36.62027670898438,
+          36.62027670898438
+        ],
+        "saved_policy_price": 30.403684616088867,
+        "saved_policy_old_load_change_pct": -13.074833697722465,
+        "candidate_response_at_saved_price_pct": -13.074833697722465,
+        "original_static_profit_best_price": 30.52,
+        "original_static_profit_best_load_change_pct": -13.987405956364253,
+        "candidate_static_profit_best_price": 30.52,
+        "candidate_static_profit_best_load_change_pct": -13.987405956364253,
+        "candidate_response_at_price_cap_pct": -30.68047735723446
+      },
+      {
+        "hour": 23,
+        "window_weight": 0.0,
+        "nominal_baseline_load": 3605.482421875,
+        "a": -0.0011,
+        "b": 36.432061328125,
+        "kappa": 0.0011,
+        "response_reference": 28.5,
+        "previous_kappa": 0.0011,
+        "previous_reference": 28.5,
+        "class_a": [
+          -0.0033399478227651718,
+          -0.0026462086039733866,
+          -0.0043143267010231105
+        ],
+        "class_b": [
+          36.432061328125,
+          36.432061328125,
+          36.432061328125
+        ],
+        "saved_policy_price": 30.364778518676758,
+        "saved_policy_old_load_change_pct": -13.96928614030174,
+        "candidate_response_at_saved_price_pct": -13.96928614030174,
+        "original_static_profit_best_price": 30.265,
+        "original_static_profit_best_load_change_pct": -13.161190613036677,
+        "candidate_static_profit_best_price": 30.265,
+        "candidate_static_profit_best_load_change_pct": -13.161190613036677,
+        "candidate_response_at_price_cap_pct": -32.757358179031826
+      }
+    ]
+  },
+  "offline_method": {
+    "kind": "deterministic per-hour original-profit price grid scan; no storage actions, no Agent, no training or policy evaluation",
+    "retail_price_grid": {
+      "min": 26.5,
+      "max": 32.5,
+      "step": 0.005,
+      "points": 1201
+    },
+    "noise": "all response noise is zero as in baseline run",
+    "kernel_max_load_abs_error_against_Environment_response": 0.00048828125,
+    "rational_class_mapping_max_abs_error_float32": 0.0001349029337234242,
+    "not_joint_policy_optimum": "静态扫描仅检验参数经济性；它不替代SAC联合定价储能训练，且无储能时的逐小时最优不能无条件宣称为带储能联合最优。"
+  },
+  "summary": {
+    "midday_hours": [
+      10,
+      11,
+      12
+    ],
+    "saved_policy_original_midday_reduction_pct": [
+      20.52203594413736,
+      21.712917974759204,
+      20.11505157057778
+    ],
+    "candidate_at_same_saved_prices_midday_reduction_pct": [
+      11.419380686505754,
+      11.597778397813219,
+      10.609355582125213
+    ],
+    "candidate_static_best_midday_reduction_pct": [
+      8.257621831342766,
+      8.73108368658545,
+      9.869067876057247
+    ],
+    "candidate_static_best_midday_prices": [
+      31.7,
+      32.1,
+      32.365
+    ],
+    "original_static_cap_hours": [
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20
+    ],
+    "candidate_static_cap_hours": [
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20
+    ],
+    "original_static_wholesale_price_correlation": 0.9250700810481848,
+    "candidate_static_wholesale_price_correlation": 0.9250377378451017,
+    "candidate_static_mean_prices_by_original_TOU": {
+      "26.5": 28.711666666666662,
+      "28.5": 31.49214285714286,
+      "32.5": 32.5
+    },
+    "candidate_daily_load_change_at_static_prices_pct": -10.421607589340487,
+    "candidate_all_a_negative": true,
+    "candidate_all_rational_loads_positive_across_price_bounds": true,
+    "limited_claim": "候选满足本次午间目标的离线响应诊断，并保留低/平/高TOU价位均值顺序；不保证训练后逐小时响应或价格单调，不宣称经验标定。"
+  },
+  "local_reference_check": {
+    "path": "archive/local/EQN-SAC_项目交接_20261018/04_参考论文/已有原文与辅助译文/!现货市场环境下售电商激励型需求响应优化策略_郭昆健、高赐威(用户收益函数).pdf",
+    "locator": "PDF第4页，刊内页3，式(7)、式(10)",
+    "finding": "该文二次式是削减/转移响应量x的响应成本k1*x^2+k2*x，及扣成本后的激励响应收益；不能直接声称本文a,b由该文用电效用U(L)原式或表格标定。当前a,b是对项目现有理性响应层的代数重参数化。"
+  },
+  "limitations": [
+    "目标8–12%由本次情景需求给定，缺少真实用户价格—负荷观测，属于透明的合成参数选择。",
+    "仅午间窗口变化；20时等其他小时仍可能削减约20%，本轮未擅自一并校准。",
+    "无跨时段负荷守恒或回补；需求减少不应称为已自动转移到低谷。",
+    "旧策略价格仅作固定输入算术对照，未加载或调用任何已训练Actor。"
+  ],
+  "source_hashes": {
+    "eqnsac/environment.py": "913310f2fecd96da4c3e3d587a9147cb680d6b1920a3e608ff2453f891a024c5",
+    "data/profile.json": "ba6149855dfe04a4a49f5564ef6cd8c46bce3975298f6d741f37a1181597602c",
+    "checks/sac_revision/response_parameter_probe.py": "f1cc8ebc166b50f0b261f5d75dc097ef5304ad565190945ab889342efe56cb44",
+    "runs/sac_fixed_day_refined_500/config.json": "6ed17154efe49bf368d3d78d2886bb356adef4992e44f655981ffe6b4f048009"
+  }
+}

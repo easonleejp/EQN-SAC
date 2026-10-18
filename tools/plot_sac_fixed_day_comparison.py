@@ -3,6 +3,8 @@
 不导入 SAC 模型，不训练、不评价策略；测试的 24 个小时不平均、不平滑。
 仅训练利润叠加完整窗口的 20 回合尾随均值。输入文件都通过检查后才写图。
 最大购电跳变与 RMS 使用日内相邻 23 个差分，不包含跨日或首尾回环。
+--hourly-utility 显式允许仅改变 U(L)=a*L²+b*L 的逐小时系数；核验
+curvature=-a、reference=b+2*a*baseline_load，其余配置和外生输入必须相同。
 
 Example:
     .venv/bin/python tools/plot_sac_fixed_day_comparison.py \
@@ -15,6 +17,7 @@ Example:
 """
 
 import argparse
+import copy
 import csv
 import json
 from pathlib import Path
@@ -37,6 +40,7 @@ else:
 ROOT = Path(__file__).resolve().parents[1]
 BEFORE, AFTER, GRAY, GOLD = "#376A9D", "#CD6028", "#959CA5", "#A88A4D"
 NOISE_KEYS = ("curvature_std", "demand_noise_std", "participation_noise_std")
+MIDDAY_HOURS = tuple(range(11, 16))  # Predeclared h11–15, i.e. 11:00–16:00.
 
 
 def read_run(path):
@@ -103,24 +107,79 @@ def read_run(path):
                 checkpoint_record=checkpoint_record)
 
 
-def compare_inputs(before, after):
+def utility_record(run):
+    """Verify explicit coefficients; label historical coefficients as reconstructed."""
+    cfg, env = run["cfg"], run["env"]
+    coefficients = cfg.get("hourly_utility", {})
+    load = np.asarray(run["profile"]["baseline_load"], dtype=float)
+    reference = np.asarray(env["hourly_demand_reference"], dtype=float)
+    if coefficients:
+        require(isinstance(coefficients, dict) and set(coefficients) == {"a", "b"},
+                "hourly_utility 必须只包含 a、b 两组系数。")
+        a, b = (np.asarray(coefficients[key], dtype=float) for key in ("a", "b"))
+        require(a.shape == b.shape == (24,) and np.isfinite(a).all()
+                and np.isfinite(b).all() and np.all(a < 0), "效用系数必须为有限24小时数组，且a<0。")
+        require(env.get("hourly_utility") == coefficients, "有效环境中的 a、b 与训练配置不一致。")
+        curvature = np.asarray(env["demand"].get("hourly_curvature_mean"), dtype=float)
+        require(curvature.shape == (24,) and np.allclose(curvature, -a, rtol=1e-12, atol=1e-12),
+                "hourly_curvature_mean 必须等于 -a。")
+        require(reference.shape == (24,) and np.allclose(reference, b + 2 * a * load,
+                                                        rtol=1e-12, atol=1e-10),
+                "hourly_demand_reference 必须由 b + 2*a*原负荷 推导。")
+        origin = "explicit hourly_utility coefficients saved in config and effective environment"
+    else:
+        require(env.get("hourly_utility", {}) == {}, "旧配置无小时效用系数，但有效环境含显式系数。")
+        curvature = np.full(24, env["demand"]["curvature_mean"], dtype=float)
+        if "hourly_curvature_mean" in env["demand"]:
+            require(np.array_equal(np.asarray(env["demand"]["hourly_curvature_mean"]), curvature),
+                    "无小时效用配置时不能存在不同的逐小时曲率。")
+        a = -curvature
+        b = reference - 2 * a * load
+        origin = "reconstructed equivalent coefficients from historical constant curvature and saved demand reference; not original saved a/b"
+    return {"origin": origin, "a": a.tolist(), "b": b.tolist(),
+            "hourly_curvature_mean": curvature.tolist(), "hourly_demand_reference": reference.tolist(),
+            "derivation": "U(L)=a*L^2+b*L; curvature=-a; demand_reference=b+2*a*baseline_load"}
+
+
+def compare_inputs(before, after, hourly_utility=False):
     """Require paired exogenous data; preserve the allowed configuration differences."""
     require(before["profile"] == after["profile"], "前后完整名义 profile 不同，不能作同日比较。")
     for key in ("baseline_load", "grid_price", "wind"):
         require(np.array_equal(before["values"][key], after["values"][key]),
                 f"前后实际 {key} 不同，不能作同日比较。")
-    # A changed response/storage parameter is allowed; changed prices/rules are not.
-    for key in ("user", "hourly_demand_reference", "params"):
-        require(before["env"][key] == after["env"][key], f"前后价格/参考值/结算输入 {key} 不同。")
-    return {key: {"before": before["cfg"].get(key), "after": after["cfg"].get(key)}
-            for key in sorted(set(before["cfg"]) | set(after["cfg"]))
-            if before["cfg"].get(key) != after["cfg"].get(key)}
+    configs = [dict(run["cfg"], hourly_utility=run["cfg"].get("hourly_utility", {})) for run in (before, after)]
+    if hourly_utility:
+        require(bool(configs[1]["hourly_utility"]), "--hourly-utility 要求本次存在显式 a、b 校准。")
+        for run in (before, after):
+            utility_record(run)
+        rest = [{key: value for key, value in cfg.items() if key != "hourly_utility"} for cfg in configs]
+        require(rest[0] == rest[1], "本轮只允许 hourly_utility 变化；其他训练、状态、响应、储能配置必须相同。")
+        environments = [copy.deepcopy(run["env"]) for run in (before, after)]
+        for env in environments:
+            env.pop("hourly_utility", None)
+            env.pop("hourly_demand_reference")
+            env["demand"].pop("hourly_curvature_mean", None)
+        require(environments[0] == environments[1], "除小时效用系数及派生量外，前后有效环境必须完全相同。")
+    else:
+        # Default historical comparison keeps its original strict reference check.
+        for key in ("user", "hourly_demand_reference", "params"):
+            require(before["env"][key] == after["env"][key], f"前后价格/参考值/结算输入 {key} 不同。")
+    return {key: {"before": configs[0].get(key), "after": configs[1].get(key)}
+            for key in sorted(set(configs[0]) | set(configs[1]))
+            if configs[0].get(key) != configs[1].get(key)}
+
+
+def response_percent(values):
+    require(np.all(values["baseline_load"] > 0), "响应比例要求原始负荷为正。")
+    return 100 * (values["baseline_load"] - values["user_load"]) / values["baseline_load"]
 
 
 def diagnostics(run):
     values = run["values"]
     delta = np.diff(values["grid_purchase"])
     index = int(np.argmax(np.abs(delta)))
+    midday = np.asarray(MIDDAY_HOURS)
+    response_percent(values)  # Validate the denominator before calculating ratios.
     return {
         "price_h22": float(values["price"][22]), "price_h23": float(values["price"][23]),
         "price_change_h22_to_h23": float(values["price"][23] - values["price"][22]),
@@ -131,12 +190,14 @@ def diagnostics(run):
         "grid_daily_peak": float(values["grid_purchase"].max()),
         "grid_daily_std": float(values["grid_purchase"].std()),
         "daily_profit_raw": float(values["profit"].sum()),
+        "midday_reduction_pct": float(100 * (values["baseline_load"][midday] - values["user_load"][midday]).sum()
+                                       / values["baseline_load"][midday].sum()),
         "training_updates": max(0, 12000 - max(run["cfg"]["batch_size"], run["cfg"]["warmup_steps"], 1) + 1)
                             * run["cfg"].get("updates_per_step", 1),
     }
 
 
-def draw(output, before, after, metrics):
+def draw(output, before, after, metrics, hourly_utility=False):
     fig, axes = plt.subplots(3, 2, figsize=(17, 14.6))
     fig.subplots_adjust(left=.075, right=.975, top=.825, bottom=.14, hspace=.57, wspace=.22)
     fig.suptitle("同一固定日｜两次 SAC 训练与实际测试对比", x=.075, ha="left", y=.972,
@@ -201,7 +262,12 @@ def draw(output, before, after, metrics):
     ax.set_ylim(lower - .08 * (upper - lower), upper + .08 * (upper - lower))
 
     ax = axes[2, 0]
-    setup(ax, "e  原负荷与响应后负荷", "功率（kW）", "固定原负荷相同；前后均为单个测试回合的真实用户用电")
+    subtitle = "固定原负荷相同；前后均为单个测试回合的真实用户用电"
+    if hourly_utility:
+        old, new = metrics["before"]["midday_reduction_pct"], metrics["after"]["midday_reduction_pct"]
+        subtitle = f"中午 h11–15 加权削减：{old:.2f}% → {new:.2f}%（{new - old:+.2f} 个百分点）"
+        ax.axvspan(11, 16, color=GOLD, alpha=.10)
+    setup(ax, "e  原负荷与响应后负荷", "功率（kW）", subtitle)
     step(ax, a["baseline_load"], GRAY, "原负荷", ":", 1.4)
     step(ax, a["user_load"], BEFORE, ls="--", width=1.8)
     step(ax, b["user_load"], AFTER, width=2.2)
@@ -223,10 +289,13 @@ def draw(output, before, after, metrics):
 
     h_before = " → ".join(f"h{h}" for h in x["grid_max_change_hours"])
     h_after = " → ".join(f"h{h}" for h in y["grid_max_change_hours"])
+    interpretation = ("仅 a、b 及派生参考价/曲率变化；原 TOU、其余参数与预算相同。中午比例按原负荷加权；同日测试不证明泛化或收敛。"
+                      if hourly_utility else
+                      "本图比较整套配置，不能归因于单个改动；相同固定日的训练后测试不证明未见场景泛化或已收敛。")
     footer = (
         f"最大购电跳变发生于：前一次 {h_before}；本次 {h_after}。RMS = sqrt(mean(Δ购电²))，仅计算日内相邻 23 次变化。\n"
         "前后外生数据相同且三项环境噪声均为 0；SAC 训练探索仍有随机性。测试动作、价格、负荷与功率均未平滑。\n"
-        "本图比较整套配置，不能归因于单个改动；相同固定日的训练后测试不证明未见场景泛化或已收敛。\n"
+        + interpretation + "\n"
         "单位沿用本轮假设：澳分/kWh、kW、kWh；训练利润 AUD = 原始利润 ÷ 100。原始数据来源未核定货币单位。"
     )
     fig.text(.075, .026, footer, fontsize=9.2, color="#475467", va="bottom", linespacing=1.55)
@@ -238,7 +307,7 @@ def draw(output, before, after, metrics):
     return paths
 
 
-def write_hourly(path, before, after):
+def write_hourly(path, before, after, hourly_utility=False):
     columns = {"hour": np.arange(24), "tou_price": np.asarray(before["profile"]["retail_price"])}
     for key in ("grid_price", "baseline_load", "wind"):
         columns[key] = before["values"][key]
@@ -251,6 +320,13 @@ def write_hourly(path, before, after):
         columns[label + "_signed_storage_power"] = values["charge"] - values["discharge"]
         columns[label + "_price_change_from_previous_hour"] = [None, *np.diff(values["price"])]
         columns[label + "_grid_change_from_previous_hour"] = [None, *np.diff(values["grid_purchase"])]
+        columns[label + "_response_pct"] = response_percent(values)
+        if hourly_utility:
+            record = utility_record(run)
+            for key in ("a", "b", "hourly_curvature_mean", "hourly_demand_reference"):
+                columns[label + "_utility_" + key] = record[key]
+    columns["response_change_pp"] = columns["after_response_pct"] - columns["before_response_pct"]
+    columns["midday_window"] = np.isin(np.arange(24), MIDDAY_HOURS).astype(int)
     with path.open("w", encoding="utf-8", newline="") as stream:
         writer = csv.DictWriter(stream, fieldnames=list(columns))
         writer.writeheader()
@@ -266,21 +342,24 @@ def main():
     parser.add_argument("--after", type=Path, default=ROOT / "runs/sac_fixed_day_refined_500")
     parser.add_argument("--output", type=Path, default=ROOT / "experiments/sac_fixed_day_refined_500_20261018/figures")
     parser.add_argument("--font", default="PingFang SC")
+    parser.add_argument("--hourly-utility", action="store_true",
+                        help="Only hourly a/b calibration may differ; verify its derived curvature/reference")
     args = parser.parse_args()
     require(args.before.resolve() != args.after.resolve(), "前后不能指向同一运行目录。")
     before, after = read_run(args.before.resolve()), read_run(args.after.resolve())
-    changes = compare_inputs(before, after)
+    changes = compare_inputs(before, after, args.hourly_utility)
     metrics = {label: diagnostics(run) for label, run in (("before", before), ("after", after))}
     metrics["delta_after_minus_before"] = {
-        key: metrics["after"][key] - value for key, value in metrics["before"].items()
+        (key.removesuffix("_pct") + "_pp" if key.endswith("_pct") else key): metrics["after"][key] - value
+        for key, value in metrics["before"].items()
         if isinstance(value, (int, float))
     }
     font_path = set_style(args.font)
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=True)
-    artifacts = draw(output, before, after, metrics)
+    artifacts = draw(output, before, after, metrics, args.hourly_utility)
     hourly = output / "hourly_comparison.csv"
-    write_hourly(hourly, before, after)
+    write_hourly(hourly, before, after, args.hourly_utility)
     artifacts.append(hourly)
     for run in (before, after):
         require(all(item == fingerprint(item["path"]) for item in run["inputs"]),
@@ -297,6 +376,13 @@ def main():
         "unit_assumption": {"price": "Australian cents/kWh", "power": "kW", "energy": "kWh",
                             "training_plot_profit": "AUD = raw / 100", "source_units_verified": False},
         "configuration_changes": changes, "metrics": metrics,
+        "comparison_mode": "hourly_utility_only" if args.hourly_utility else "historical_strict_reference",
+        "hourly_utility": ({label: utility_record(run) for label, run in (("before", before), ("after", after))}
+                           if args.hourly_utility else None),
+        "response_definition": "100*(baseline_load-user_load)/baseline_load; positive=reduction, negative=increase; changes reported in percentage points",
+        "midday_window": {"hours": list(MIDDAY_HOURS), "clock_interval": "11:00–16:00",
+                          "selected_before_new_test": True,
+                          "aggregation": "100*sum(baseline_load-user_load)/sum(baseline_load), not unweighted mean of hourly ratios"},
         "inputs": {"before": before["inputs"], "after": after["inputs"]},
         "checkpoint_verification": {"before": before["checkpoint_record"], "after": after["checkpoint_record"]},
         "script": fingerprint(__file__), "helper_script": fingerprint(Path(__file__).with_name("plot_sac_fixed_day.py")),
